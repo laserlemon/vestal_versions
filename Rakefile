@@ -1,23 +1,14 @@
+require 'rubygems'
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+require 'echoe'
 
-desc 'Default: run unit tests.'
-task :default => :test
-
-desc 'Test the vestal_versions plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.libs << 'test'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+Echoe.new('vestal_versions', '0.2.2') do |g|
+  g.description = %(Keep a DRY history of your ActiveRecord models' changes)
+  g.url = 'http://github.com/laserlemon/vestal_versions'
+  g.author = 'Steve Richert'
+  g.email = 'steve@laserlemon.com'
+  g.ignore_pattern = %w(tmp/* script/*)
+  g.development_dependencies = []
 end
 
-desc 'Generate documentation for the vestal_versions plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'VestalVersions'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+Dir["#{File.dirname(__FILE__)}/tasks/*.rake"].sort.each{|t| load t }
