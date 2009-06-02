@@ -1,0 +1,13 @@
+= vestal_versions
+
+== Installation
+
+  script/plugin install git://github.com/laserlemon/vestal_versions.git
+
+== Example
+
+Coming soon...
+
+== Tips
+
+Coming soon...
