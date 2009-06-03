@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steve Richert"]
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Vestal_versions", "--main", "README.rdoc"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{vestal_versions}
-  s.rubygems_version = %q{1.3.3}
+  s.rubygems_version = %q{1.3.4}
   s.summary = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.test_files = ["test/test_helper.rb", "test/vestal_versions_test.rb"]
 
