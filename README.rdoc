@@ -1,13 +1,77 @@
 = vestal_versions
 
+Finally, DRY ActiveRecord versioning!
+
+technoweenie[http://github.com/technoweenie]'s <tt>acts_as_versioned</tt>[http://github.com/technoweenie/acts_as_versioned] was a great start, but it failed to keep up with ActiveRecord's introduction of dirty objects in version 2.1. Additionally, each versioned model needs its own versions table that duplicates most of the original table's columns. The versions table is then populated with records that often duplicate most of the original record's attributes. All in all, not very DRY at all.
+
+<tt>simply_versioned</tt>[http://github.com/mmower/simply_versioned] by mmower[http://github.com/mmower] started to move in the right direction by removing a great deal of the duplication of acts_as_versioned. It requires only one versions table and no changes whatsoever to existing models. Its versions table stores all of the model attributes as a YAML hash in a single text column. But we could be DRYer!
+
+<tt>vestal_versions</tt> keeps in the spirit of consolidating to one versions table, polymorphically associated with its parent models. But it goes one step further by storing a serialized hash of only the models' changes. Think modern version control systems. By traversing the record of changes, the models can be reverted to any point in time.
+
+And that's just what <tt>vestal_versions</tt> does. Not only can a model be reverted to a previous version number but it can be reverted to a date or time!
+
 == Installation
 
-  script/plugin install git://github.com/laserlemon/vestal_versions.git
+In <tt>environment.rb</tt>:
+
+  Rails::Initializer.run do |config|
+    config.gem 'laserlemon-vestal_versions', :lib => 'vestal_versions', :source => 'http://gems.github.com'
+  end
+
+At your application root, run:
+
+  $ sudo rake gems:install
+  
+Next, generate and run the first and last versioning migration you'll ever need:
+
+  $ script/generate vestal_versions_migration
+  $ rake db:migrate
 
 == Example
 
-Coming soon...
+To version an ActiveRecord model, simply add <tt>versioned</tt> to you class like so:
 
-== Tips
+  class User < ActiveRecord::Base
+    versioned
+    
+    validates_presence_of :first_name, :last_name
+    
+    def name
+      "#{first_name} #{last_name}"
+    end
+  end
 
-Coming soon...
+It's that easy! Now watch it in action...
+
+  >> u = User.create(:first_name => 'Steve', :last_name => 'Richert')
+  => #<User first_name: "Steve", last_name: "Richert">
+  >> u.version
+  => 1
+  >> u.update_attribute(:first_name, 'Stephen')
+  => true
+  >> u.name
+  => "Stephen Richert"
+  >> u.version
+  => 2
+  >> u.revert_to(:first)
+  => 1
+  >> u.name
+  => "Steve Richert"
+  >> u.version
+  => 1
+  >> u.save
+  => true
+  >> u.version
+  => 3
+  >> u.update_attribute(:last_name, 'Jobs')
+  => true
+  >> u.name
+  => "Steve Jobs"
+  >> u.version
+  => 4
+  >> u.revert_to!(2)
+  => true
+  >> u.name
+  => "Stephen Richert"
+  >> u.version
+  => 5
