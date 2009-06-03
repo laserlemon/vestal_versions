@@ -14,6 +14,7 @@ module LaserLemon
           def at(value)
             case value
             when Version: value
+            when Symbol: send(value)
             when Numeric: first(:conditions => {:number => value.floor})
             when Date, Time: last(:conditions => ['versions.created_at <= ?', value.to_time])
             end
