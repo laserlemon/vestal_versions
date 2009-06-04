@@ -29,7 +29,7 @@ Next, generate and run the first and last versioning migration you'll ever need:
 
 == Example
 
-To version an ActiveRecord model, simply add <tt>versioned</tt> to you class like so:
+To version an ActiveRecord model, simply add <tt>versioned</tt> to your class like so:
 
   class User < ActiveRecord::Base
     versioned
