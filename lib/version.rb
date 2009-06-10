@@ -10,6 +10,10 @@ class Version < ActiveRecord::Base
   
   before_create :set_number
   
+  def version
+    number
+  end
+  
   def <=>(other)
     number <=> other.number
   end
