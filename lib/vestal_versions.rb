@@ -1,3 +1,5 @@
+require 'version'
+
 module LaserLemon
   module VestalVersions
     def self.included(base)
@@ -6,7 +8,7 @@ module LaserLemon
     
     module ClassMethods
       def versioned
-        has_many :versions, :as => :versioned, :class_name => 'VestalVersion', :order => 'versions.number', :dependent => :destroy, :autosave => true do
+        has_many :versions, :as => :versioned, :order => 'versions.number', :dependent => :destroy, :autosave => true do
           def current
             first(:conditions => {:number => versioned.version})
           end
@@ -22,7 +24,7 @@ module LaserLemon
           
           def between(from_value, to_value)
             from, to = at(from_value), at(to_value)
-            return [] unless [from, to].all?{|v| v.is_a?(VestalVersion) }
+            return [] unless [from, to].all?{|v| v.is_a?(Version) }
             all(
               :conditions => {:number => ([from, to].min.number..[from, to].max.number)},
               :order => "versions.number #{(from > to) ? 'DESC' : 'ASC'}"
