@@ -1,4 +1,4 @@
-class Version < ActiveRecord::Base
+class VestalVersion < ActiveRecord::Base
   
   belongs_to :versioned, :polymorphic => true
   
