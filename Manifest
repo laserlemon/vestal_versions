@@ -3,6 +3,7 @@ generators/vestal_versions_migration/vestal_versions_migration_generator.rb
 init.rb
 lib/version.rb
 lib/vestal_versions.rb
+Manifest
 MIT-LICENSE
 Rakefile
 README.rdoc
@@ -10,4 +11,4 @@ tasks/vestal_versions_tasks.rake
 test/test_helper.rb
 test/vestal_versions_test.rb
 VERSION.yml
-Manifest
+vestal_versions.gemspec

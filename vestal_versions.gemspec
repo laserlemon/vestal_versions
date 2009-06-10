@@ -2,15 +2,15 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steve Richert"]
-  s.date = %q{2009-06-02}
+  s.date = %q{2009-06-10}
   s.description = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.email = %q{steve@laserlemon.com}
   s.extra_rdoc_files = ["lib/version.rb", "lib/vestal_versions.rb", "README.rdoc", "tasks/vestal_versions_tasks.rake"]
-  s.files = ["generators/vestal_versions_migration/templates/migration.rb", "generators/vestal_versions_migration/vestal_versions_migration_generator.rb", "init.rb", "lib/version.rb", "lib/vestal_versions.rb", "MIT-LICENSE", "Rakefile", "README.rdoc", "tasks/vestal_versions_tasks.rake", "test/test_helper.rb", "test/vestal_versions_test.rb", "VERSION.yml", "Manifest", "vestal_versions.gemspec"]
+  s.files = ["generators/vestal_versions_migration/templates/migration.rb", "generators/vestal_versions_migration/vestal_versions_migration_generator.rb", "init.rb", "lib/version.rb", "lib/vestal_versions.rb", "Manifest", "MIT-LICENSE", "Rakefile", "README.rdoc", "tasks/vestal_versions_tasks.rake", "test/test_helper.rb", "test/vestal_versions_test.rb", "VERSION.yml", "vestal_versions.gemspec"]
   s.homepage = %q{http://github.com/laserlemon/vestal_versions}
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Vestal_versions", "--main", "README.rdoc"]
   s.require_paths = ["lib"]

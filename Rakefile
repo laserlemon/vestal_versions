@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'echoe'
 
-Echoe.new('vestal_versions', '0.2.1') do |g|
+Echoe.new('vestal_versions', '0.2.2') do |g|
   g.description = %(Keep a DRY history of your ActiveRecord models' changes)
   g.url = 'http://github.com/laserlemon/vestal_versions'
   g.author = 'Steve Richert'
