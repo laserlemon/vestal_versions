@@ -1,5 +1,7 @@
 class VestalVersion < ActiveRecord::Base
   
+  set_table_name 'versions'
+  
   belongs_to :versioned, :polymorphic => true
   
   validates_presence_of :versioned, :changes, :number

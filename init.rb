@@ -1,2 +1,2 @@
-require 'vestal_versions'
 require 'version'
+require 'vestal_versions'
