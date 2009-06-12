@@ -43,12 +43,10 @@ module LaserLemon
         @version = nil
         unless changes.blank?
           if versions.empty?
-            content_columns = self.class.column_names.delete_if{|c| c == self.class.primary_key }.delete_if{|c| c =~ /^(cre|upd)ated_(at|on)$/ }
-            content_attributes = attributes.slice(*content_columns)
             if new_record?
-              versions.build(:changes => content_attributes)
+              versions.build(:changes => attributes)
             else
-              reverted_attributes = content_attributes.inject({}){|h,(k,v)| h.update(k => (changed.include?(k) ? changes[k].first : v)) }
+              reverted_attributes = attributes.inject({}){|h,(k,v)| h.update(k => (changed.include?(k) ? changes[k].first : v)) }
               version_timestamp = (try(:updated_at) || try(:created_at))
               versions.build(:changes => reverted_attributes, :created_at => version_timestamp)
             end
