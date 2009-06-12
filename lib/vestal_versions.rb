@@ -57,8 +57,7 @@ module LaserLemon
       
       def version
         @version ||= begin
-          last_version = versions.last
-          last_version.nil? ? 1 : last_version.number
+          new_record? || (last_version = versions.last).nil? ? 1 : last_version.number
         end
       end
       
