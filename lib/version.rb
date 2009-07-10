@@ -29,6 +29,6 @@ class Version < ActiveRecord::Base
   private
   
   def set_number
-    write_attribute(:number, versioned.versions.maximum(:number).to_i + 1)
+    write_attribute(:number, versioned.version.to_i + 1)
   end
 end

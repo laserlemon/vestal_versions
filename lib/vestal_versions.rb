@@ -41,6 +41,7 @@ module LaserLemon
     module InstanceMethods
       def build_version
         @version = nil
+        versions.reload
         unless changes.blank?
           if versions.empty?
             if new_record?
@@ -56,9 +57,7 @@ module LaserLemon
       end
       
       def version
-        @version ||= begin
-          new_record? || (last_version = versions.last).nil? ? 1 : last_version.number
-        end
+        @version ||= versions.maximum(:number)
       end
       
       def revert_to(value)
