@@ -76,6 +76,14 @@ module LaserLemon
       def revert_to!(value)
         revert_to(value) && save
       end
+      
+      def last_changes
+        versions.at(version).changes
+      end
+      
+      def last_changed
+        last_changes.keys
+      end
     end
   end
 end
