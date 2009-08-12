@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "0.3.0"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steve Richert"]
-  s.date = %q{2009-08-11}
+  s.date = %q{2009-08-12}
   s.description = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.email = %q{steve@laserlemon.com}
   s.extra_rdoc_files = ["lib/version.rb", "lib/vestal_versions.rb", "README.rdoc", "tasks/vestal_versions_tasks.rake"]
