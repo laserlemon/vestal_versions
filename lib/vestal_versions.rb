@@ -8,53 +8,60 @@ module LaserLemon
     
     module ClassMethods
       def versioned
-        has_many :versions, :as => :versioned, :order => 'versions.number', :dependent => :destroy, :autosave => true do
-          def current
-            first(:conditions => {:number => versioned.version})
-          end
-          
+        has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :destroy do
           def at(value)
             case value
             when Version: value
-            when Symbol: send(value)
-            when Numeric: first(:conditions => {:number => value.floor})
-            when Date, Time: last(:conditions => ['versions.created_at <= ?', value.to_time])
+            when Numeric: find_by_number(value.floor)
+            when Date, Time: last(:conditions => ['versions.created_at <= ?', value.to_time.in_time_zone])
             end
           end
           
           def between(from_value, to_value)
-            from, to = at(from_value), at(to_value)
-            return [] unless [from, to].all?{|v| v.is_a?(Version) }
+            from, to = number_at(from_value), number_at(to_value)
+            return [] if from.nil? || to.nil? || (from == to)
             all(
-              :conditions => {:number => ([from, to].min.number..[from, to].max.number)},
+              :conditions => {:number => Range.new(*[from, to].sort)},
               :order => "versions.number #{(from > to) ? 'DESC' : 'ASC'}"
             )
           end
+          
+          private
+          
+          def number_at(value)
+            case value
+            when Version: value.number
+            when Numeric: value.floor
+            when Date, Time: at(value).try(:number)
+            end
+          end
         end
         
-        before_save :build_version
+        after_save :create_version, :if => :needs_version?
         
         include InstanceMethods
       end
     end
     
     module InstanceMethods
-      def build_version
-        @version = nil
-        versions.reload
-        unless changes.blank?
-          if versions.empty?
-            if new_record?
-              versions.build(:changes => attributes)
-            else
-              reverted_attributes = attributes.inject({}){|h,(k,v)| h.update(k => (changed.include?(k) ? changes[k].first : v)) }
-              version_timestamp = (try(:updated_at) || try(:created_at))
-              versions.build(:changes => reverted_attributes, :created_at => version_timestamp)
-            end
-          end
-          versions.build(:changes => changes) unless new_record?
-        end
+      private
+      
+      def needs_version?
+        !changed.empty?
       end
+      
+      def create_version
+        if versions.empty?
+          versions.create(:changes => attributes, :number => 1)
+        else
+          @version = nil
+          versions.create(:changes => changes, :number => (version.to_i + 1))
+        end
+        
+        @version = nil
+      end
+      
+      public
       
       def version
         @version ||= versions.maximum(:number)
@@ -63,13 +70,16 @@ module LaserLemon
       def revert_to(value)
         chain = versions.between(version, value)
         return version unless chain.size > 1
+        
         new_version, backward = chain.last.number, (chain.first > chain.last)
         backward ? chain.pop : chain.shift
+        
         chain.each do |version|
-          version.changes.each do |attribute, change|
+          version.changes.except('updated_at', 'updated_on').each do |attribute, change|
             write_attribute(attribute, backward ? change.first : change.last)
           end
         end
+        
         @version = new_version
       end
       
