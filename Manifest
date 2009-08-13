@@ -9,6 +9,7 @@ Rakefile
 README.rdoc
 tasks/vestal_versions_tasks.rake
 test/test_helper.rb
+test/version_test.rb
 test/vestal_versions_test.rb
 VERSION.yml
 vestal_versions.gemspec
