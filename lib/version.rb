@@ -1,4 +1,5 @@
 class Version < ActiveRecord::Base
+  include Comparable
   
   belongs_to :versioned, :polymorphic => true
   
@@ -8,13 +9,5 @@ class Version < ActiveRecord::Base
   
   def <=>(other)
     number <=> other.number
-  end
-  
-  def <(other)
-    number < other.number
-  end
-  
-  def >(other)
-    number > other.number
   end
 end
