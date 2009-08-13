@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "0.4.1"
+  s.version = "0.4.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["laserlemon"]
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
@@ -26,6 +27,12 @@ Gem::Specification.new do |s|
      "init.rb",
      "lib/version.rb",
      "lib/vestal_versions.rb",
+     "test/changes_test.rb",
+     "test/comparable_test.rb",
+     "test/creation_test.rb",
+     "test/last_changes_test.rb",
+     "test/revert_test.rb",
+     "test/schema.rb",
      "test/test_helper.rb",
      "vestal_versions.gemspec"
   ]
@@ -35,8 +42,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.test_files = [
-    "test/comparable_test.rb",
+    "test/changes_test.rb",
+     "test/comparable_test.rb",
      "test/creation_test.rb",
+     "test/last_changes_test.rb",
+     "test/revert_test.rb",
      "test/schema.rb",
      "test/test_helper.rb"
   ]
