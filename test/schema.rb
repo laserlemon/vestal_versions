@@ -23,7 +23,7 @@ end
 CreateSchema.suppress_messages do
   CreateSchema.migrate(:up)
 end
- 
+
 class User < ActiveRecord::Base
   versioned
 

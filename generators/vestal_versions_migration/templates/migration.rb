@@ -6,7 +6,7 @@ class CreateVestalVersions < ActiveRecord::Migration
       t.integer :number
       t.datetime :created_at
     end
-    
+
     change_table :versions do |t|
       t.index [:versioned_type, :versioned_id]
       t.index :number
