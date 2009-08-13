@@ -1,3 +1,10 @@
+$: << File.join(File.dirname(__FILE__), '..', 'lib')
+$: << File.join(File.dirname(__FILE__))
+
 require 'rubygems'
-require 'active_support'
-require 'active_support/test_case'
+require 'test/unit'
+require 'activerecord'
+require 'shoulda'
+require 'vestal_versions'
+require 'schema'
+begin; require 'redgreen'; rescue LoadError; end

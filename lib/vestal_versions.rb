@@ -14,7 +14,7 @@ module LaserLemon
             when Version: value
             when Numeric: find_by_number(value.floor)
             when Symbol: respond_to?(value) ? send(value) : nil
-            when Date, Time: last(:conditions => ['versions.created_at <= ?', value.to_time.in_time_zone])
+            when Date, Time: last(:conditions => ['versions.created_at <= ?', value.to_time])
             end
           end
           
@@ -51,15 +51,19 @@ module LaserLemon
         !changed.empty?
       end
       
+      def reset_version(new_version = nil)
+        @version = new_version
+      end
+      
       def create_version
         if versions.empty?
           versions.create(:changes => attributes, :number => 1)
         else
-          @version = nil
+          reset_version
           versions.create(:changes => changes, :number => (version.to_i + 1))
         end
         
-        @version = nil
+        reset_version
       end
       
       public
@@ -72,23 +76,30 @@ module LaserLemon
         chain = versions.between(version, value)
         return version unless chain.size > 1
         
-        new_version, backward = chain.last.number, (chain.first > chain.last)
+        new_version = chain.last.number
+        backward = chain.first > chain.last
         backward ? chain.pop : chain.shift
         
+        timestamps = %w(created_at created_on updated_at updated_on)
+        
         chain.each do |version|
-          version.changes.except('updated_at', 'updated_on').each do |attribute, change|
-            write_attribute(attribute, backward ? change.first : change.last)
+          version.changes.except(*timestamps).each do |attribute, change|
+            new_value = backward ? change.first : change.last
+            write_attribute(attribute, new_value)
           end
         end
         
-        @version = new_version
+        reset_version(new_version)
       end
       
       def revert_to!(value)
-        revert_to(value) && save
+        revert_to(value)
+        reset_version if saved = save
+        saved
       end
       
       def last_changes
+        return {} if version == 1
         versions.at(version).changes
       end
       
