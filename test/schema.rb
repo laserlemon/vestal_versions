@@ -1,5 +1,5 @@
 ActiveRecord::Base.establish_connection(
-  :adapter => RUBY_ENGINE == 'jruby' ? 'jdbcsqlite3' : 'sqlite3',
+  :adapter => defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby' ? 'jdbcsqlite3' : 'sqlite3',
   :database => File.join(File.dirname(__FILE__), 'test.db')
 )
 
