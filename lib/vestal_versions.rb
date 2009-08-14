@@ -11,10 +11,10 @@ module LaserLemon
         has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :destroy do
           def at(value)
             case value
-              when Version: value
-              when Numeric: find_by_number(value.floor)
-              when Symbol: respond_to?(value) ? send(value) : nil
-              when Date, Time: last(:conditions => ['versions.created_at <= ?', value.to_time])
+              when Version; value
+              when Numeric; find_by_number(value.floor)
+              when Symbol; respond_to?(value) ? send(value) : nil
+              when Date, Time; last(:conditions => ['versions.created_at <= ?', value.to_time])
             end
           end
 
@@ -31,9 +31,9 @@ module LaserLemon
 
             def number_at(value)
               case value
-                when Version: value.number
-                when Numeric: value.floor
-                when Symbol, Date, Time: at(value).try(:number)
+                when Version; value.number
+                when Numeric; value.floor
+                when Symbol, Date, Time; at(value).try(:number)
               end
             end
         end
