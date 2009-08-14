@@ -44,12 +44,12 @@ class CreationTest < Test::Unit::TestCase
       end
 
       should 'increase by one' do
-        assert_equal (@initial_count + 1), @count
+        assert_equal @initial_count + 1, @count
       end
 
       should 'increase by one when reverted' do
         @user.revert_to!(:first)
-        assert_equal (@count + 1), @user.versions.count
+        assert_equal @count + 1, @user.versions.count
       end
 
       should 'not increase until a revert is saved' do
