@@ -77,6 +77,10 @@ module LaserLemon
           @last_version ||= versions.maximum(:number)
         end
 
+        def reverted?
+          version != last_version
+        end
+
         def revert_to(value)
           chain = versions.between(version, value)
           return version unless chain.size > 1
