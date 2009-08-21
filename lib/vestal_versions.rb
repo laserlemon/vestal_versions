@@ -52,6 +52,7 @@ module LaserLemon
         end
 
         def reset_version(new_version = nil)
+          @last_version = nil if new_version.nil?
           @version = new_version
         end
 
@@ -69,7 +70,15 @@ module LaserLemon
       public
 
         def version
-          @version ||= versions.maximum(:number)
+          @version ||= last_version
+        end
+
+        def last_version
+          @last_version ||= versions.maximum(:number)
+        end
+
+        def reverted?
+          version != last_version
         end
 
         def revert_to(value)
