@@ -41,6 +41,7 @@ module LaserLemon
         after_save :create_version, :if => :needs_version?
 
         include InstanceMethods
+        alias_method_chain :reload, :versions
       end
     end
 
@@ -79,6 +80,11 @@ module LaserLemon
 
         def reverted?
           version != last_version
+        end
+        
+        def reload_with_versions(*args)
+          reset_version
+          reload_without_versions(*args)
         end
 
         def revert_to(value)
