@@ -21,8 +21,9 @@ module LaserLemon
           def between(from_value, to_value)
             from, to = number_at(from_value), number_at(to_value)
             return [] if from.nil? || to.nil?
+            condition = (from == to) ? to : Range.new(*[from, to].sort)
             all(
-              :conditions => {:number => (from == to) ? to : Range.new(*[from, to].sort)},
+              :conditions => {:number => condition},
               :order => "versions.number #{(from > to) ? 'DESC' : 'ASC'}"
             )
           end
