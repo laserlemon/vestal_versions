@@ -78,7 +78,7 @@ module LaserLemon
         def reverted?
           version != last_version
         end
-        
+
         def reload_with_versions(*args)
           reset_version
           reload_without_versions(*args)
