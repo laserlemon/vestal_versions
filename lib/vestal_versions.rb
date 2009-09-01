@@ -28,15 +28,13 @@ module LaserLemon
             )
           end
 
-          private
-
-            def number_at(value)
-              case value
-                when Version then value.number
-                when Numeric then value.floor
-                when Symbol, Date, Time then at(value).try(:number)
-              end
+          def number_at(value)
+            case value
+              when Version then value.number
+              when Numeric then value.floor
+              when Symbol, Date, Time then at(value).try(:number)
             end
+          end
         end
 
         after_save :create_version, :if => :needs_version?
