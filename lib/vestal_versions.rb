@@ -9,15 +9,6 @@ module LaserLemon
     module ClassMethods
       def versioned
         has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :destroy do
-          def at(value)
-            case value
-              when Version then value
-              when Numeric then find_by_number(value.floor)
-              when Symbol then respond_to?(value) ? send(value) : nil
-              when Date, Time then last(:conditions => ['versions.created_at <= ?', value.to_time])
-            end
-          end
-
           def between(from_value, to_value)
             from, to = number_at(from_value), number_at(to_value)
             return [] if from.nil? || to.nil?
@@ -26,6 +17,15 @@ module LaserLemon
               :conditions => {:number => condition},
               :order => "versions.number #{(from > to) ? 'DESC' : 'ASC'}"
             )
+          end
+
+          def at(value)
+            case value
+              when Version then value
+              when Numeric then find_by_number(value.floor)
+              when Symbol then respond_to?(value) ? send(value) : nil
+              when Date, Time then last(:conditions => ['versions.created_at <= ?', value.to_time])
+            end
           end
 
           def number_at(value)
