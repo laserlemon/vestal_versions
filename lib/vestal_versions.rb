@@ -87,8 +87,10 @@ module LaserLemon
         end
 
         def revert_to(value)
-          chain = versions.between(version, value)
-          return version unless chain.size > 1
+          to_value = versions.number_at(value)
+          return version if to_value == version
+          chain = versions.between(version, to_value)
+          return version if chain.empty?
 
           new_version = chain.last.number
           backward = chain.first > chain.last
