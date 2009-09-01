@@ -46,7 +46,6 @@ module LaserLemon
 
     module InstanceMethods
       private
-
         def needs_version?
           !changed.empty?
         end
@@ -68,7 +67,6 @@ module LaserLemon
         end
 
       public
-
         def version
           @version ||= last_version
         end
