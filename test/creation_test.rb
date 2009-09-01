@@ -35,6 +35,15 @@ class CreationTest < Test::Unit::TestCase
       assert_equal count, @user.versions.count
     end
 
+    should 'not be zero for valid version range' do
+      assert_not_equal 0, @user.versions.between(1, 1).size
+    end
+
+    should 'be zero for invalid version range' do
+      count = @user.versions.count
+      assert_equal 0, @user.versions.between(count+1, count+1).size
+    end
+
     context 'after an update' do
       setup do
         @initial_count = @count
