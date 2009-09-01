@@ -27,14 +27,6 @@ class CreationTest < Test::Unit::TestCase
       assert_equal @count, @user.versions.count
     end
 
-    should 'not increase when reverting to an identical version' do
-      @user.update_attribute(:name, 'Steve Jobs')
-      @user.update_attribute(:name, @name)
-      count = @user.versions.count
-      @user.revert_to!(:first)
-      assert_equal count, @user.versions.count
-    end
-
     should 'not be zero for valid version range' do
       assert_not_equal 0, @user.versions.between(1, 1).size
     end
