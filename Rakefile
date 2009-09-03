@@ -13,6 +13,10 @@ begin
     g.homepage = 'http://github.com/laserlemon/vestal_versions'
     g.authors = %w(laserlemon)
     g.add_development_dependency 'thoughtbot-shoulda'
+    g.rubyforge_project = 'laser-lemon'
+  end
+  Jeweler::RubyforgeTasks.new do |r|
+    r.doc_task = 'rdoc'
   end
 rescue LoadError
   puts 'Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com'

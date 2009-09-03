@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "0.4.4"
+  s.version = "0.4.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["laserlemon"]
-  s.date = %q{2009-09-01}
+  s.date = %q{2009-09-03}
   s.description = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.email = %q{steve@laserlemon.com}
   s.extra_rdoc_files = [
@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/laserlemon/vestal_versions}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
+  s.rubyforge_project = %q{laser-lemon}
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.test_files = [
