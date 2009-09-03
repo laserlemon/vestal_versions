@@ -111,13 +111,9 @@ module LaserLemon
           saved
         end
 
-        def last_changes
+        def latest_changes
           return {} if version.nil? || version == 1
           versions.at(version).changes
-        end
-
-        def last_changed
-          last_changes.keys
         end
     end
   end
