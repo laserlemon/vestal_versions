@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "0.4.5"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["laserlemon"]
@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
      "test/changes_test.rb",
      "test/comparable_test.rb",
      "test/creation_test.rb",
-     "test/last_changes_test.rb",
+     "test/latest_changes_test.rb",
      "test/revert_test.rb",
      "test/schema.rb",
      "test/test_helper.rb",
@@ -48,7 +48,7 @@ Gem::Specification.new do |s|
      "test/changes_test.rb",
      "test/comparable_test.rb",
      "test/creation_test.rb",
-     "test/last_changes_test.rb",
+     "test/latest_changes_test.rb",
      "test/revert_test.rb",
      "test/schema.rb",
      "test/test_helper.rb"
