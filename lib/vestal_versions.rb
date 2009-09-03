@@ -59,8 +59,7 @@ module LaserLemon
           if versions.empty?
             versions.create(:changes => attributes, :number => 1)
           else
-            reset_version
-            versions.create(:changes => changes, :number => (version.to_i + 1))
+            versions.create(:changes => changes, :number => (last_version + 1))
           end
 
           reset_version
