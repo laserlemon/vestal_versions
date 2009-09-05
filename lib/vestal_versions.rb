@@ -37,7 +37,9 @@ module LaserLemon
           end
         end
 
-        after_save :create_version, :if => :needs_version?
+        after_create :create_initial_version
+        after_update :create_initial_version, :if => :needs_initial_version?
+        after_update :create_version, :if => :needs_version?
 
         include InstanceMethods
         alias_method_chain :reload, :versions
@@ -46,6 +48,10 @@ module LaserLemon
 
     module InstanceMethods
       private
+        def needs_initial_version?
+          versions.empty?
+        end
+
         def needs_version?
           !changed.empty?
         end
@@ -55,13 +61,12 @@ module LaserLemon
           @version = new_version
         end
 
-        def create_version
-          if versions.empty?
-            versions.create(:changes => attributes, :number => 1)
-          else
-            versions.create(:changes => changes, :number => (last_version + 1))
-          end
+        def create_initial_version
+          versions.create(:changes => nil, :number => 1)
+        end
 
+        def create_version
+          versions.create(:changes => changes, :number => (last_version + 1))
           reset_version
         end
 

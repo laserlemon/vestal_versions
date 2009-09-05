@@ -6,8 +6,8 @@ class ChangesTest < Test::Unit::TestCase
       @user = User.create(:name => 'Steve Richert')
     end
 
-    should "initially equal its parent's attributes" do
-      assert_equal @user.attributes, @user.versions.first.changes
+    should "initially be blank" do
+      assert @user.versions.first.changes.blank?
     end
 
     should 'contain all changed attributes' do
