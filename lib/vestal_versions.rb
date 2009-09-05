@@ -8,7 +8,7 @@ module LaserLemon
 
     module ClassMethods
       def versioned
-        has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :destroy do
+        has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :delete_all do
           def between(from_value, to_value)
             from, to = number_at(from_value), number_at(to_value)
             return [] if from.nil? || to.nil?
