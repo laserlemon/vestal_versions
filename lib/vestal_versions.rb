@@ -88,6 +88,27 @@ module LaserLemon
           reload_without_versions(*args)
         end
 
+        def changes_between(from, to)
+          from_number, to_number = versions.number_at(from), versions.number_at(to)
+          return {} if from_number == to_number
+          chain = versions.between(from_number, to_number)
+          return {} if chain.empty?
+
+          backward = chain.first > chain.last
+          backward ? chain.pop : chain.shift
+
+          timestamps = %w(created_at created_on updated_at updated_on)
+
+          chain.inject({}) do |changes, version|
+            version.changes.except(*timestamps).each do |attribute, change|
+              change.reverse! if backward
+              new_change = [changes.fetch(attribute, change).first, change.last]
+              changes.update(attribute => new_change)
+            end
+            changes
+          end
+        end
+
         def revert_to(value)
           to_number = versions.number_at(value)
           changes = changes_between(version, to_number)
@@ -109,27 +130,6 @@ module LaserLemon
         def latest_changes
           return {} if version.nil? || version == 1
           versions.at(version).changes
-        end
-
-        def changes_between(from, to)
-          from_number, to_number = versions.number_at(from), versions.number_at(to)
-          return {} if from_number == to_number
-          chain = versions.between(from_number, to_number)
-          return {} if chain.empty?
-
-          backward = chain.first > chain.last
-          backward ? chain.pop : chain.shift
-
-          timestamps = %w(created_at created_on updated_at updated_on)
-
-          chain.inject({}) do |changes, version|
-            version.changes.except(*timestamps).each do |attribute, change|
-              change.reverse! if backward
-              new_change = [changes.fetch(attribute, change).first, change.last]
-              changes.update(attribute => new_change)
-            end
-            changes
-          end
         end
     end
   end
