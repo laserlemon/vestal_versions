@@ -9,13 +9,13 @@ module LaserLemon
     module ClassMethods
       def versioned
         has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :delete_all do
-          def between(from_value, to_value)
-            from, to = number_at(from_value), number_at(to_value)
-            return [] if from.nil? || to.nil?
-            condition = (from == to) ? to : Range.new(*[from, to].sort)
+          def between(from, to)
+            from_number, to_number = number_at(from), number_at(to)
+            return [] if from_number.nil? || to_number.nil?
+            condition = (from_number == to_number) ? to_number : Range.new(*[from_number, to_number].sort)
             all(
               :conditions => {:number => condition},
-              :order => "versions.number #{(from > to) ? 'DESC' : 'ASC'}"
+              :order => "versions.number #{(from_number > to_number) ? 'DESC' : 'ASC'}"
             )
           end
 
@@ -89,9 +89,9 @@ module LaserLemon
         end
 
         def revert_to(value)
-          to_value = versions.number_at(value)
-          return version if to_value == version
-          chain = versions.between(version, to_value)
+          to_number = versions.number_at(value)
+          return version if to_number == version
+          chain = versions.between(version, to_number)
           return version if chain.empty?
 
           new_version = chain.last.number
