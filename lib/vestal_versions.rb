@@ -90,24 +90,14 @@ module LaserLemon
 
         def revert_to(value)
           to_number = versions.number_at(value)
-          return version if to_number == version
-          chain = versions.between(version, to_number)
-          return version if chain.empty?
+          changes = changes_between(version, to_number)
+          return version if changes.empty?
 
-          new_version = chain.last.number
-          backward = chain.first > chain.last
-          backward ? chain.pop : chain.shift
-
-          timestamps = %w(created_at created_on updated_at updated_on)
-
-          chain.each do |version|
-            version.changes.except(*timestamps).each do |attribute, change|
-              new_value = backward ? change.first : change.last
-              write_attribute(attribute, new_value)
-            end
+          changes.each do |attribute, change|
+            write_attribute(attribute, change.last)
           end
 
-          reset_version(new_version)
+          reset_version(to_number)
         end
 
         def revert_to!(value)
