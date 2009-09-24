@@ -21,7 +21,7 @@ In <tt>environment.rb</tt>:
 At your application root, run:
 
   $ sudo rake gems:install
-  
+
 Next, generate and run the first and last versioning migration you'll ever need:
 
   $ script/generate vestal_versions_migration
@@ -33,9 +33,9 @@ To version an ActiveRecord model, simply add <tt>versioned</tt> to your class li
 
   class User < ActiveRecord::Base
     versioned
-    
+  
     validates_presence_of :first_name, :last_name
-    
+  
     def name
       "#{first_name} #{last_name}"
     end
