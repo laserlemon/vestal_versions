@@ -15,7 +15,7 @@ And that's just what <tt>vestal_versions</tt> does. Not only can a model be reve
 In <tt>environment.rb</tt>:
 
   Rails::Initializer.run do |config|
-    config.gem 'laserlemon-vestal_versions', :lib => 'vestal_versions', :source => 'http://gems.github.com'
+    config.gem 'vestal_versions'
   end
 
 At your application root, run:
