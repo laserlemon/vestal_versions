@@ -3,6 +3,7 @@ class Version < ActiveRecord::Base
 
   belongs_to :versioned, :polymorphic => true
 
+  undef_method :changes
   serialize :changes, Hash
 
   alias_attribute :version, :number
