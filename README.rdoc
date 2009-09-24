@@ -6,7 +6,7 @@ Finally, DRY ActiveRecord versioning!
 
 <tt>simply_versioned</tt>[http://github.com/mmower/simply_versioned] by mmower[http://github.com/mmower] started to move in the right direction by removing a great deal of the duplication of acts_as_versioned. It requires only one versions table and no changes whatsoever to existing models. Its versions table stores all of the model attributes as a YAML hash in a single text column. But we could be DRYer!
 
-<tt>vestal_versions</tt> keeps in the spirit of consolidating to one versions table, polymorphically associated with its parent models. But it goes one step further by storing a serialized hash of only the models' changes. Think modern version control systems. By traversing the record of changes, the models can be reverted to any point in time.
+<tt>vestal_versions</tt>[http://github.com/laserlemon/vestal_versions] keeps in the spirit of consolidating to one versions table, polymorphically associated with its parent models. But it goes one step further by storing a serialized hash of _only_ the models' changes. Think modern version control systems. By traversing the record of changes, the models can be reverted to any point in time.
 
 And that's just what <tt>vestal_versions</tt> does. Not only can a model be reverted to a previous version number but also to a date or time!
 
