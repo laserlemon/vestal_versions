@@ -7,7 +7,14 @@ module LaserLemon
     end
 
     module ClassMethods
-      def versioned
+      def versioned(options = {})
+        class_inheritable_accessor :versioned_columns
+        self.versioned_columns = case
+          when options[:only] then column_names & Array(options[:only]).map(&:to_s)
+          when options[:except] then column_names - Array(options[:except]).map(&:to_s)
+          else column_names
+        end
+
         has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :delete_all do
           def between(from, to)
             from_number, to_number = number_at(from), number_at(to)
@@ -53,7 +60,7 @@ module LaserLemon
         end
 
         def needs_version?
-          !changed.empty?
+          !(versioned_columns & changed).empty?
         end
 
         def reset_version(new_version = nil)
@@ -66,7 +73,7 @@ module LaserLemon
         end
 
         def create_version
-          versions.create(:changes => changes, :number => (last_version + 1))
+          versions.create(:changes => changes.slice(*versioned_columns), :number => (last_version + 1))
           reset_version
         end
 
