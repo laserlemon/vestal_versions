@@ -8,12 +8,10 @@ module LaserLemon
 
     module ClassMethods
       def versioned(options = {})
-        class_inheritable_accessor :versioned_columns
-        self.versioned_columns = case
-          when options[:only] then column_names & Array(options[:only]).map(&:to_s)
-          when options[:except] then column_names - Array(options[:except]).map(&:to_s)
-          else column_names
-        end
+        class_inheritable_accessor :version_only_columns
+        self.version_only_columns = Array(options[:only]).map(&:to_s).uniq if options[:only]
+        class_inheritable_accessor :version_except_columns
+        self.version_except_columns = Array(options[:except]).map(&:to_s).uniq if options[:except]
 
         has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :delete_all do
           def between(from, to)
@@ -55,6 +53,14 @@ module LaserLemon
 
     module InstanceMethods
       private
+        def versioned_columns
+          @versioned_columns ||= case
+            when version_only_columns then self.class.column_names & version_only_columns
+            when version_except_columns then self.class.column_names - version_except_columns
+            else self.class.column_names
+          end
+        end
+
         def needs_initial_version?
           versions.empty?
         end
