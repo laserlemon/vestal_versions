@@ -54,11 +54,11 @@ module LaserLemon
     module InstanceMethods
       private
         def versioned_columns
-          @versioned_columns ||= case
+          case
             when version_only_columns then self.class.column_names & version_only_columns
             when version_except_columns then self.class.column_names - version_except_columns
             else self.class.column_names
-          end
+          end - %w(created_at created_on updated_at updated_on)
         end
 
         def needs_initial_version?
@@ -110,10 +110,8 @@ module LaserLemon
           backward = chain.first > chain.last
           backward ? chain.pop : chain.shift
 
-          timestamps = %w(created_at created_on updated_at updated_on)
-
           chain.inject({}) do |changes, version|
-            version.changes.except(*timestamps).each do |attribute, change|
+            version.changes.each do |attribute, change|
               change.reverse! if backward
               new_change = [changes.fetch(attribute, change).first, change.last]
               changes.update(attribute => new_change)
