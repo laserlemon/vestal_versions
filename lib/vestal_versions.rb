@@ -28,7 +28,6 @@ module LaserLemon
             case value
               when Version then value
               when Numeric then find_by_number(value.floor)
-              when Symbol then respond_to?(value) ? send(value) : nil
               when Date, Time then last(:conditions => ['versions.created_at <= ?', value.to_time])
             end
           end
@@ -37,7 +36,7 @@ module LaserLemon
             case value
               when Version then value.number
               when Numeric then value.floor
-              when Symbol, Date, Time then at(value).try(:number)
+              when Date, Time then at(value).try(:number)
             end
           end
         end
