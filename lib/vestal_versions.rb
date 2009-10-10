@@ -36,7 +36,7 @@ module LaserLemon
             case value
               when Version then value.number
               when Numeric then value.floor
-              when Date, Time then at(value).try(:number)
+              when Date, Time then at(value).try(:number) || 1
             end
           end
         end
@@ -88,7 +88,7 @@ module LaserLemon
         end
 
         def last_version
-          @last_version ||= versions.maximum(:number)
+          @last_version ||= versions.maximum(:number) || 1
         end
 
         def reverted?
