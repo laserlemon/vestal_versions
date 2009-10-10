@@ -4,9 +4,10 @@ class BetweenTest < Test::Unit::TestCase
   context 'The number of versions between' do
     setup do
       @user = User.create(:name => 'Steve Richert')
+      @user.update_attribute(:name, 'Steve Jobs')
       @version = @user.version
-      @valid = [@version, 0, 1_000_000, :first, :last, 1.day.since(@user.created_at), @user.versions.first]
-      @invalid = [nil, :bogus, 'bogus', Date.parse('0001-12-25')]
+      @valid = [@version, 0, 1_000_000, 1.day.since(@user.created_at), @user.versions.last]
+      @invalid = [nil, :bogus, 'bogus', (1..2)]
     end
 
     context 'the current version and the current version' do

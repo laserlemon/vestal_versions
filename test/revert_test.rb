@@ -17,12 +17,6 @@ class RevertTest < Test::Unit::TestCase
       @first_version, @last_version = @attributes.keys.min, @attributes.keys.max
     end
 
-    should 'do nothing for a non-existent version' do
-      attributes = @user.attributes
-      @user.revert_to!(nil)
-      assert_equal attributes, @user.attributes
-    end
-
     should 'return the new version number' do
       new_version = @user.revert_to(@first_version)
       assert_equal @first_version, new_version
@@ -34,20 +28,12 @@ class RevertTest < Test::Unit::TestCase
       assert_not_equal current_version, @user.version
     end
 
-    should 'be able to target the first version' do
-      @user.revert_to(:first)
-      assert_equal @first_version, @user.version
-    end
-
-    should 'be able to target the last version' do
-      @user.revert_to(:last)
-      assert_equal @last_version, @user.version
-    end
-
-    should 'do nothing for a non-existent method name' do
+    should 'do nothing for a invalid argument' do
       current_version = @user.version
-      @user.revert_to(:bogus)
-      assert_equal current_version, @user.version
+      [nil, :bogus, 'bogus', (1..2)].each do |invalid|
+        @user.revert_to(invalid)
+        assert_equal current_version, @user.version
+      end
     end
 
     should 'be able to target a version number' do
