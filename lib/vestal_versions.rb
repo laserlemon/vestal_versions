@@ -97,7 +97,7 @@ module LaserLemon
           return {} if chain.empty?
 
           backward = chain.first > chain.last
-          backward ? chain.pop : chain.shift
+          backward ? chain.pop : chain.shift unless [from_number, to_number].include?(1)
 
           chain.inject({}) do |changes, version|
             version.changes.each do |attribute, change|
