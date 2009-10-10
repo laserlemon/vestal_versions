@@ -8,8 +8,8 @@ class CreationTest < Test::Unit::TestCase
       @count = @user.versions.count
     end
 
-    should 'initially equal one' do
-      assert_equal 1, @count
+    should 'initially equal zero' do
+      assert_equal 0, @count
     end
 
     should 'not increase when no changes are made in an update' do
