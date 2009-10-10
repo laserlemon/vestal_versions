@@ -41,8 +41,6 @@ module LaserLemon
           end
         end
 
-        after_create :create_initial_version
-        after_update :create_initial_version, :if => :needs_initial_version?
         after_update :create_version, :if => :needs_version?
 
         include InstanceMethods
@@ -60,10 +58,6 @@ module LaserLemon
           end - %w(created_at created_on updated_at updated_on)
         end
 
-        def needs_initial_version?
-          versions.empty?
-        end
-
         def needs_version?
           !(versioned_columns & changed).empty?
         end
@@ -71,10 +65,6 @@ module LaserLemon
         def reset_version(new_version = nil)
           @last_version = nil if new_version.nil?
           @version = new_version
-        end
-
-        def create_initial_version
-          versions.create(:changes => nil, :number => 1)
         end
 
         def create_version
