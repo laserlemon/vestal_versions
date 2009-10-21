@@ -6,23 +6,11 @@ class ChangesTest < Test::Unit::TestCase
       @user = User.create(:name => 'Steve Richert')
     end
 
-    should "initially be blank" do
-      assert @user.versions.first.changes.blank?
-    end
-
-    should 'contain all changed attributes' do
+    should 'contain only the changed attributes' do
       @user.name = 'Steve Jobs'
       changes = @user.changes
       @user.save
-      assert_equal changes, @user.versions.last.changes.slice(*changes.keys)
-    end
-
-    should 'contain no more than the changed attributes and timestamps' do
-      timestamps = %w(created_at created_on updated_at updated_on)
-      @user.name = 'Steve Jobs'
-      changes = @user.changes
-      @user.save
-      assert_equal changes, @user.versions.last.changes.except(*timestamps)
+      assert_equal changes, @user.versions.last.changes
     end
   end
 end

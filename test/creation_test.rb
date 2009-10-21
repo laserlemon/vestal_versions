@@ -8,8 +8,8 @@ class CreationTest < Test::Unit::TestCase
       @count = @user.versions.count
     end
 
-    should 'initially equal one' do
-      assert_equal 1, @count
+    should 'initially equal zero' do
+      assert_equal 0, @count
     end
 
     should 'not increase when no changes are made in an update' do
@@ -40,12 +40,12 @@ class CreationTest < Test::Unit::TestCase
       end
 
       should 'increase by one when reverted' do
-        @user.revert_to!(:first)
+        @user.revert_to!(1)
         assert_equal @count + 1, @user.versions.count
       end
 
       should 'not increase until a revert is saved' do
-        @user.revert_to(:first)
+        @user.revert_to(1)
         assert_equal @count, @user.versions.count
         @user.save
         assert_not_equal @count, @user.versions.count
@@ -62,7 +62,7 @@ class CreationTest < Test::Unit::TestCase
       end
 
       should 'not increase when reverting to an identical version' do
-        @user.revert_to!(:first)
+        @user.revert_to!(1)
         assert_equal @count, @user.versions.count
       end
     end

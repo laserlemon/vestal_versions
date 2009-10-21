@@ -30,7 +30,6 @@ module LaserLemon
             case value
               when Version then value
               when Numeric then find_by_number(value.floor)
-              when Symbol then respond_to?(value) ? send(value) : nil
               when Date, Time then last(:conditions => ['versions.created_at <= ?', value.to_time])
             end
           end
@@ -39,13 +38,11 @@ module LaserLemon
             case value
               when Version then value.number
               when Numeric then value.floor
-              when Symbol, Date, Time then at(value).try(:number)
+              when Date, Time then at(value).try(:number) || 1
             end
           end
         end
 
-        after_create :create_initial_version
-        after_update :create_initial_version, :if => :needs_initial_version?
         after_update :create_version, :if => :needs_version?
 
         include InstanceMethods
@@ -63,10 +60,6 @@ module LaserLemon
           end - %w(created_at created_on updated_at updated_on)
         end
 
-        def needs_initial_version?
-          versions.empty?
-        end
-
         def needs_version?
           !(versioned_columns & changed).empty?
         end
@@ -74,10 +67,6 @@ module LaserLemon
         def reset_version(new_version = nil)
           @last_version = nil if new_version.nil?
           @version = new_version
-        end
-
-        def create_initial_version
-          versions.create(:changes => nil, :number => 1)
         end
 
         def create_version
@@ -91,7 +80,7 @@ module LaserLemon
         end
 
         def last_version
-          @last_version ||= versions.maximum(:number)
+          @last_version ||= versions.maximum(:number) || 1
         end
 
         def reverted?
@@ -109,8 +98,8 @@ module LaserLemon
           chain = versions.between(from_number, to_number)
           return {} if chain.empty?
 
-          backward = chain.first > chain.last
-          backward ? chain.pop : chain.shift
+          backward = from_number > to_number
+          backward ? chain.pop : chain.shift unless [from_number, to_number].include?(1)
 
           chain.inject({}) do |changes, version|
             version.changes.each do |attribute, change|
