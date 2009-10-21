@@ -1,4 +1,6 @@
-require 'version'
+%w(changes control creation reload reversion tagging version versions).each do |f|
+  require File.join(File.dirname(__FILE__), 'vestal_versions', f)
+end
 
 module LaserLemon
   module VestalVersions
