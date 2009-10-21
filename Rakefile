@@ -12,6 +12,8 @@ begin
     g.email = 'steve@laserlemon.com'
     g.homepage = 'http://github.com/laserlemon/vestal_versions'
     g.authors = %w(laserlemon)
+    g.add_development_dependency 'activerecord'
+    g.add_development_dependency 'activesupport'
     g.add_development_dependency 'thoughtbot-shoulda'
     g.rubyforge_project = 'laser-lemon'
   end
