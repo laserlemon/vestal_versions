@@ -1,4 +1,4 @@
+*.db
 .DS_Store
 pkg
 rdoc
-test/*.db
