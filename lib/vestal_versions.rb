@@ -16,33 +16,15 @@ module VestalVersions
 
       has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :delete_all, :extend => Versions
 
-      after_update :create_version, :if => :needs_version?
-
       include InstanceMethods
       include Changes
+      include Creation
       include Reversion
       include Reload
     end
   end
 
   module InstanceMethods
-    private
-      def versioned_columns
-        case
-          when version_only_columns then self.class.column_names & version_only_columns
-          when version_except_columns then self.class.column_names - version_except_columns
-          else self.class.column_names
-        end - %w(created_at created_on updated_at updated_on)
-      end
-
-      def needs_version?
-        !(versioned_columns & changed).empty?
-      end
-
-      def create_version
-        versions.create(:changes => changes.slice(*versioned_columns), :number => (last_version + 1))
-        reset_version
-      end
   end
 end
 
