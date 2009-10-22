@@ -12,5 +12,9 @@ module VestalVersions
     def <=>(other)
       number <=> other.number
     end
+
+    def initial?
+      number == 1
+    end
   end
 end
