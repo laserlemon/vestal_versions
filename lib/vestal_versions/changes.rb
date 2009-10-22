@@ -2,6 +2,10 @@ module VestalVersions
   module Changes
     def self.included(base)
       Hash.send(:include, HashMethods)
+
+      base.class_eval do
+        after_update :merge_version_changes
+      end
     end
 
     def changes_between(from, to)
@@ -17,6 +21,23 @@ module VestalVersions
         changes.append_changes!(backward ? version.changes.reverse_changes : version.changes)
       end
     end
+
+    private
+      def merge_version_changes
+        version_changes.append_changes!(incremental_version_changes)
+      end
+
+      def version_changes
+        @version_changes ||= {}
+      end
+
+      def incremental_version_changes
+        changes.slice(*versioned_columns)
+      end
+
+      def reset_version_changes
+        @version_changes = nil
+      end
 
     module HashMethods
       def append_changes(changes)

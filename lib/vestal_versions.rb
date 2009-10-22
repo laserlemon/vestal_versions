@@ -29,6 +29,7 @@ module VestalVersions
     include Changes
     include Creation
     include Reversion
+    include Control
     include Reload
   end
 

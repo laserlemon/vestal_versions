@@ -3,6 +3,7 @@ module VestalVersions
     def self.included(base)
       base.class_eval do
         after_update :create_version, :if => :create_version?
+        after_update :update_version, :if => :update_version?
       end
     end
 
@@ -12,7 +13,18 @@ module VestalVersions
       end
 
       def create_version
-        versions.create(:changes => changes.slice(*versioned_columns), :number => (last_version + 1))
+        versions.create(:changes => version_changes, :number => (last_version + 1))
+        reset_version_changes
+        reset_version
+      end
+
+      def update_version?
+        false
+      end
+
+      def update_version
+        (v = versions.last).update_attribute(:changes, v.changes.append_changes(version_changes))
+        reset_version_changes
         reset_version
       end
 
