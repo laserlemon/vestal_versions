@@ -78,11 +78,6 @@ module VestalVersions
         reset_version if saved = save
         saved
       end
-
-      def latest_changes
-        return {} if version.nil? || version == 1
-        versions.at(version).changes
-      end
   end
 end
 
