@@ -14,33 +14,7 @@ module VestalVersions
       class_inheritable_accessor :version_except_columns
       self.version_except_columns = Array(options[:except]).map(&:to_s).uniq if options[:except]
 
-      has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :delete_all do
-        def between(from, to)
-          from_number, to_number = number_at(from), number_at(to)
-          return [] if from_number.nil? || to_number.nil?
-          condition = (from_number == to_number) ? to_number : Range.new(*[from_number, to_number].sort)
-          all(
-            :conditions => {:number => condition},
-            :order => "versions.number #{(from_number > to_number) ? 'DESC' : 'ASC'}"
-          )
-        end
-
-        def at(value)
-          case value
-            when Version then value
-            when Numeric then find_by_number(value.floor)
-            when Date, Time then last(:conditions => ['versions.created_at <= ?', value.to_time])
-          end
-        end
-
-        def number_at(value)
-          case value
-            when Version then value.number
-            when Numeric then value.floor
-            when Date, Time then at(value).try(:number) || 1
-          end
-        end
-      end
+      has_many :versions, :as => :versioned, :order => 'versions.number ASC', :dependent => :delete_all, :extend => Versions
 
       after_update :create_version, :if => :needs_version?
 
