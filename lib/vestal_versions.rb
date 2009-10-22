@@ -30,6 +30,7 @@ module VestalVersions
     include Creation
     include Reversion
     include Control
+    include Tagging
     include Reload
   end
 
