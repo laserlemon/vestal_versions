@@ -19,7 +19,7 @@ module VestalVersions
       after_update :create_version, :if => :needs_version?
 
       include InstanceMethods
-      alias_method_chain :reload, :versions
+      include Reload
     end
   end
 
@@ -58,11 +58,6 @@ module VestalVersions
 
       def reverted?
         version != last_version
-      end
-
-      def reload_with_versions(*args)
-        reset_version
-        reload_without_versions(*args)
       end
 
       def changes_between(from, to)
