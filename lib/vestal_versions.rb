@@ -3,7 +3,7 @@
 end
 
 module VestalVersions
-  def versioned(options = {})
+  def versioned(options = {}, &block)
     class << self
       def versioned?
         true
@@ -24,9 +24,7 @@ module VestalVersions
       :dependent => :delete_all
     )
 
-    has_many :versions, options do
-      yield if block_given?
-    end
+    has_many :versions, options, &block
 
     include Changes
     include Creation
