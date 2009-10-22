@@ -4,6 +4,12 @@ end
 
 module VestalVersions
   def versioned(options = {})
+    class << self
+      def versioned?
+        true
+      end
+    end
+
     class_inheritable_accessor :version_only_columns
     self.version_only_columns = Array(options[:only]).map(&:to_s).uniq if options[:only]
     class_inheritable_accessor :version_except_columns
@@ -15,6 +21,10 @@ module VestalVersions
     include Creation
     include Reversion
     include Reload
+  end
+
+  def versioned?
+    false
   end
 end
 
