@@ -15,6 +15,7 @@ module VestalVersions
         when Version then value
         when Numeric then find_by_number(value.floor)
         when Date, Time then last(:conditions => ["#{aliased_table_name}.created_at <= ?", value.to_time])
+        when Symbol then respond_to?(value) ? send(value) : nil
       end
     end
 
@@ -23,6 +24,7 @@ module VestalVersions
         when Version then value.number
         when Numeric then value.floor
         when Date, Time then at(value).try(:number) || 1
+        when Symbol then at(value).try(:number)
       end
     end
   end
