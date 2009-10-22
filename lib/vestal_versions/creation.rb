@@ -13,7 +13,7 @@ module VestalVersions
       end
 
       def create_version
-        versions.create(:changes => version_changes, :number => (last_version + 1))
+        versions.create(:changes => version_changes, :number => last_version + 1)
         reset_version_changes
         reset_version
       end
