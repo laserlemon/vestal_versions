@@ -9,7 +9,7 @@ module VestalVersions
 
     private
       def create_version?
-        !(versioned_columns & changed).empty?
+        version_changes.present?
       end
 
       def create_version
