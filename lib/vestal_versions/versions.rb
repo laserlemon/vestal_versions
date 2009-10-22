@@ -6,7 +6,7 @@ module VestalVersions
       condition = (from_number == to_number) ? to_number : Range.new(*[from_number, to_number].sort)
       all(
         :conditions => {:number => condition},
-        :order => "versions.number #{(from_number > to_number) ? 'DESC' : 'ASC'}"
+        :order => "#{aliased_table_name}.number #{(from_number > to_number) ? 'DESC' : 'ASC'}"
       )
     end
 
@@ -14,7 +14,7 @@ module VestalVersions
       case value
         when Version then value
         when Numeric then find_by_number(value.floor)
-        when Date, Time then last(:conditions => ['versions.created_at <= ?', value.to_time])
+        when Date, Time then last(:conditions => ["#{aliased_table_name}.created_at <= ?", value.to_time])
       end
     end
 
