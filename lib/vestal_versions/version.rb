@@ -7,8 +7,6 @@ module VestalVersions
     undef_method :changes
     serialize :changes, Hash
 
-    alias_attribute :version, :number
-
     def <=>(other)
       number <=> other.number
     end
