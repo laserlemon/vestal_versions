@@ -15,6 +15,7 @@ class CreateSchema < ActiveRecord::Migration
       t.belongs_to :versioned, :polymorphic => true
       t.text :changes
       t.integer :number
+      t.string :tag
       t.datetime :created_at
     end
   end
