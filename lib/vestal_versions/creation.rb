@@ -23,7 +23,8 @@ module VestalVersions
       end
 
       def update_version
-        (v = versions.last).update_attribute(:changes, v.changes.append_changes(version_changes))
+        (v = versions.last).changes_will_change!
+        v.update_attribute(:changes, v.changes.append_changes(version_changes))
         reset_version_changes
         reset_version
       end
