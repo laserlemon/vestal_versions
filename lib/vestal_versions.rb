@@ -20,6 +20,7 @@ module VestalVersions
 
       include InstanceMethods
       include Changes
+      include Reversion
       include Reload
     end
   end
@@ -38,45 +39,9 @@ module VestalVersions
         !(versioned_columns & changed).empty?
       end
 
-      def reset_version(new_version = nil)
-        @last_version = nil if new_version.nil?
-        @version = new_version
-      end
-
       def create_version
         versions.create(:changes => changes.slice(*versioned_columns), :number => (last_version + 1))
         reset_version
-      end
-
-    public
-      def version
-        @version ||= last_version
-      end
-
-      def last_version
-        @last_version ||= versions.maximum(:number) || 1
-      end
-
-      def reverted?
-        version != last_version
-      end
-
-      def revert_to(value)
-        to_number = versions.number_at(value)
-        changes = changes_between(version, to_number)
-        return version if changes.empty?
-
-        changes.each do |attribute, change|
-          write_attribute(attribute, change.last)
-        end
-
-        reset_version(to_number)
-      end
-
-      def revert_to!(value)
-        revert_to(value)
-        reset_version if saved = save
-        saved
       end
   end
 end
