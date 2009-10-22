@@ -4,6 +4,8 @@ module VestalVersions
 
     belongs_to :versioned, :polymorphic => true
 
+    default_scope :order => "#{table_name}.number ASC"
+
     undef_method :changes
     serialize :changes, Hash
 
