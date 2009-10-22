@@ -3,8 +3,8 @@ require 'test_helper'
 class ComparableTest < Test::Unit::TestCase
   context 'A comparable version' do
     setup do
-      @version_1 = Version.new(:number => 1)
-      @version_2 = Version.new(:number => 2)
+      @version_1 = VestalVersions::Version.new(:number => 1)
+      @version_2 = VestalVersions::Version.new(:number => 2)
     end
 
     should 'equal itself' do
