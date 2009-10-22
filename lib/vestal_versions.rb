@@ -10,11 +10,23 @@ module VestalVersions
       end
     end
 
-    class_inheritable_accessor :version_only, :version_except
-    self.version_only = Array(options[:only]).map(&:to_s).uniq if options[:only]
-    self.version_except = Array(options[:except]).map(&:to_s).uniq if options[:except]
+    options.symbolize_keys!
 
-    has_many :versions, :class_name => '::VestalVersions::Version', :as => :versioned, :order => 'versions.number ASC', :dependent => :delete_all, :extend => Versions
+    class_inheritable_accessor :version_only, :version_except
+    self.version_only = Array(options.delete(:only)).map(&:to_s).uniq if options[:only]
+    self.version_except = Array(options.delete(:except)).map(&:to_s).uniq if options[:except]
+
+    options.merge!(
+      :as => :versioned,
+      :extend => Array(options[:extend]).unshift(Versions)
+    ).reverse_merge!(
+      :class_name => '::VestalVersions::Version',
+      :dependent => :delete_all
+    )
+
+    has_many :versions, options do
+      yield if block_given?
+    end
 
     include Changes
     include Creation
