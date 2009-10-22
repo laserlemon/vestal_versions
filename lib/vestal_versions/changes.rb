@@ -15,7 +15,7 @@ module VestalVersions
       return {} if chain.empty?
 
       backward = from_number > to_number
-      backward ? chain.pop : chain.shift unless [from_number, to_number].include?(1)
+      backward ? chain.pop : chain.shift unless from_number == 1 || to_number == 1
 
       chain.inject({}) do |changes, version|
         changes.append_changes!(backward ? version.changes.reverse_changes : version.changes)
