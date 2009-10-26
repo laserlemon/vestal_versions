@@ -1,8 +1,14 @@
-%w(changes conditions control creation reload reversion tagging version versions).each do |f|
+%w(changes conditions configuration control creation reload reversion tagging version versions).each do |f|
   require File.join(File.dirname(__FILE__), 'vestal_versions', f)
 end
 
 module VestalVersions
+  class << self
+    def configure
+      yield Configuration
+    end
+  end
+
   def versioned(options = {}, &block)
     class << self
       def versioned?
@@ -11,6 +17,7 @@ module VestalVersions
     end
 
     options.symbolize_keys!
+    options.reverse_merge!(Configuration.options)
 
     class_inheritable_accessor :version_only, :version_except
     self.version_only = Array(options.delete(:only)).map(&:to_s).uniq if options[:only]
