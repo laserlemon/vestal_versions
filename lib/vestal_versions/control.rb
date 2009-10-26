@@ -6,22 +6,16 @@ module VestalVersions
     end
 
     def skip_version
-      @skip_version = true
-      begin
+      with_version_flag(@skip_version) do
         yield if block_given?
         save
-      ensure
-        @skip_version = nil
       end
     end
 
     def skip_version!
-      @skip_version = true
-      begin
+      with_version_flag(@skip_version) do
         yield if block_given?
         save!
-      ensure
-        @skip_version = nil
       end
     end
 
@@ -29,23 +23,13 @@ module VestalVersions
       !!@skip_version
     end
 
-    def merge_version
-      @merge_version = true
-      begin
-        yield
-      ensure
-        @merge_version = nil
-      end
+    def merge_version(&block)
+      with_version_flag(@merge_version, &block)
       save
     end
 
-    def merge_version!
-      @merge_version = true
-      begin
-        yield
-      ensure
-        @merge_version = nil
-      end
+    def merge_version!(&block)
+      with_version_flag(@merge_version, &block)
       save!
     end
 
@@ -53,36 +37,18 @@ module VestalVersions
       !!@merge_version
     end
 
-    def append_version
-      @merge_version = true
-      begin
-        yield
-      ensure
-        @merge_version = nil
+    def append_version(&block)
+      with_version_flag(@merge_version, &block)
+      with_version_flag(@append_version) do
+        save
       end
-      @append_version = true
-      begin
-        saved = save
-      ensure
-        @append_version = nil
-      end
-      saved
     end
 
-    def append_version!
-      @merge_version = true
-      begin
-        yield
-      ensure
-        @merge_version = nil
+    def append_version!(&block)
+      with_version_flag(@merge_version, &block)
+      with_version_flag(@append_version) do
+        save!
       end
-      @append_version = true
-      begin
-        saved = save!
-      ensure
-        @append_version = nil
-      end
-      saved
     end
 
     def append_version?
@@ -90,6 +56,15 @@ module VestalVersions
     end
 
     private
+      def with_version_flag(flag)
+        flag = true
+        begin
+          yield
+        ensure
+          flag = nil
+        end
+      end
+
       def create_version_with_control?
         !skip_version? && !merge_version? && !append_version? && create_version_without_control?
       end
