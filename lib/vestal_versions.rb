@@ -1,4 +1,4 @@
-%w(changes conditions configuration control creation reload reversion tagging version versions).each do |f|
+%w(changes conditions configuration control creation reload reset reversion tagging version versions).each do |f|
   require File.join(File.dirname(__FILE__), 'vestal_versions', f)
 end
 
@@ -42,6 +42,7 @@ module VestalVersions
     include Changes
     include Creation
     include Reversion
+    include Reset
     include Conditions
     include Control
     include Tagging
