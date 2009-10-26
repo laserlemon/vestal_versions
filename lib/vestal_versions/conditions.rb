@@ -15,7 +15,7 @@ module VestalVersions
       end
 
       def version_conditions_met?
-        version_if.all?(&:call) && !version_unless.any?(&:call)
+        version_if.all?{|p| p.call(self) } && !version_unless.any?{|p| p.call(self) }
       end
   end
 end
