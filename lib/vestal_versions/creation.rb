@@ -31,8 +31,8 @@ module VestalVersions
 
       def versioned_columns
         case
-          when version_only then self.class.column_names & version_only
-          when version_except then self.class.column_names - version_except
+          when vestal_versions_options[:only] then self.class.column_names & vestal_versions_options[:only]
+          when vestal_versions_options[:except] then self.class.column_names - vestal_versions_options[:except]
           else self.class.column_names
         end - %w(created_at created_on updated_at updated_on)
       end
