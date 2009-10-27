@@ -45,6 +45,8 @@ module VestalVersions
           new_change = [new_changes.fetch(attribute, change).first, change.last]
           new_changes.merge!(attribute => new_change)
         end
+
+        delete_if{|k,v| v.first == v.last }
       end
 
       def append_changes!(changes)
