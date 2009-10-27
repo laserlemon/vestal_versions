@@ -6,10 +6,8 @@ module VestalVersions
 
     def revert_to(value)
       to_number = versions.number_at(value)
-      changes = changes_between(version, to_number)
-      return version if changes.empty?
 
-      changes.each do |attribute, change|
+      changes_between(version, to_number).each do |attribute, change|
         write_attribute(attribute, change.last)
       end
 
