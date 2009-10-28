@@ -66,7 +66,7 @@ module VestalVersions
       end
 
       def reverse_changes!
-        replace(reverse(perform))
+        replace(reverse_changes)
       end
     end
   end
