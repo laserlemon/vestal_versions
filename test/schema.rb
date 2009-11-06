@@ -13,10 +13,12 @@ class CreateSchema < ActiveRecord::Migration
 
     create_table :versions, :force => true do |t|
       t.belongs_to :versioned, :polymorphic => true
+      t.belongs_to :user, :polymorphic => true
+      t.string :user_name
       t.text :changes
       t.integer :number
       t.string :tag
-      t.datetime :created_at
+      t.timestamps
     end
   end
 end
