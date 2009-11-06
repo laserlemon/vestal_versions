@@ -13,7 +13,7 @@ module VestalVersions
       end
 
       def create_version
-        versions.create(:changes => version_changes, :number => last_version + 1)
+        versions.create(version_attributes)
         reset_version_changes
         reset_version
       end
@@ -35,6 +35,10 @@ module VestalVersions
           when vestal_versions_options[:except] then self.class.column_names - vestal_versions_options[:except]
           else self.class.column_names
         end - %w(created_at created_on updated_at updated_on)
+      end
+
+      def version_attributes
+        {:changes => version_changes, :number => last_version + 1}
       end
   end
 end
