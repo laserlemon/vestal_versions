@@ -1,6 +1,4 @@
-%w(changes conditions configuration control creation reload reset reversion tagging users version versions).each do |f|
-  require File.join(File.dirname(__FILE__), 'vestal_versions', f)
-end
+Dir[File.join(File.dirname(__FILE__), 'vestal_versions', '*.rb')].each{|f| require f }
 
 module VestalVersions
   class << self
