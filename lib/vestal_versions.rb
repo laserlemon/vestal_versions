@@ -1,6 +1,10 @@
 Dir[File.join(File.dirname(__FILE__), 'vestal_versions', '*.rb')].each{|f| require f }
 
 module VestalVersions
+  def self.extended(base)
+    base.extend Versioned
+  end
+
   class << self
     def configure
       yield Configuration
@@ -8,12 +12,6 @@ module VestalVersions
   end
 
   def versioned(options = {}, &block)
-    class << self
-      def versioned?
-        true
-      end
-    end
-
     options.symbolize_keys!
     options.reverse_merge!(Configuration.options)
     options.reverse_merge!(
@@ -46,10 +44,6 @@ module VestalVersions
     include Control
     include Tagging
     include Reload
-  end
-
-  def versioned?
-    false
   end
 end
 
