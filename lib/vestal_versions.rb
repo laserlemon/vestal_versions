@@ -1,14 +1,10 @@
 Dir[File.join(File.dirname(__FILE__), 'vestal_versions', '*.rb')].each{|f| require f }
 
 module VestalVersions
+  extend Configuration
+
   def self.extended(base)
     base.extend Versioned
-  end
-
-  class << self
-    def configure
-      yield Configuration
-    end
   end
 
   def versioned(options = {}, &block)

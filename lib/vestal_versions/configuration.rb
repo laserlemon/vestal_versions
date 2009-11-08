@@ -1,5 +1,9 @@
 module VestalVersions
   module Configuration
+    def configure
+      yield Configuration
+    end
+
     class << self
       def options
         @options ||= {}
