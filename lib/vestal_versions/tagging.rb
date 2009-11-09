@@ -2,11 +2,17 @@ module VestalVersions
   module Tagging
     def self.included(base)
       Version.send(:include, VersionMethods)
+
+      base.class_eval do
+        include InstanceMethods
+      end
     end
 
-    def tag_version(tag)
-      v = versions.at(version) || versions.build(:number => 1)
-      v.tag!(tag)
+    module InstanceMethods
+      def tag_version(tag)
+        v = versions.at(version) || versions.build(:number => 1)
+        v.tag!(tag)
+      end
     end
 
     module VersionMethods

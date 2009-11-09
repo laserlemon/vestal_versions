@@ -1,18 +1,22 @@
 module VestalVersions
   module Users
     def self.included(base)
+      Version.send(:include, VersionMethods)
+
       base.class_eval do
+        include InstanceMethods
+
         attr_accessor :updated_by
         alias_method_chain :version_attributes, :user
-
-        Version.send(:include, VersionMethods)
       end
     end
 
-    private
-      def version_attributes_with_user
-        version_attributes_without_user.merge(:user => updated_by)
-      end
+    module InstanceMethods
+      private
+        def version_attributes_with_user
+          version_attributes_without_user.merge(:user => updated_by)
+        end
+    end
 
     module VersionMethods
       def self.included(base)

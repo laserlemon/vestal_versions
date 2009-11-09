@@ -4,40 +4,44 @@ module VestalVersions
       Hash.send(:include, HashMethods)
 
       base.class_eval do
+        include InstanceMethods
+
         after_update :merge_version_changes
       end
     end
 
-    def changes_between(from, to)
-      from_number, to_number = versions.number_at(from), versions.number_at(to)
-      return {} if from_number == to_number
-      chain = versions.between(from_number, to_number).reject(&:initial?)
-      return {} if chain.empty?
+    module InstanceMethods
+      def changes_between(from, to)
+        from_number, to_number = versions.number_at(from), versions.number_at(to)
+        return {} if from_number == to_number
+        chain = versions.between(from_number, to_number).reject(&:initial?)
+        return {} if chain.empty?
 
-      backward = from_number > to_number
-      backward ? chain.pop : chain.shift unless from_number == 1 || to_number == 1
+        backward = from_number > to_number
+        backward ? chain.pop : chain.shift unless from_number == 1 || to_number == 1
 
-      chain.inject({}) do |changes, version|
-        changes.append_changes!(backward ? version.changes.reverse_changes : version.changes)
+        chain.inject({}) do |changes, version|
+          changes.append_changes!(backward ? version.changes.reverse_changes : version.changes)
+        end
       end
+
+      private
+        def merge_version_changes
+          version_changes.append_changes!(incremental_version_changes)
+        end
+
+        def version_changes
+          @version_changes ||= {}
+        end
+
+        def incremental_version_changes
+          changes.slice(*versioned_columns)
+        end
+
+        def reset_version_changes
+          @version_changes = nil
+        end
     end
-
-    private
-      def merge_version_changes
-        version_changes.append_changes!(incremental_version_changes)
-      end
-
-      def version_changes
-        @version_changes ||= {}
-      end
-
-      def incremental_version_changes
-        changes.slice(*versioned_columns)
-      end
-
-      def reset_version_changes
-        @version_changes = nil
-      end
 
     module HashMethods
       def append_changes(changes)
