@@ -23,7 +23,7 @@ begin
     r.doc_task = 'rdoc'
   end
 rescue LoadError
-  puts 'Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com'
+  puts 'Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler'
 end
 
 Rake::TestTask.new do |t|
