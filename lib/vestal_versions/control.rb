@@ -31,7 +31,7 @@ module VestalVersions
       #   end
       #   user.version # => 1
       def skip_version
-        with_version_flag(@skip_version) do
+        with_version_flag(:skip_version) do
           yield if block_given?
           save
         end
@@ -41,7 +41,7 @@ module VestalVersions
       # +skip_version!+ block is that the save automatically performed at the close of the block
       # is a +save!+, meaning that an exception will be raised if the object cannot be saved.
       def skip_version!
-        with_version_flag(@skip_version) do
+        with_version_flag(:skip_version) do
           yield if block_given?
           save!
         end
@@ -72,16 +72,20 @@ module VestalVersions
       #   # => {"first_name" => ["Steve", "Stephen"], "last_name" => ["Jobs", "Richert"]}
       #
       # See VestalVersions::Changes for an explanation on how changes are appended.
-      def merge_version(&block)
-        with_version_flag(@merge_version, &block)
+      def merge_version
+        with_version_flag(:merge_version) do
+          yield if block_given?
+        end
         save
       end
 
       # Behaving almost identically to the +merge_version+ block, the only difference with the
       # +merge_version!+ block is that the save automatically performed at the close of the block
       # is a +save!+, meaning that an exception will be raised if the object cannot be saved.
-      def merge_version!(&block)
-        with_version_flag(@merge_version, &block)
+      def merge_version!
+        with_version_flag(:merge_version) do
+          yield if block_given?
+        end
         save!
       end
 
@@ -111,9 +115,12 @@ module VestalVersions
       #   user.version # => 2
       #
       # See VestalVersions::Changes for an explanation on how changes are appended.
-      def append_version(&block)
-        with_version_flag(@merge_version, &block)
-        with_version_flag(@append_version) do
+      def append_version
+        with_version_flag(:merge_version) do
+          yield if block_given?
+        end
+
+        with_version_flag(:append_version) do
           save
         end
       end
@@ -121,9 +128,12 @@ module VestalVersions
       # Behaving almost identically to the +append_version+ block, the only difference with the
       # +append_version!+ block is that the save automatically performed at the close of the block
       # is a +save!+, meaning that an exception will be raised if the object cannot be saved.
-      def append_version!(&block)
-        with_version_flag(@merge_version, &block)
-        with_version_flag(@append_version) do
+      def append_version!
+        with_version_flag(:merge_version) do
+          yield if block_given?
+        end
+
+        with_version_flag(:append_version) do
           save!
         end
       end
@@ -141,11 +151,11 @@ module VestalVersions
         # instance variables isn't inadvertently left in the "on" position by execution within the
         # block raising an exception.
         def with_version_flag(flag)
-          flag = true
           begin
+            instance_variable_set("@#{flag}", true)
             yield
           ensure
-            flag = nil
+            instance_variable_set("@#{flag}", nil)
           end
         end
 

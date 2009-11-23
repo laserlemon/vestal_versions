@@ -52,7 +52,8 @@ module VestalVersions
 
         # Updates the last version's changes by appending the current version changes.
         def update_version
-          (v = versions.last).changes_will_change!
+          return create_version unless v = versions.last
+          v.changes_will_change!
           v.update_attribute(:changes, v.changes.append_changes(version_changes))
           reset_version_changes
           reset_version
