@@ -1,6 +1,7 @@
 module VestalVersions
+  # Simply adds a flag to determine whether a model class if versioned.
   module Versioned
-    def self.extended(base)
+    def self.extended(base) # :nodoc:
       base.class_eval do
         class << self
           alias_method_chain :versioned, :flag
@@ -8,6 +9,8 @@ module VestalVersions
       end
     end
 
+    # Overrides the +versioned+ method to first define the +versioned?+ class method before
+    # deferring to the original +versioned+.
     def versioned_with_flag(*args)
       class << self
         def versioned?
@@ -18,6 +21,8 @@ module VestalVersions
       versioned_without_flag(*args)
     end
 
+    # For all ActiveRecord::Base models that do not call the +versioned+ method, the +versioned?+
+    # method will return false.
     def versioned?
       false
     end

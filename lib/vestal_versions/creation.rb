@@ -1,6 +1,8 @@
 module VestalVersions
+  # Adds the functionality necessary to control version creation on a versioned instance of
+  # ActiveRecord::Base.
   module Creation
-    def self.included(base)
+    def self.included(base) # :nodoc:
       base.class_eval do
         extend ClassMethods
         include InstanceMethods
@@ -14,7 +16,10 @@ module VestalVersions
       end
     end
 
+    # Class methods added to ActiveRecord::Base to facilitate the creation of new versions.
     module ClassMethods
+      # Overrides the basal +prepare_versioned_options+ method defined in VestalVersions::Options
+      # to extract the <tt>:only</tt> and <tt>:except</tt> options into +vestal_versions_options+.
       def prepare_versioned_options_with_creation(options)
         prepare_versioned_options_without_creation(options)
 
@@ -23,22 +28,29 @@ module VestalVersions
       end
     end
 
+    # Instance methods that determine whether to save a version and actually perform the save.
     module InstanceMethods
       private
+        # Returns whether a new version should be created upon updating the parent record.
         def create_version?
           version_changes.present?
         end
 
+        # Creates a new version upon updating the parent record.
         def create_version
           versions.create(version_attributes)
           reset_version_changes
           reset_version
         end
 
+        # Returns whether the last version should be updated upon updating the parent record.
+        # This method is overridden in VestalVersions::Control to account for a control block that
+        # merges changes onto the previous version.
         def update_version?
           false
         end
 
+        # Updates the last version's changes by appending the current version changes.
         def update_version
           (v = versions.last).changes_will_change!
           v.update_attribute(:changes, v.changes.append_changes(version_changes))
@@ -46,6 +58,12 @@ module VestalVersions
           reset_version
         end
 
+        # Returns an array of column names that should be included in the changes of created
+        # versions. If <tt>vestal_versions_options[:only]</tt> is specified, only those columns
+        # will be versioned. Otherwise, if <tt>vestal_versions_options[:except]</tt> is specified,
+        # all columns will be versioned other than those specified. Without either option, the
+        # default is to version all columns. At any rate, the four "automagic" timestamp columns
+        # maintained by Rails are never versioned.
         def versioned_columns
           case
             when vestal_versions_options[:only] then self.class.column_names & vestal_versions_options[:only]
@@ -54,6 +72,8 @@ module VestalVersions
           end - %w(created_at created_on updated_at updated_on)
         end
 
+        # Specifies the attributes used during version creation. This is separated into its own
+        # method so that it can be overridden by the VestalVersions::Users feature.
         def version_attributes
           {:changes => version_changes, :number => last_version + 1}
         end
