@@ -12,13 +12,13 @@ module VestalVersions
     # Overrides the +versioned+ method to first define the +versioned?+ class method before
     # deferring to the original +versioned+.
     def versioned_with_flag(*args)
+      versioned_without_flag(*args)
+
       class << self
         def versioned?
           true
         end
       end
-
-      versioned_without_flag(*args)
     end
 
     # For all ActiveRecord::Base models that do not call the +versioned+ method, the +versioned?+

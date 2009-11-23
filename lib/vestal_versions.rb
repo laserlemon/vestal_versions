@@ -75,6 +75,8 @@ module VestalVersions
     #   itself. If an array is given and any element evaluates as +true+, the version creation will
     #   be skipped.
     def versioned(options = {}, &block)
+      return if versioned?
+
       include Options
       include Changes
       include Creation
