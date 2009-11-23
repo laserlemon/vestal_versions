@@ -106,6 +106,7 @@ class ControlTest < Test::Unit::TestCase
         @user = User.create(:name => 'Steve Richert')
         @user.update_attribute(:last_name, 'Jobs')
         @user.update_attribute(:last_name, 'Richert')
+        @last_version = @user.versions.last
         @count = @user.versions.count
       end
 
@@ -118,6 +119,12 @@ class ControlTest < Test::Unit::TestCase
 
         should 'not create a version' do
           assert_equal @count, @user.versions.count
+        end
+
+        should 'update the last version' do
+          last_version = @user.versions.last
+          assert_equal @last_version.id, last_version.id
+          assert_not_equal @last_version.attributes, last_version.attributes
         end
       end
 
@@ -132,6 +139,12 @@ class ControlTest < Test::Unit::TestCase
 
         should 'not create a version' do
           assert_equal @count, @user.versions.count
+        end
+
+        should 'update the last version' do
+          last_version = @user.versions.last
+          assert_equal @last_version.id, last_version.id
+          assert_not_equal @last_version.attributes, last_version.attributes
         end
       end
     end
