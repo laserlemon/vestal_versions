@@ -1,6 +1,6 @@
-require 'test_helper'
+require File.join(File.dirname(__FILE__), 'test_helper')
 
-class RevertTest < Test::Unit::TestCase
+class ReversionTest < Test::Unit::TestCase
   context 'A model reversion' do
     setup do
       @user, @attributes, @times = User.new, {}, {}
