@@ -17,9 +17,9 @@ module VestalVersions
     serialize :changes, Hash
 
     # In conjunction with the included Comparable module, allows comparison of version records
-    # based on their corresponding version numbers.
+    # based on their corresponding version numbers, creation timestamps and IDs.
     def <=>(other)
-      number <=> other.number
+      [number, created_at, id].map(&:to_i) <=> [other.number, other.created_at, other.id].map(&:to_i)
     end
 
     # Returns whether the version has a version number of 1. Useful when deciding whether to ignore
