@@ -15,7 +15,8 @@ begin
     g.authors = %w(laserlemon)
     g.add_development_dependency 'activerecord'
     g.add_development_dependency 'activesupport'
-    g.add_development_dependency 'thoughtbot-shoulda'
+    g.add_development_dependency 'shoulda'
+    g.add_development_dependency 'mocha'
     g.rubyforge_project = 'laser-lemon'
   end
   Jeweler::GemcutterTasks.new
