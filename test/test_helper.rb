@@ -3,7 +3,7 @@ $: << File.dirname(__FILE__)
 
 require 'rubygems'
 require 'test/unit'
-require 'activerecord'
+require 'active_record'
 require 'shoulda'
 require 'vestal_versions'
 require 'schema'
