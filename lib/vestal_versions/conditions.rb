@@ -26,10 +26,12 @@ module VestalVersions
       # If all of the <tt>:if</tt> conditions are met and none of the <tt>:unless</tt> conditions
       # are unmet, than version creation will proceed, assuming all other conditions are also met.
       def prepare_versioned_options_with_conditions(options)
-        prepare_versioned_options_without_conditions(options)
+        result = prepare_versioned_options_without_conditions(options)
 
         self.vestal_versions_options[:if] = Array(options.delete(:if)).map(&:to_proc)
         self.vestal_versions_options[:unless] = Array(options.delete(:unless)).map(&:to_proc)
+
+        result
       end
     end
 

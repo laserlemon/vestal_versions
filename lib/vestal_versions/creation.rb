@@ -21,10 +21,12 @@ module VestalVersions
       # Overrides the basal +prepare_versioned_options+ method defined in VestalVersions::Options
       # to extract the <tt>:only</tt> and <tt>:except</tt> options into +vestal_versions_options+.
       def prepare_versioned_options_with_creation(options)
-        prepare_versioned_options_without_creation(options)
+        result = prepare_versioned_options_without_creation(options)
 
         self.vestal_versions_options[:only] = Array(options.delete(:only)).map(&:to_s).uniq if options[:only]
         self.vestal_versions_options[:except] = Array(options.delete(:except)).map(&:to_s).uniq if options[:except]
+
+        result
       end
     end
 
