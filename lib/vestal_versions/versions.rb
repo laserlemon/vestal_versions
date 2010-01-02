@@ -21,14 +21,16 @@ module VestalVersions
 
     # Returns all version records created before the version associated with the given value.
     def before(value)
-      all(:conditions => "#{aliased_table_name}.number < #{number_at(value)}")
+      return [] if (number = number_at(value)).nil?
+      all(:conditions => "#{aliased_table_name}.number < #{number}")
     end
 
     # Returns all version records created after the version associated with the given value.
     #
     # This is useful for dissociating records during use of the +reset_to!+ method.
     def after(value)
-      all(:conditions => "#{aliased_table_name}.number > #{number_at(value)}")
+      return [] if (number = number_at(value)).nil?
+      all(:conditions => "#{aliased_table_name}.number > #{number}")
     end
 
     # Returns a single version associated with the given value. The following formats are valid:
