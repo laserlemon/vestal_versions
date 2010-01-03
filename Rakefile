@@ -17,12 +17,8 @@ begin
     g.add_development_dependency 'activesupport'
     g.add_development_dependency 'shoulda'
     g.add_development_dependency 'mocha'
-    g.rubyforge_project = 'laser-lemon'
   end
   Jeweler::GemcutterTasks.new
-  Jeweler::RubyforgeTasks.new do |r|
-    r.doc_task = 'rdoc'
-  end
 rescue LoadError
   puts 'Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler'
 end
