@@ -134,35 +134,35 @@ There are a handful of exciting new additions in version 1.0 of <tt>vestal_versi
   
 * Resetting. This is basically a hard revert. The new <tt>reset_to!</tt> instance method behaves just like the <tt>revert_to!</tt> method except that after the reversion, it will also scrap all the versions that came after that target version.
   
-  @user.name # => "Steve Richert"
-  @user.version # => 1
-  @user.versions.count # => 0
-  @user.update_attribute(:last_name, "Jobs")
-  @user.name # => "Steve Jobs"
-  @user.version # => 2
-  @user.versions.count # => 1
-  @user.reset_to!(1)
-  @user.name # => "Steve Richert"
-  @user.version # => 1
-  @user.versions.count # => 0
+    @user.name # => "Steve Richert"
+    @user.version # => 1
+    @user.versions.count # => 0
+    @user.update_attribute(:last_name, "Jobs")
+    @user.name # => "Steve Jobs"
+    @user.version # => 2
+    @user.versions.count # => 1
+    @user.reset_to!(1)
+    @user.name # => "Steve Richert"
+    @user.version # => 1
+    @user.versions.count # => 0
   
 * Storing which user is responsible for a revision. Rather than introduce a lot of controller magic to guess what to store, you can simply update an additional attribute on your versioned model: <tt>updated_by</tt>.
   
-  @user.update_attributes(:last_name => "Jobs", :updated_by => "Tyler")
-  @user.versions.last.user # => "Tyler"
+    @user.update_attributes(:last_name => "Jobs", :updated_by => "Tyler")
+    @user.versions.last.user # => "Tyler"
   
   Instead of passing a simple string to the <tt>updated_by</tt> setter, you can pass a model instance, such as an ActiveRecord user or administrator. The association will be saved polymorphically alongside the version.
   
-  @user.update_attributes(:last_name => "Jobs", :updated_by => current_user)
-  @user.versions.last.user # => #<User first_name: "Steven", last_name: "Tyler">
+    @user.update_attributes(:last_name => "Jobs", :updated_by => current_user)
+    @user.versions.last.user # => #<User first_name: "Steven", last_name: "Tyler">
   
 * Global configuration. The new <tt>vestal_versions</tt> Rails generator also writes an initializer with instructions on how to set application-wide options for the <tt>versioned</tt> method.
   
 * Conditional version creation. The <tt>versioned</tt> method now accepts <tt>:if</tt> and <tt>:unless</tt> options. Each expects a symbol representing an instance method or a proc that will be evaluated to determine whether or not to create a new version after an update. An array containing any combination of symbols and procs can also be given.
   
-  class User < ActiveRecord::Base
-    versioned :if => :really_create_a_version?
-  end
+    class User < ActiveRecord::Base
+      versioned :if => :really_create_a_version?
+    end
   
 * Custom version classes. By passing a <tt>:class_name</tt> option to the <tt>versioned</tt> method, you can specify your own ActiveRecord version model. <tt>VestalVersions::Version</tt> is the default, but feel free to stray from that. I recommend that your custom model inherit from <tt>VestalVersions::Version</tt>, but that's up to you!
   
