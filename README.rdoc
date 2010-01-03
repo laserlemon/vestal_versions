@@ -175,3 +175,5 @@ Thank you to all those who post {issues and suggestions}[http://github.com/laser
 * splattael[http://github.com/splattael], who first bugged (and helped) me to write some tests for this thing
 * snaury[http://github.com/snaury], who helped out early on with the <tt>between</tt> association method, the <tt>:dependent</tt> option and a conflict from using a method called <tt>changes</tt>
 * sthapit[http://github.com/sthapit], who was responsible for the <tt>:only</tt> and <tt>:except</tt> options as well as showing me that I'm a dummy for storing a useless first version
+
+To contribute to <tt>vestal_versions</tt>, please fork, hack away in the integration[http://github.com/laserlemon/vestal_versions/tree/integration] branch and send me a pull request. Remember your tests!
