@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["laserlemon"]
-  s.date = %q{2010-01-02}
+  s.date = %q{2010-01-03}
   s.description = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.email = %q{steve@laserlemon.com}
   s.extra_rdoc_files = [
@@ -22,6 +22,10 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "generators/vestal_versions/templates/initializer.rb",
+     "generators/vestal_versions/templates/migration.rb",
+     "generators/vestal_versions/vestal_versions_generator.rb",
+     "init.rb",
      "lib/vestal_versions.rb",
      "lib/vestal_versions/changes.rb",
      "lib/vestal_versions/conditions.rb",
@@ -37,10 +41,6 @@ Gem::Specification.new do |s|
      "lib/vestal_versions/version.rb",
      "lib/vestal_versions/versioned.rb",
      "lib/vestal_versions/versions.rb",
-     "rails/init.rb",
-     "rails_generators/vestal_versions/templates/initializer.rb",
-     "rails_generators/vestal_versions/templates/migration.rb",
-     "rails_generators/vestal_versions/vestal_versions_generator.rb",
      "test/changes_test.rb",
      "test/conditions_test.rb",
      "test/configuration_test.rb",
@@ -62,7 +62,6 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/laserlemon/vestal_versions}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{laser-lemon}
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.test_files = [
