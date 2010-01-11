@@ -30,6 +30,7 @@ module VestalVersions
     base.class_eval do
       extend ClassMethods
       extend Versioned
+      extend Associations
     end
   end
 
