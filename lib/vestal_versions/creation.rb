@@ -35,7 +35,7 @@ module VestalVersions
       private
         # Returns whether a new version should be created upon updating the parent record.
         def create_version?
-          version_changes.present?
+          !version_changes.blank?
         end
 
         # Creates a new version upon updating the parent record.
