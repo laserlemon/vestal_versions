@@ -19,7 +19,7 @@ class ResetTest < Test::Unit::TestCase
     end
 
     should 'dissociate all versions after the target' do
-      @versions.reverse.each_with_index do |version, i|
+      @versions.reverse.each do |version|
         @user.reset_to!(version)
         assert_equal 0, @user.versions(true).after(version).count
       end
@@ -31,7 +31,7 @@ class ResetTest < Test::Unit::TestCase
       end
 
       should 'delete all versions after the target version' do
-        @versions.reverse.each_with_index do |version, i|
+        @versions.reverse.each do |version|
           later_versions = @user.versions.after(version)
           @user.reset_to!(version)
           later_versions.each do |later_version|
@@ -44,7 +44,7 @@ class ResetTest < Test::Unit::TestCase
 
       should 'not destroy all versions after the target version' do
         VestalVersions::Version.any_instance.stubs(:destroy).raises(RuntimeError)
-        @versions.reverse.each_with_index do |version, i|
+        @versions.reverse.each do |version|
           assert_nothing_raised do
             @user.reset_to!(version)
           end
@@ -58,7 +58,7 @@ class ResetTest < Test::Unit::TestCase
       end
 
       should 'delete all versions after the target version' do
-        @versions.reverse.each_with_index do |version, i|
+        @versions.reverse.each do |version|
           later_versions = @user.versions.after(version)
           @user.reset_to!(version)
           later_versions.each do |later_version|
@@ -71,7 +71,7 @@ class ResetTest < Test::Unit::TestCase
 
       should 'destroy all versions after the target version' do
         VestalVersions::Version.any_instance.stubs(:destroy).raises(RuntimeError)
-        @versions.reverse.each_with_index do |version, i|
+        @versions.reverse.each do |version|
           later_versions = @user.versions.after(version)
           if later_versions.empty?
             assert_nothing_raised do
@@ -92,7 +92,7 @@ class ResetTest < Test::Unit::TestCase
       end
 
       should 'leave all versions after the target version' do
-        @versions.reverse.each_with_index do |version, i|
+        @versions.reverse.each do |version|
           later_versions = @user.versions.after(version)
           @user.reset_to!(version)
           later_versions.each do |later_version|
