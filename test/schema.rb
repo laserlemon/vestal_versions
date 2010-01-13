@@ -38,3 +38,6 @@ class User < ActiveRecord::Base
     self[:first_name], self[:last_name] = names.split(' ', 2)
   end
 end
+
+class MyCustomVersion < VestalVersions::Version
+end

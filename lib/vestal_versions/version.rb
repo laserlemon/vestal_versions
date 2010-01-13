@@ -6,9 +6,6 @@ module VestalVersions
     # Associate polymorphically with the parent record.
     belongs_to :versioned, :polymorphic => true
 
-    # Order versions by number, ascending by default.
-    default_scope :order => "#{table_name}.number ASC"
-
     # ActiveRecord::Base#changes is an existing method, so before serializing the +changes+ column,
     # the existing +changes+ method is undefined. The overridden +changes+ method pertained to 
     # dirty attributes, but will not affect the partial updates functionality as that's based on

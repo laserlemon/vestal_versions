@@ -29,8 +29,8 @@ class VersionTest < Test::Unit::TestCase
       assert_not_equal @last_version, last_version
     end
 
-    should 'default to ordering by number when finding' do
-      order = VestalVersions::Version.send(:scope, :find)[:order]
+    should 'default to ordering by number when finding through association' do
+      order = @user.versions.send(:scope, :find)[:order]
       assert_equal 'versions.number ASC', order
     end
 

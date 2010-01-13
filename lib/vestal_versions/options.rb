@@ -28,6 +28,9 @@ module VestalVersions
           :class_name => 'VestalVersions::Version',
           :dependent => :delete_all
         )
+        options.reverse_merge!(
+          :order => "#{options[:class_name].constantize.table_name}.number ASC"
+        )
 
         class_inheritable_accessor :vestal_versions_options
         self.vestal_versions_options = options.dup
