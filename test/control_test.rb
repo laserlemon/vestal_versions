@@ -122,7 +122,7 @@ class ControlTest < Test::Unit::TestCase
         end
 
         should 'update the last version' do
-          last_version = @user.versions.last
+          last_version = @user.versions(true).last
           assert_equal @last_version.id, last_version.id
           assert_not_equal @last_version.attributes, last_version.attributes
         end
@@ -142,7 +142,7 @@ class ControlTest < Test::Unit::TestCase
         end
 
         should 'update the last version' do
-          last_version = @user.versions.last
+          last_version = @user.versions(true).last
           assert_equal @last_version.id, last_version.id
           assert_not_equal @last_version.attributes, last_version.attributes
         end
