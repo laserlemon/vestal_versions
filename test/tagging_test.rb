@@ -9,9 +9,10 @@ class TaggingTest < Test::Unit::TestCase
 
     should "update the version record's tag column" do
       tag_name = 'TAG'
-      assert_not_equal tag_name, @user.versions.last.tag
+      last_version = @user.versions.last
+      assert_not_equal tag_name, last_version.tag
       @user.tag_version(tag_name)
-      assert_equal tag_name, @user.versions.last.tag
+      assert_equal tag_name, last_version.reload.tag
     end
 
     should 'create a version record for an initial version' do
