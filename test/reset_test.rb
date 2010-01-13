@@ -3,6 +3,7 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 class ResetTest < Test::Unit::TestCase
   context 'Resetting a model' do
     setup do
+      @original_dependent = User.reflect_on_association(:versions).options[:dependent]
       @user, @versions = User.new, []
       @names = ['Steve Richert', 'Stephen Richert', 'Stephen Jobs', 'Steve Jobs']
       @names.each do |name|
@@ -27,7 +28,7 @@ class ResetTest < Test::Unit::TestCase
 
     context 'with the :dependent option as :delete_all' do
       setup do
-        User.prepare_versioned_options(:dependent => :delete_all)
+        User.reflect_on_association(:versions).options[:dependent] = :delete_all
       end
 
       should 'delete all versions after the target version' do
@@ -54,7 +55,7 @@ class ResetTest < Test::Unit::TestCase
 
     context 'with the :dependent option as :destroy' do
       setup do
-        User.prepare_versioned_options(:dependent => :destroy)
+        User.reflect_on_association(:versions).options[:dependent] = :destroy
       end
 
       should 'delete all versions after the target version' do
@@ -88,7 +89,7 @@ class ResetTest < Test::Unit::TestCase
 
     context 'with the :dependent option as :nullify' do
       setup do
-        User.prepare_versioned_options(:dependent => :nullify)
+        User.reflect_on_association(:versions).options[:dependent] = :nullify
       end
 
       should 'leave all versions after the target version' do
@@ -102,6 +103,10 @@ class ResetTest < Test::Unit::TestCase
           end
         end
       end
+    end
+
+    teardown do
+      User.reflect_on_association(:versions).options[:dependent] = @original_dependent
     end
   end
 end
