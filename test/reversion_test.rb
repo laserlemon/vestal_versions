@@ -10,7 +10,9 @@ class ReversionTest < Test::Unit::TestCase
         @user.update_attribute(:name, name)
         @attributes[@user.version] = @user.attributes
         time += 1.hour
-        @user.versions.last.try(:update_attribute, :created_at, time)
+        if last_version = @user.versions.last
+          last_version.update_attribute(:created_at, time)
+        end
         @times[@user.version] = time
       end
       @user.reload.versions.reload

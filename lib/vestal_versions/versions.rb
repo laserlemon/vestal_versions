@@ -64,9 +64,9 @@ module VestalVersions
     # still return a valid version number (useful for reversion).
     def number_at(value)
       case value
-        when Date, Time then at(value).try(:number) || 1
+        when Date, Time then (v = at(value)) ? v.number : 1
         when Numeric then value.floor
-        when String, Symbol then at(value).try(:number)
+        when String, Symbol then (v = at(value)) ? v.number : nil
         when Version then value.number
       end
     end
