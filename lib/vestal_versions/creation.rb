@@ -7,6 +7,7 @@ module VestalVersions
         extend ClassMethods
         include InstanceMethods
 
+        after_create :create_version, :if => :create_initial_version?
         after_update :create_version, :if => :create_version?
         after_update :update_version, :if => :update_version?
 
@@ -19,13 +20,15 @@ module VestalVersions
     # Class methods added to ActiveRecord::Base to facilitate the creation of new versions.
     module ClassMethods
       # Overrides the basal +prepare_versioned_options+ method defined in VestalVersions::Options
-      # to extract the <tt>:only</tt> and <tt>:except</tt> options into +vestal_versions_options+.
+      # to extract the <tt>:only</tt>, <tt>:except</tt> and <tt>:initial_version</tt> options
+      # into +vestal_versions_options+.
       def prepare_versioned_options_with_creation(options)
         result = prepare_versioned_options_without_creation(options)
 
         self.vestal_versions_options[:only] = Array(options.delete(:only)).map(&:to_s).uniq if options[:only]
         self.vestal_versions_options[:except] = Array(options.delete(:except)).map(&:to_s).uniq if options[:except]
-
+        self.vestal_versions_options[:initial_version] = options[:initial_version]
+        
         result
       end
     end
@@ -33,6 +36,11 @@ module VestalVersions
     # Instance methods that determine whether to save a version and actually perform the save.
     module InstanceMethods
       private
+        # Returns whether an initial version should be created upon creation of the parent record.
+        def create_initial_version?
+          vestal_versions_options[:initial_version] == true
+        end
+        
         # Returns whether a new version should be created upon updating the parent record.
         def create_version?
           !version_changes.blank?

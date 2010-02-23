@@ -63,6 +63,9 @@ module VestalVersions
     #   object is updated to determine whether a new version should be created. +to_proc+ is called
     #   on any symbols given and the resulting procs are called, passing in the object itself. If
     #   an array is given, all must be evaluate to +true+ in order for a version to be created.
+    # * <tt>:initial_version</tt>: When set to true, an initial version is always created when the
+    #   parent object is created. This initial version will have nil changes however it can be
+    #   used to store who created the original version.
     # * <tt>:only</tt>: An update will trigger version creation as long as at least one updated
     #   column falls within those specified here. Also, upon version creation, only the columns
     #   specified here will be included in the change history. This option accepts a symbol, string
