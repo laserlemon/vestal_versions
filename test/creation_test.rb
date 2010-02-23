@@ -121,4 +121,28 @@ class CreationTest < Test::Unit::TestCase
       end
     end
   end
+
+  context 'First version' do
+    setup do
+      @name = 'Steve Richert'
+      @user = User.create(:name => @name)
+    end
+    should 'should be number 2 (after an update)' do
+      @user.update_attribute(:last_name, 'Jobs')
+      assert_equal 2, @user.versions.first.number
+    end
+    
+    context "With :initial_version option" do
+      setup do
+        User.prepare_versioned_options(:initial_version => true)
+        @user = User.create(:name => @name)
+      end
+      should 'should be number 1' do
+        assert_equal 1, @user.versions.first.number
+      end
+      teardown do
+        User.prepare_versioned_options(:initial_version => nil)
+      end
+    end
+  end
 end

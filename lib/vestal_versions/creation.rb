@@ -7,7 +7,7 @@ module VestalVersions
         extend ClassMethods
         include InstanceMethods
 
-        after_create :create_version, :if => :create_initial_version?
+        after_create :create_initial_version, :if => :create_initial_version?
         after_update :create_version, :if => :create_version?
         after_update :update_version, :if => :update_version?
 
@@ -27,7 +27,7 @@ module VestalVersions
 
         self.vestal_versions_options[:only] = Array(options.delete(:only)).map(&:to_s).uniq if options[:only]
         self.vestal_versions_options[:except] = Array(options.delete(:except)).map(&:to_s).uniq if options[:except]
-        self.vestal_versions_options[:initial_version] = options[:initial_version]
+        self.vestal_versions_options[:initial_version] = options.delete(:initial_version)
         
         result
       end
@@ -40,7 +40,14 @@ module VestalVersions
         def create_initial_version?
           vestal_versions_options[:initial_version] == true
         end
-        
+
+        # Creates an initial version upon creation of the parent record.
+        def create_initial_version
+          versions.create(version_attributes.merge(:number => 1))
+          reset_version_changes
+          reset_version
+        end
+                
         # Returns whether a new version should be created upon updating the parent record.
         def create_version?
           !version_changes.blank?
