@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-class TaggingTest < Test::Unit::TestCase
+class VersionTaggingTest < Test::Unit::TestCase
   context 'Tagging a version' do
     setup do
       @user = User.create(:name => 'Steve Richert')

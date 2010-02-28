@@ -85,7 +85,7 @@ module VestalVersions
       include Reset
       include Conditions
       include Control
-      include Tagging
+      include VersionTagging
       include Reload
 
       prepare_versioned_options(options)

@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
      "lib/vestal_versions/reload.rb",
      "lib/vestal_versions/reset.rb",
      "lib/vestal_versions/reversion.rb",
-     "lib/vestal_versions/tagging.rb",
+     "lib/vestal_versions/version_tagging.rb",
      "lib/vestal_versions/users.rb",
      "lib/vestal_versions/version.rb",
      "lib/vestal_versions/versioned.rb",
