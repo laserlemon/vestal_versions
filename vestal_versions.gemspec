@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["laserlemon"]
-  s.date = %q{2010-01-13}
+  s.date = %q{2010-03-27}
   s.description = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.email = %q{steve@laserlemon.com}
   s.extra_rdoc_files = [
@@ -36,9 +36,9 @@ Gem::Specification.new do |s|
      "lib/vestal_versions/reload.rb",
      "lib/vestal_versions/reset.rb",
      "lib/vestal_versions/reversion.rb",
-     "lib/vestal_versions/version_tagging.rb",
      "lib/vestal_versions/users.rb",
      "lib/vestal_versions/version.rb",
+     "lib/vestal_versions/version_tagging.rb",
      "lib/vestal_versions/versioned.rb",
      "lib/vestal_versions/versions.rb",
      "test/changes_test.rb",
@@ -51,9 +51,9 @@ Gem::Specification.new do |s|
      "test/reset_test.rb",
      "test/reversion_test.rb",
      "test/schema.rb",
-     "test/tagging_test.rb",
      "test/test_helper.rb",
      "test/users_test.rb",
+     "test/version_tagging_test.rb",
      "test/version_test.rb",
      "test/versioned_test.rb",
      "test/versions_test.rb",
@@ -62,7 +62,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/laserlemon/vestal_versions}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.test_files = [
     "test/changes_test.rb",
@@ -75,9 +75,9 @@ Gem::Specification.new do |s|
      "test/reset_test.rb",
      "test/reversion_test.rb",
      "test/schema.rb",
-     "test/tagging_test.rb",
      "test/test_helper.rb",
      "test/users_test.rb",
+     "test/version_tagging_test.rb",
      "test/version_test.rb",
      "test/versioned_test.rb",
      "test/versions_test.rb"
