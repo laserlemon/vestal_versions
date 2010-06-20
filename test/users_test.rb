@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.expand_path(File.join(File.dirname(__FILE__), 'test_helper'))
 
 class UsersTest < Test::Unit::TestCase
   context 'The user responsible for an update' do

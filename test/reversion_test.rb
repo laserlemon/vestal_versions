@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'test_helper')
+require File.expand_path(File.join(File.dirname(__FILE__), 'test_helper'))
 
 class ReversionTest < Test::Unit::TestCase
   context 'A model reversion' do
@@ -40,7 +40,7 @@ class ReversionTest < Test::Unit::TestCase
 
     should 'be able to target a version number' do
       @user.revert_to(1)
-      assert 1, @user.version
+      assert_equal 1, @user.version
     end
 
     should 'be able to target a date and time' do
