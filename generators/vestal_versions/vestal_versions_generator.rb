@@ -7,7 +7,7 @@ class VestalVersionsGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('../templates', __FILE__)
   
   def generate_files
-    migration_template 'migration.rb', File.join('db', 'migration', 'create_vestal_versions')
+    migration_template 'migration.rb', File.join('db', 'migrate', 'create_vestal_versions')
     template 'initializer.rb', File.join('config', 'initializers', 'vestal_versions.rb')
   end
   
