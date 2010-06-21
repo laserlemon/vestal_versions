@@ -1,4 +1,4 @@
-= vestal_versions
+= vestal_versions for Rails 3
 
 Finally, DRY ActiveRecord versioning!
 
@@ -7,6 +7,10 @@ Finally, DRY ActiveRecord versioning!
 <tt>vestal_versions</tt>[http://github.com/laserlemon/vestal_versions] requires only one versions table (polymorphically associated with its parent models) and no changes whatsoever to existing tables. But it goes one step DRYer by storing a serialized hash of _only_ the models' changes. Think modern version control systems. By traversing the record of changes, the models can be reverted to any point in time.
 
 And that's just what <tt>vestal_versions</tt> does. Not only can a model be reverted to a previous version number but also to a date or time!
+
+== Compatibility
+  
+Tested with Active Record 3.0.0.beta4 with Ruby 1.8.7 and 1.9.2-preview3.
 
 == Installation
 
@@ -18,10 +22,6 @@ Next, generate and run the first and last versioning migration you'll ever need:
 
   $ rails generate vestal_versions
   $ rake db:migrate
-  
-== Compatibility
-  
-Tested with Active Record 3.0.0.beta4 with Ruby 1.8.7 and 1.9.2-preview3.
 
 == Example
 
