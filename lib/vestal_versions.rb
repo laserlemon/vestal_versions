@@ -21,6 +21,7 @@
 #
 # See the +versioned+ documentation for more details.
 
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'generators', 'vestal_versions', 'vestal_versions_generator'))
 Dir[File.join(File.dirname(__FILE__), 'vestal_versions', '*.rb')].each{|f| require f }
 
 # The base module that gets included in ActiveRecord::Base. See the documentation for
