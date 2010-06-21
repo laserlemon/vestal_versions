@@ -13,7 +13,7 @@ begin
     g.email = 'steve@laserlemon.com'
     g.homepage = 'http://github.com/laserlemon/vestal_versions'
     g.authors = %w(laserlemon)
-    g.add_dependency 'activerecord', '>= 2.1.0'
+    g.add_dependency 'activerecord', '>= 3.0.0.beta4'
     g.add_development_dependency 'shoulda'
     g.add_development_dependency 'mocha'
   end
