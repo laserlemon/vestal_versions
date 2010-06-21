@@ -10,7 +10,7 @@ And that's just what <tt>vestal_versions</tt> does. Not only can a model be reve
 
 == Installation
 
-In <tt>Gemfile</tt>:
+In the Gemfile:
 
   gem 'vestal_versions', :git => 'git://github.com/lailsonbm/vestal_versions', :branch => 'rails3'
 
@@ -21,7 +21,7 @@ Next, generate and run the first and last versioning migration you'll ever need:
   
 == Compatibility
   
-  Tested with Active Record 3.0.0.beta4 with Ruby 1.8.7 and 1.9.2-preview3.
+Tested with Active Record 3.0.0.beta4 with Ruby 1.8.7 and 1.9.2-preview3.
 
 == Example
 
