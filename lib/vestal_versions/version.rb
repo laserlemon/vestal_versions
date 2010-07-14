@@ -7,7 +7,7 @@ module VestalVersions
     belongs_to :versioned, :polymorphic => true
 
     # ActiveRecord::Base#changes is an existing method, so before serializing the +changes+ column,
-    # the existing +changes+ method is undefined. The overridden +changes+ method pertained to 
+    # the existing +changes+ method is undefined. The overridden +changes+ method pertained to
     # dirty attributes, but will not affect the partial updates functionality as that's based on
     # an underlying +changed_attributes+ method, not +changes+ itself.
     undef_method :changes
@@ -28,5 +28,33 @@ module VestalVersions
     def initial?
       number == 1
     end
+
+    def restore!
+      # ensure on the deleted tag..
+      if tag != 'deleted'
+        latest_version = self.class.find(:first, :limit => 1, :order => 'number DESC', :conditions => {:versioned_id => versioned_id, :versioned_type => versioned_type})
+        latest_version.restore!
+      else
+        attrs = modifications
+
+        class_name = attrs['type'].blank? ? versioned_type : attrs['type']
+        klass = class_name.constantize
+        model = klass.new
+
+        attrs.each do |k, v|
+          begin
+            model.send "#{k}=", v
+          rescue NoMethodError
+            logger.warn "Attribute #{k} does not exist on #{item_type} (Version id: #{id})."
+          end
+        end
+
+        model
+        model.save!
+        self.destroy # remove the last version
+        model
+      end
+    end
+
   end
 end

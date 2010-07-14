@@ -39,5 +39,11 @@ class User < ActiveRecord::Base
   end
 end
 
+class DeletedUser < ActiveRecord::Base
+  set_table_name 'users'
+  versioned :dependent => :tracking
+
+end
+
 class MyCustomVersion < VestalVersions::Version
 end
