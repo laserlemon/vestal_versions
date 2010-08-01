@@ -47,7 +47,9 @@ module VestalVersions
     #   will permanently remove all associated versions *without* triggering any destroy callbacks.
     #   Other options are :destroy which removes the associated versions *with* callbacks, or
     #   :nullify which leaves the version records in the database, but dissociates them from the
-    #   parent object by setting the foreign key columns to +nil+ values.
+    #   parent object by setting the foreign key columns to +nil+ values.  Setting this option to 
+    #   :tracking will perform a soft delete on destroy and create a new version record preserving
+    #   details of this record for later restoration.
     # * <tt>:except</tt>: An update will trigger version creation as long as at least one column
     #   outside those specified here was updated. Also, upon version creation, the columns
     #   specified here will be excluded from the change history. This is useful when dealing with

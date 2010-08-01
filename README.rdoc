@@ -163,7 +163,28 @@ There are a handful of exciting new additions in version 1.0 of <tt>vestal_versi
 * Custom version classes. By passing a <tt>:class_name</tt> option to the <tt>versioned</tt> method, you can specify your own ActiveRecord version model. <tt>VestalVersions::Version</tt> is the default, but feel free to stray from that. I recommend that your custom model inherit from <tt>VestalVersions::Version</tt>, but that's up to you!
   
 * A <tt>versioned?</tt> convenience class method. If your user model is versioned, <tt>User.versioned?</tt> will let you know.
-  
+
+* Soft Deletes & Restoration.  By setting <tt>:dependent</tt> to <tt>:tracking</tt> destroys will be tracked.  On destroy a new version will be created storing the complete details of the object with a tag of 'deleted'.  The object can later be restored using the <tt>restore!</tt> method on the VestalVersions::Version record.  The attributes of the restored object will be set using the attribute writer methods.  After a restore! is performed the version record with the 'deleted' tag is removed from the history.
+
+    class User < ActiveRecord::Base
+      versioned :dependent => :tracking
+    end
+
+    >> @user.version
+    => 2
+    >> @user.destroy
+    => <User id: 2, first_name: "Steve", last_name: "Jobs", ... > 
+    >> User.find(2)
+    => ActiveRecord::RecordNotFound: Couldn't find User with ID=2
+    >> VestalVersions::Version.last
+    => <VestalVersions::Version id: 4, versioned_id: 2, versioned_type: "User", user_id: nil, user_type: nil, user_name: nil, modifications: {"created_at"=>Sun Aug 01 18:39:57 UTC 2010, "updated_at"=>Sun Aug 01 18:42:28 UTC 2010, "id"=>2, "last_name"=>"Jobs", "first_name"=>"Stephen"}, number: 3, tag: "deleted", created_at: "2010-08-01 18:42:43", updated_at: "2010-08-01 18:42:43"> 
+    >> VestalVersions::Version.last.restore!
+    => <User id: 2, first_name => "Steven", last_name: "Jobs", ... >
+    >> @user = User.find(2)
+    => <User id: 2, first_name => "Steven", last_name: "Jobs", ... >
+    >> @user.version
+    => 2
+
 == Thanks!
 
 Thank you to all those who post {issues and suggestions}[http://github.com/laserlemon/vestal_versions/issues]. And special thanks to:
