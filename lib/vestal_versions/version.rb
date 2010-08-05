@@ -30,11 +30,18 @@ module VestalVersions
     end
 
     def restore!
-      # ensure on the deleted tag..
-      if tag != 'deleted'
-        latest_version = self.class.find(:first, :limit => 1, :order => 'number DESC', :conditions => {:versioned_id => versioned_id, :versioned_type => versioned_type})
-        latest_version.restore!
-      else
+      model = restore
+      
+      if model
+        model.save!
+        destroy
+      end
+      
+      model
+    end
+    
+    def restore
+      if tag == 'deleted'
         attrs = modifications
 
         class_name = attrs['type'].blank? ? versioned_type : attrs['type']
@@ -50,11 +57,10 @@ module VestalVersions
         end
 
         model
-        model.save!
-        self.destroy # remove the last version
-        model
+      else
+        latest_version = self.class.find(:first, :conditions => {:versioned_id => versioned_id, :versioned_type => versioned_type, :tag => 'deleted'})
+        latest_version.nil? ? nil : latest_version.restore
       end
     end
-
   end
 end

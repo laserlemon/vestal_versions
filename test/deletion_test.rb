@@ -91,6 +91,26 @@ class DeletionTest < Test::Unit::TestCase
 
       assert_equal @user, restored_user
     end
-    
+  end
+  context "restoring a deleted version without save" do
+    setup do
+      @user = DeletedUser.create(:first_name => 'Steve', :last_name => 'Richert')
+      @user.update_attribute(:last_name, 'Jobs')
+      @user.destroy
+      @last_version = VestalVersions::Version.last
+    end
+    should "not save the DeletedUser when restoring" do
+      user = @last_version.restore
+      assert_equal user.new_record?, true
+    end
+    should "restore the user object properly" do
+      user = @last_version.restore
+      assert_equal user, @user
+    end
+    should "not decrement the versions table" do
+      old_version_count = VestalVersions::Version.count
+      @last_version.restore
+      assert_equal old_version_count, VestalVersions::Version.count
+    end
   end
 end
