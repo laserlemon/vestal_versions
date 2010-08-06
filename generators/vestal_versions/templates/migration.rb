@@ -6,7 +6,7 @@ class CreateVestalVersions < ActiveRecord::Migration
       t.string :user_name
       t.text :changes
       t.integer :number
-      t.string :tag
+      t.string :versionable_tag
 
       t.timestamps
     end
@@ -16,7 +16,7 @@ class CreateVestalVersions < ActiveRecord::Migration
       t.index [:user_id, :user_type]
       t.index :user_name
       t.index :number
-      t.index :tag
+      t.index :versionable_tag
       t.index :created_at
     end
   end

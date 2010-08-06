@@ -8,7 +8,7 @@ class VersionsTest < Test::Unit::TestCase
       time = names.size.hours.ago
       names.each do |name|
         @user.update_attribute(:name, name)
-        @user.tag_version(@user.version.to_s)
+        @user.versionable_tag_version(@user.version.to_s)
         time += 1.hour
         @user.versions.last.update_attribute(:created_at, time)
         @times[@user.version] = time
@@ -72,10 +72,10 @@ class VersionsTest < Test::Unit::TestCase
       end
     end
 
-    should 'be fetchable by tag' do
-      @times.keys.map{|n| [n, n.to_s] }.each do |number, tag|
-        assert_kind_of VestalVersions::Version, @user.versions.at(tag)
-        assert_equal number, @user.versions.at(tag).number
+    should 'be fetchable by versionable_tag' do
+      @times.keys.map{|n| [n, n.to_s] }.each do |number, versionable_tag|
+        assert_kind_of VestalVersions::Version, @user.versions.at(versionable_tag)
+        assert_equal number, @user.versions.at(versionable_tag).number
       end
     end
 
@@ -126,14 +126,14 @@ class VersionsTest < Test::Unit::TestCase
       end
     end
 
-    should 'provide a version number for a valid tag' do
-      @times.keys.map{|n| [n, n.to_s] }.each do |number, tag|
-        assert_kind_of Fixnum, @user.versions.number_at(tag)
-        assert_equal number, @user.versions.number_at(tag)
+    should 'provide a version number for a valid versionable_tag' do
+      @times.keys.map{|n| [n, n.to_s] }.each do |number, versionable_tag|
+        assert_kind_of Fixnum, @user.versions.number_at(versionable_tag)
+        assert_equal number, @user.versions.number_at(versionable_tag)
       end
     end
 
-    should 'return nil when providing a version number for an invalid tag' do
+    should 'return nil when providing a version number for an invalid versionable_tag' do
       assert_nil @user.versions.number_at('INVALID')
     end
 

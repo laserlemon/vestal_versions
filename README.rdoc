@@ -85,13 +85,13 @@ For the most part, version 1.0 of <tt>vestal_versions</tt> is backwards compatib
     change_table :versions do |t|
       t.belongs_to :user, :polymorphic => true
       t.string :user_name
-      t.string :tag
+      t.string :versionable_tag
     end
     
     change_table :versions do |t|
       t.index [:user_id, :user_type]
       t.index :user_name
-      t.index :tag
+      t.index :versionable_tag
     end
   
 * When a model is created (or updated the first time after being versioned), an initial version record with a number of 1 is no longer created. These aren't used during reversion and so they end up just being dead weight. Feel free to scrap all your versions where <tt>number == 1</tt> after the upgrade if you'd like to free up some room in your database (but you don't have to).
@@ -119,18 +119,18 @@ There are a handful of exciting new additions in version 1.0 of <tt>vestal_versi
   
   Also available, are <tt>merge_version</tt> and <tt>append_version</tt> blocks. The <tt>merge_version</tt> block will compile the possibly multiple versions that would result from the updates inside the block into one summary version. The single resulting version is then tacked onto the version history as usual. The <tt>append_version</tt> block works similarly except that the resulting single version is combined with the most recent version in the history and saved.
   
-* Version tagging. Any version can have a tag attached to it (must be unique within the scope of the versioned parent) and that tag can be used for reversion.
+* Version versionable_tagging. Any version can have a versionable_tag attached to it (must be unique within the scope of the versioned parent) and that versionable_tag can be used for reversion.
   
     @user.name # => "Steve Richert"
     @user.update_attribute(:last_name, "Jobs")
     @user.name # => "Steve Jobs"
-    @user.tag_version("apple")
+    @user.versionable_tag_version("apple")
     @user.update_attribute(:last_name, "Richert")
     @user.name # => "Steve Richert"
     @user.revert_to("apple")
     @user.name # => "Steve Jobs"
   
-  So if you're not big on version numbers, you could just tag your versions and avoid the numbers altogether.
+  So if you're not big on version numbers, you could just versionable_tag your versions and avoid the numbers altogether.
   
 * Resetting. This is basically a hard revert. The new <tt>reset_to!</tt> instance method behaves just like the <tt>revert_to!</tt> method except that after the reversion, it will also scrap all the versions that came after that target version.
   

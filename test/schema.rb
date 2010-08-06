@@ -17,7 +17,7 @@ class CreateSchema < ActiveRecord::Migration
       t.string :user_name
       t.text :changes
       t.integer :number
-      t.string :tag
+      t.string :versionable_tag
       t.timestamps
     end
   end
