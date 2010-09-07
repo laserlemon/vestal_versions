@@ -30,7 +30,7 @@ module VestalVersions
     module VersionMethods
       def self.included(base) # :nodoc:
         base.class_eval do
-          validates_uniqueness_of :tag, :scope => [:versioned_id, :versioned_type], :if => :tagged?
+          validates_uniqueness_of :tag, :scope => [:versioned_id, :versioned_type], :if => :validate_tags?
         end
       end
 
@@ -44,6 +44,10 @@ module VestalVersions
       # Simply returns a boolean signifying whether the version instance has a tag value attached.
       def tagged?
         !tag.nil?
+      end
+      
+      def validate_tags?
+        tagged? && tag != 'deleted'
       end
     end
   end
