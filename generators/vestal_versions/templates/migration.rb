@@ -6,6 +6,7 @@ class CreateVestalVersions < ActiveRecord::Migration
       t.string :user_name
       t.text :modifications
       t.integer :number
+      t.integer :reverted_from
       t.string :tag
 
       t.timestamps

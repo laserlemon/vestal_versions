@@ -64,5 +64,36 @@ class ReversionTest < Test::Unit::TestCase
         assert_equal attributes.except(*timestamps), @user.attributes.except(*timestamps)
       end
     end
+    
+    should "store the reverted_from pointing to the previous version" do
+      @user.revert_to!(1)
+      assert_equal 1, @user.versions.last.reverted_from
+    end
+    
+    should "not store the revereted_from for subsequent saves" do
+      @user.revert_to!(1)
+      @user.update_attributes(:name => 'Bill Gates')
+      assert_equal nil, @user.versions.last.reverted_from
+    end
+    should "store the reverted_from pointing to the version it was reverted from when save is called later" do
+      @user.revert_to(1)
+      @user.name = "Reverted"
+      @user.save
+      assert_equal 1, @user.versions.last.reverted_from
+    end
+    should "not store the reverted_from for subsequent saves when the revert_to-save is called later" do
+      @user.revert_to(1)
+      @user.name = "Reverted"
+      @user.save
+      @user.update_attributes(:name => 'Bill Gates')
+      assert_equal nil, @user.versions.last.reverted_from
+    end
+    should "clear the reverted_from if the model is reloaded after a revert_to without a save" do
+      @user.revert_to(1)
+      @user.reload
+      @user.update_attributes(:name => 'Bill Gates')
+      assert_equal nil, @user.versions.last.reverted_from
+    end
+    
   end
 end
