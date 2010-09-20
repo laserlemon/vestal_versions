@@ -6,7 +6,6 @@ module VestalVersions
       base.class_eval do
         include InstanceMethods
 
-        alias_method_chain :reload, :versions
       end
     end
 
@@ -14,9 +13,9 @@ module VestalVersions
     module InstanceMethods
       # Overrides ActiveRecord::Base#reload, resetting the instance-variable-cached version number
       # before performing the original +reload+ method.
-      def reload_with_versions(*args)
+      def reload(*args)
         reset_version
-        reload_without_versions(*args)
+        super
       end
     end
   end
