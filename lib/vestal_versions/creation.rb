@@ -39,8 +39,8 @@ module VestalVersions
         end
 
         # Creates a new version upon updating the parent record.
-        def create_version
-          versions.create(version_attributes)
+        def create_version(attributes = nil)
+          versions.create(attributes || version_attributes)
           reset_version_changes
           reset_version
         end
