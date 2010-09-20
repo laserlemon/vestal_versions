@@ -39,5 +39,23 @@ class VersionTest < Test::Unit::TestCase
       assert_equal 1, version.number
       assert_equal true, version.initial?
     end
+    
+    should "return the version number if it is not a revert" do
+      assert_equal @user.version, @user.versions.last.original_number
+    end
+
+    should "return the reverted_version if it is a revert" do
+      @user.revert_to!(1)
+      assert_equal 1, @user.versions.last.original_number
+    end
+
+    should "return the original version if it is a double revert" do
+      @user.revert_to!(2)
+      version = @user.version
+      @user.update_attributes(:last_name => 'Gates')
+      @user.revert_to!(version)
+      assert_equal 2, @user.versions.last.original_number
+    end
+    
   end
 end
