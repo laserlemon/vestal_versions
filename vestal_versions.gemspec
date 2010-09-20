@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{vestal_versions}
-  s.version = "1.1.0"
+  s.version = "1.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["laserlemon"]
-  s.date = %q{2010-06-21}
+  s.date = %q{2010-09-20}
   s.description = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.email = %q{steve@laserlemon.com}
   s.extra_rdoc_files = [
@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
      "lib/vestal_versions/configuration.rb",
      "lib/vestal_versions/control.rb",
      "lib/vestal_versions/creation.rb",
+     "lib/vestal_versions/deletion.rb",
      "lib/vestal_versions/options.rb",
      "lib/vestal_versions/reload.rb",
      "lib/vestal_versions/reset.rb",
@@ -46,6 +47,7 @@ Gem::Specification.new do |s|
      "test/configuration_test.rb",
      "test/control_test.rb",
      "test/creation_test.rb",
+     "test/deletion_test.rb",
      "test/options_test.rb",
      "test/reload_test.rb",
      "test/reset_test.rb",
@@ -70,6 +72,7 @@ Gem::Specification.new do |s|
      "test/configuration_test.rb",
      "test/control_test.rb",
      "test/creation_test.rb",
+     "test/deletion_test.rb",
      "test/options_test.rb",
      "test/reload_test.rb",
      "test/reset_test.rb",
@@ -88,16 +91,16 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<activerecord>, [">= 3.0.0.beta4"])
+      s.add_runtime_dependency(%q<activerecord>, [">= 3.0.0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<mocha>, [">= 0"])
     else
-      s.add_dependency(%q<activerecord>, [">= 3.0.0.beta4"])
+      s.add_dependency(%q<activerecord>, [">= 3.0.0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<mocha>, [">= 0"])
     end
   else
-    s.add_dependency(%q<activerecord>, [">= 3.0.0.beta4"])
+    s.add_dependency(%q<activerecord>, [">= 3.0.0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<mocha>, [">= 0"])
   end
