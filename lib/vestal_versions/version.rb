@@ -62,7 +62,7 @@ module VestalVersions
           begin
             model.send "#{k}=", v
           rescue NoMethodError
-            logger.warn "Attribute #{k} does not exist on #{item_type} (Version id: #{id})."
+            logger.warn "Attribute #{k} does not exist on #{class_name} (Version id: #{id})." rescue nil
           end
         end
 

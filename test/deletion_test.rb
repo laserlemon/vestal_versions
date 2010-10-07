@@ -91,6 +91,11 @@ class DeletionTest < Test::Unit::TestCase
 
       assert_equal @user, restored_user
     end
+    should "restore even if the schema has changed" do
+      @last_version.update_attributes(:modifications => @last_version.modifications.merge(:old_column => 'old'))
+      user = @last_version.restore
+      assert_equal user, @user
+    end
   end
   context "restoring a deleted version without save" do
     setup do
