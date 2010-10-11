@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["laserlemon"]
-  s.date = %q{2010-10-07}
+  s.date = %q{2010-10-11}
   s.description = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.email = %q{steve@laserlemon.com}
   s.extra_rdoc_files = [
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".gitignore",
+     "Gemfile",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
@@ -67,23 +68,23 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Keep a DRY history of your ActiveRecord models' changes}
   s.test_files = [
-    "test/changes_test.rb",
-     "test/conditions_test.rb",
+    "test/schema.rb",
      "test/configuration_test.rb",
      "test/control_test.rb",
-     "test/creation_test.rb",
-     "test/deletion_test.rb",
-     "test/options_test.rb",
+     "test/version_test.rb",
+     "test/conditions_test.rb",
+     "test/test_helper.rb",
+     "test/versioned_test.rb",
+     "test/tagging_test.rb",
      "test/reload_test.rb",
+     "test/users_test.rb",
      "test/reset_test.rb",
      "test/reversion_test.rb",
-     "test/schema.rb",
-     "test/tagging_test.rb",
-     "test/test_helper.rb",
-     "test/users_test.rb",
-     "test/version_test.rb",
-     "test/versioned_test.rb",
-     "test/versions_test.rb"
+     "test/versions_test.rb",
+     "test/deletion_test.rb",
+     "test/changes_test.rb",
+     "test/creation_test.rb",
+     "test/options_test.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -92,17 +93,32 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activerecord>, [">= 3.0.0"])
+      s.add_runtime_dependency(%q<railties>, [">= 3.0.0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<mocha>, [">= 0"])
+      s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<rake>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
+      s.add_development_dependency(%q<sqlite3-ruby>, [">= 0"])
     else
       s.add_dependency(%q<activerecord>, [">= 3.0.0"])
+      s.add_dependency(%q<railties>, [">= 3.0.0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<mocha>, [">= 0"])
+      s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<rake>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
+      s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
     end
   else
     s.add_dependency(%q<activerecord>, [">= 3.0.0"])
+    s.add_dependency(%q<railties>, [">= 3.0.0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<mocha>, [">= 0"])
+    s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<rake>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
+    s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
   end
 end
 

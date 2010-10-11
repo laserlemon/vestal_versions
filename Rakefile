@@ -14,8 +14,13 @@ begin
     g.homepage = 'http://github.com/laserlemon/vestal_versions'
     g.authors = %w(laserlemon)
     g.add_dependency 'activerecord', '>= 3.0.0'
+    g.add_dependency 'railties', '>= 3.0.0'
     g.add_development_dependency 'shoulda'
     g.add_development_dependency 'mocha'
+    g.add_development_dependency 'rcov'
+    g.add_development_dependency 'rake'
+    g.add_development_dependency 'jeweler'
+    g.add_development_dependency 'sqlite3-ruby'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
