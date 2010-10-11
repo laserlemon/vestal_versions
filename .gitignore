@@ -21,3 +21,7 @@ pkg
 ## PROJECT::SPECIFIC
 *.db
 .rvmrc
+
+## BUNDLER
+.bundle
+Gemfile.lock
