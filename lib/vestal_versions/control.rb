@@ -3,12 +3,7 @@ module VestalVersions
   # a new version is created, or a previous version is updated.
   module Control
     def self.included(base) # :nodoc:
-      base.class_eval do
-        include InstanceMethods
-
-        alias_method_chain :create_version?, :control
-        alias_method_chain :update_version?, :control
-      end
+      base.send(:include, InstanceMethods)
     end
 
     # Control blocks are called on ActiveRecord::Base instances as to not cause any conflict with
@@ -161,13 +156,13 @@ module VestalVersions
 
         # Overrides the basal +create_version?+ method to make sure that new versions are not
         # created when inside any of the control blocks (until the block terminates).
-        def create_version_with_control?
-          !skip_version? && !merge_version? && !append_version? && create_version_without_control?
+        def create_version?
+          !skip_version? && !merge_version? && !append_version? && super
         end
 
         # Overrides the basal +update_version?+ method to allow the last version of an versioned
         # ActiveRecord::Base instance to be updated at the end of an +append_version+ block.
-        def update_version_with_control?
+        def update_version?
           append_version?
         end
     end

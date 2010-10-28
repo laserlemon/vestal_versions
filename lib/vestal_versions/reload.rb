@@ -5,7 +5,6 @@ module VestalVersions
     def self.included(base) # :nodoc:
       base.class_eval do
         include InstanceMethods
-
       end
     end
 

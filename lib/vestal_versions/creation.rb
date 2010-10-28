@@ -10,10 +10,6 @@ module VestalVersions
         after_create :create_initial_version, :if => :create_initial_version?
         after_update :create_version, :if => :create_version?
         after_update :update_version, :if => :update_version?
-
-        class << self
-          alias_method_chain :prepare_versioned_options, :creation
-        end
       end
     end
 
@@ -22,8 +18,8 @@ module VestalVersions
       # Overrides the basal +prepare_versioned_options+ method defined in VestalVersions::Options
       # to extract the <tt>:only</tt>, <tt>:except</tt> and <tt>:initial_version</tt> options
       # into +vestal_versions_options+.
-      def prepare_versioned_options_with_creation(options)
-        result = prepare_versioned_options_without_creation(options)
+      def prepare_versioned_options(options)
+        result = super(options)
 
         self.vestal_versions_options[:only] = Array(options.delete(:only)).map(&:to_s).uniq if options[:only]
         self.vestal_versions_options[:except] = Array(options.delete(:except)).map(&:to_s).uniq if options[:except]
