@@ -91,7 +91,7 @@ module VestalVersions
       include Reset
       include Conditions
       include Control
-      include Tagging
+      include VersionTagging
       include Reload
       include Deletion
 

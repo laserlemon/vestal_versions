@@ -1,7 +1,7 @@
 module VestalVersions
   # Allows specific versions to be tagged with a custom string. Useful for assigning a more
   # meaningful value to a version for the purpose of reversion.
-  module Tagging
+  module VersionTagging
     def self.included(base) # :nodoc:
       Version.send(:include, VersionMethods)
 
