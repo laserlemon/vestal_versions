@@ -11,6 +11,20 @@ class CreationTest < Test::Unit::TestCase
     should 'initially equal zero' do
       assert_equal 0, @count
     end
+    
+    context '(with :initial_version option)' do
+      setup do
+        User.prepare_versioned_options(:initial_version => true)
+        @user = User.create(:name => @name)
+        @count = @user.versions.count
+      end
+      should 'initially equal one' do
+        assert_equal 1, @count
+      end
+      teardown do
+        User.prepare_versioned_options(:initial_version => nil)
+      end
+    end
 
     should 'not increase when no changes are made in an update' do
       @user.update_attribute(:name, @name)
@@ -104,6 +118,30 @@ class CreationTest < Test::Unit::TestCase
 
       teardown do
         User.prepare_versioned_options(:only => nil, :except => nil)
+      end
+    end
+  end
+
+  context 'First version' do
+    setup do
+      @name = 'Steve Richert'
+      @user = User.create(:name => @name)
+    end
+    should 'should be number 2 (after an update)' do
+      @user.update_attribute(:last_name, 'Jobs')
+      assert_equal 2, @user.versions.first.number
+    end
+    
+    context "With :initial_version option" do
+      setup do
+        User.prepare_versioned_options(:initial_version => true)
+        @user = User.create(:name => @name)
+      end
+      should 'should be number 1' do
+        assert_equal 1, @user.versions.first.number
+      end
+      teardown do
+        User.prepare_versioned_options(:initial_version => nil)
       end
     end
   end
