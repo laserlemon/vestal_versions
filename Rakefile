@@ -1,31 +1,9 @@
-require 'rubygems'
-require 'rake'
+require 'bundler'
+Bundler::GemHelper.install_tasks
+
 require 'rake/testtask'
 require 'rcov/rcovtask'
 require 'rake/rdoctask'
-
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |g|
-    g.name = 'vestal_versions'
-    g.summary = %(Keep a DRY history of your ActiveRecord models' changes)
-    g.description = %(Keep a DRY history of your ActiveRecord models' changes)
-    g.email = 'steve@laserlemon.com'
-    g.homepage = 'http://github.com/laserlemon/vestal_versions'
-    g.authors = %w(laserlemon)
-    g.add_dependency 'activerecord', '>= 3.0.0'
-    g.add_dependency 'railties', '>= 3.0.0'
-    g.add_development_dependency 'shoulda'
-    g.add_development_dependency 'mocha'
-    g.add_development_dependency 'rcov'
-    g.add_development_dependency 'rake'
-    g.add_development_dependency 'jeweler'
-    g.add_development_dependency 'sqlite3-ruby'
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts 'Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler'
-end
 
 Rake::TestTask.new do |t|
   t.libs = %w(test)
