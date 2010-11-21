@@ -2,15 +2,12 @@ module VestalVersions
   # Adds the functionality necessary to control version creation on a versioned instance of
   # ActiveRecord::Base.
   module Creation
-    def self.included(base) # :nodoc:
-      base.class_eval do
-        extend ClassMethods
-        include InstanceMethods
+    extend ActiveSupport::Concern
 
-        after_create :create_initial_version, :if => :create_initial_version?
-        after_update :create_version, :if => :create_version?
-        after_update :update_version, :if => :update_version?
-      end
+    included do
+      after_create :create_initial_version, :if => :create_initial_version?
+      after_update :create_version, :if => :create_version?
+      after_update :update_version, :if => :update_version?
     end
 
     # Class methods added to ActiveRecord::Base to facilitate the creation of new versions.

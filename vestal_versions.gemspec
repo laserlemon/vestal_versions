@@ -12,18 +12,15 @@ Gem::Specification.new do |s|
   s.summary     = "Keep a DRY history of your ActiveRecord models' changes"
   s.description = "Keep a DRY history of your ActiveRecord models' changes"
 
-  s.rubyforge_project = "vestal_versions"
-
   s.files         = `git ls-files lib`.split("\n") + ['README.rdoc', 'LICENSE']
-  s.test_files    = `git ls-files -- {test}/*`.split("\n")
+  s.test_files    = `git ls-files spec`.split("\n")
   s.require_paths = ['lib']
 
   s.add_dependency 'activerecord', '>= 3.0.0'
+  s.add_dependency 'activesupport', '>= 3.0.0'
   s.add_dependency 'railties', '>= 3.0.0'
 
-  s.add_development_dependency 'shoulda'
-  s.add_development_dependency 'mocha'
+  s.add_development_dependency 'rspec'
   s.add_development_dependency 'rcov'
-  s.add_development_dependency 'rake'
   s.add_development_dependency 'sqlite3-ruby'
 end

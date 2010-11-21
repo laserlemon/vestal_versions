@@ -1,9 +1,7 @@
 module VestalVersions
   # Simply adds a flag to determine whether a model class if versioned.
   module Versioned
-    def self.extended(base) # :nodoc:
-      base.extend ClassMethods
-    end
+    extend ActiveSupport::Concern
 
     # Overrides the +versioned+ method to first define the +versioned?+ class method before
     # deferring to the original +versioned+.
@@ -24,5 +22,6 @@ module VestalVersions
         false
       end
     end
+
   end
 end
