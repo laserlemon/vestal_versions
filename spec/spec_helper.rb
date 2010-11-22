@@ -17,4 +17,4 @@ RSpec.configure do |c|
   end
 end
 
-Dir[File.dirname(__FILE__) + '/support/*.rb'].each { |f| load f }
+Dir[File.dirname(__FILE__) + '/support/*.rb'].each { |f| require f }
