@@ -1,5 +1,6 @@
 require 'bundler'
 Bundler.require
+require 'rspec/core'
 
 RSpec.configure do |c|
   c.before(:suite) do
