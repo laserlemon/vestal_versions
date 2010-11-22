@@ -8,7 +8,7 @@ if RUBY_VERSION < '1.9'
   desc "Run all tests with coverage"
   RSpec::Core::RakeTask.new :coverage => :cleanup_coverage_files do |t|
     t.rcov = true
-    t.rcov_opts =  %[-Ilib -Ispec --exclude "gems/*,spec/support,spec/paste,spec/spec_helper.rb"]
+    t.rcov_opts =  %[-Ilib -Ispec --exclude "gems/*,spec/support,spec/vestal_versions,spec/spec_helper.rb"]
   end
 else
   desc 'Run all tests with coverage'
@@ -31,7 +31,7 @@ task :cleanup_coverage_files do
   rm_rf 'coverage*'
 end
 
-task :clobber => :cleanup_rcov_files do
+task :clobber => :cleanup_coverage_files do
   rm_rf 'pkg'
   rm_rf 'tmp'
 end
