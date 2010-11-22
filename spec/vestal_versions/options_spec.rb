@@ -10,11 +10,6 @@ describe VestalVersions::Options do
       VestalVersions::Version.config.class_name = 'MyCustomVersion'
     end
 
-    after do
-      VestalVersions::Version.config.clear
-      User.prepare_versioned_options({})
-    end
-
     it 'has symbolized keys' do
       User.vestal_versions_options.keys.all?{|k| k.is_a?(Symbol) }
     end

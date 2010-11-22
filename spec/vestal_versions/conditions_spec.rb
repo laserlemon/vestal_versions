@@ -8,10 +8,6 @@ describe VestalVersions::Conditions do
       end
     end
 
-    after do
-      User.prepare_versioned_options(option => [])
-    end
-
     it 'is an array' do
       User.vestal_versions_options[option].should be_a(Array)
       User.prepare_versioned_options(option => :true)
