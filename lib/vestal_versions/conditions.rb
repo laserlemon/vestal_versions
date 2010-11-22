@@ -2,10 +2,7 @@ module VestalVersions
   # Allows version creation to occur conditionally based on given <tt>:if</tt> and/or
   # <tt>:unless</tt> options.
   module Conditions
-    def self.included(base) # :nodoc:
-      base.send(:include, InstanceMethods)
-      base.extend(ClassMethods)
-    end
+    extend ActiveSupport::Concern
 
     # Class methods on ActiveRecord::Base to prepare the <tt>:if</tt> and <tt>:unless</tt> options.
     module ClassMethods
