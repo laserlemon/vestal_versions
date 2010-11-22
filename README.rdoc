@@ -10,7 +10,7 @@ And that's just what <tt>vestal_versions</tt> does. Not only can a model be reve
 
 == Compatibility
   
-Tested with Active Record 3.0.0 with Ruby 1.8.7 and 1.9.2-preview3.
+Tested with Active Record 3.0.3 with Ruby 1.8.7 and 1.9.2.
 
 == Installation
 
@@ -20,7 +20,7 @@ In the Gemfile:
 
 Next, generate and run the first and last versioning migration you'll ever need:
 
-  $ rails generate vestal_versions
+  $ rails generate vestal_versions:migration
   $ rake db:migrate
 
 == Example
