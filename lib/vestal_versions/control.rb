@@ -2,9 +2,7 @@ module VestalVersions
   # The control feature allows use of several code blocks that provide finer control over whether
   # a new version is created, or a previous version is updated.
   module Control
-    def self.included(base) # :nodoc:
-      base.send(:include, InstanceMethods)
-    end
+    extend ActiveSupport::Concern
 
     # Control blocks are called on ActiveRecord::Base instances as to not cause any conflict with
     # other instances of the versioned class whose behavior could be inadvertently altered within

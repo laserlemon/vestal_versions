@@ -2,19 +2,16 @@ module VestalVersions
   # Allows version creation to occur conditionally based on given <tt>:if</tt> and/or
   # <tt>:unless</tt> options.
   module Deletion
-    def self.included(base) # :nodoc:
-      base.class_eval do
-        extend ClassMethods
-        include InstanceMethods
+    extend ActiveSupport::Concern
 
-        before_destroy :create_destroyed_version, :if => :delete_version?
-      end
+    included do
+      before_destroy :create_destroyed_version, :if => :delete_version?
     end
 
-    # Class methods on ActiveRecord::Base 
+    # Class methods on ActiveRecord::Base
     module ClassMethods
       # After the original +prepare_versioned_options+ method cleans the given options, this alias
-      # also extracts the <tt>:depedent</tt> if it set to <tt>:tracking</tt> 
+      # also extracts the <tt>:depedent</tt> if it set to <tt>:tracking</tt>
       def prepare_versioned_options(options)
         result = super(options)
         if result[:dependent] == :tracking

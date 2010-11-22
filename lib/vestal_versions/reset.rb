@@ -1,11 +1,7 @@
 module VestalVersions
   # Adds the ability to "reset" (or hard revert) a versioned ActiveRecord::Base instance.
   module Reset
-    def self.included(base) # :nodoc:
-      base.class_eval do
-        include InstanceMethods
-      end
-    end
+    extend ActiveSupport::Concern
 
     # Adds the instance methods required to reset an object to a previous version.
     module InstanceMethods
