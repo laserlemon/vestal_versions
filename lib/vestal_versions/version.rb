@@ -1,7 +1,11 @@
+require 'active_record'
+require 'active_support/configurable'
+
 module VestalVersions
   # The ActiveRecord model representing versions.
   class Version < ActiveRecord::Base
     include Comparable
+    include ActiveSupport::Configurable
 
     # Associate polymorphically with the parent record.
     belongs_to :versioned, :polymorphic => true

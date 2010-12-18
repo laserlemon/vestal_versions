@@ -2,14 +2,11 @@ module VestalVersions
   # Provides the ability to manipulate hashes in the specific format that ActiveRecord gives to
   # dirty attribute changes: string keys and unique, two-element array values.
   module Changes
-    def self.included(base) # :nodoc:
-      Hash.send(:include, HashMethods)
+    extend ActiveSupport::Concern
+    included do
+      Hash.class_eval{ include HashMethods }
 
-      base.class_eval do
-        include InstanceMethods
-
-        after_update :merge_version_changes
-      end
+      after_update :merge_version_changes
     end
 
     # Methods available to versioned ActiveRecord::Base instances in order to manage changes used

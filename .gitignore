@@ -1,27 +1,4 @@
-## MAC OS
-.DS_Store
-
-## TEXTMATE
-*.tmproj
-tmtags
-
-## EMACS
-*~
-\#*
-.\#*
-
-## VIM
-*.swp
-
-## PROJECT::GENERAL
-coverage
-rdoc
-pkg
-
-## PROJECT::SPECIFIC
-*.db
-.rvmrc
-
-## BUNDLER
+pkg/*
+*.gem
 .bundle
-Gemfile.lock
+coverage

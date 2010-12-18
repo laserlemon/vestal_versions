@@ -1,3 +1,8 @@
+require 'active_support/concern'
+require 'active_support/dependencies/autoload'
+require 'active_support/core_ext/module/delegation'
+require 'active_record'
+
 # +vestal_versions+ keeps track of updates to ActiveRecord models, leveraging the introduction of
 # dirty attributes in Rails 2.1. By storing only the updated attributes in a serialized column of a
 # single version model, the history is kept DRY and no additional schema changes are necessary.
@@ -21,17 +26,34 @@
 #
 # See the +versioned+ documentation for more details.
 
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'generators', 'vestal_versions', 'vestal_versions_generator'))
-Dir[File.join(File.dirname(__FILE__), 'vestal_versions', '*.rb')].each{|f| require f }
-
 # The base module that gets included in ActiveRecord::Base. See the documentation for
 # VestalVersions::ClassMethods for more useful information.
 module VestalVersions
-  def self.included(base) # :nodoc:
-    base.class_eval do
-      extend ClassMethods
-      extend Versioned
-    end
+  extend ActiveSupport::Concern
+  extend ActiveSupport::Autoload
+
+  autoload :Changes
+  autoload :Conditions
+  autoload :Control
+  autoload :Creation
+  autoload :Deletion
+  autoload :Options
+  autoload :Reload
+  autoload :Reset
+  autoload :Reversion
+  autoload :Users
+  autoload :Version
+  autoload :VERSION, 'vestal_versions/version_num'
+  autoload :VersionTagging
+  autoload :Versioned
+  autoload :Versions
+
+  class << self
+    delegate :config, :configure, :to => Version
+  end
+
+  included do
+    include Versioned
   end
 
   module ClassMethods
@@ -99,8 +121,6 @@ module VestalVersions
       has_many :versions, options, &block
     end
   end
-
-  extend Configuration
 end
 
-ActiveRecord::Base.send(:include, VestalVersions)
+ActiveRecord::Base.class_eval{ include VestalVersions }

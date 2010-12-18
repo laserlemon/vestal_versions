@@ -1,50 +1,37 @@
-require 'rubygems'
-require 'rake'
-require 'rake/testtask'
-require 'rcov/rcovtask'
-require 'rake/rdoctask'
+require 'bundler'
+require 'rspec/core/rake_task'
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |g|
-    g.name = 'vestal_versions'
-    g.summary = %(Keep a DRY history of your ActiveRecord models' changes)
-    g.description = %(Keep a DRY history of your ActiveRecord models' changes)
-    g.email = 'steve@laserlemon.com'
-    g.homepage = 'http://github.com/laserlemon/vestal_versions'
-    g.authors = %w(laserlemon)
-    g.add_dependency 'activerecord', '>= 3.0.0'
-    g.add_dependency 'railties', '>= 3.0.0'
-    g.add_development_dependency 'shoulda'
-    g.add_development_dependency 'mocha'
-    g.add_development_dependency 'rcov'
-    g.add_development_dependency 'rake'
-    g.add_development_dependency 'jeweler'
-    g.add_development_dependency 'sqlite3-ruby'
+Bundler::GemHelper.install_tasks
+RSpec::Core::RakeTask.new(:spec)
+
+if RUBY_VERSION < '1.9'
+  desc "Run all tests with coverage"
+  RSpec::Core::RakeTask.new :coverage => :cleanup_coverage_files do |t|
+    t.rcov = true
+    t.rcov_opts =  %[-Ilib -Ispec --exclude "gems/*,spec/support,spec/vestal_versions,spec/spec_helper.rb"]
   end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts 'Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler'
+else
+  desc 'Run all tests with coverage'
+  task :coverage => :cleanup_coverage_files do
+    require 'simplecov'
+
+    SimpleCov.start do
+      add_filter '/spec/'
+
+      require 'rspec/core'
+      spec_dir = File.expand_path('../spec', __FILE__)
+      RSpec::Core::Runner.disable_autorun!
+      RSpec::Core::Runner.run [spec_dir], STDERR, STDOUT
+    end
+
+  end
 end
 
-Rake::TestTask.new do |t|
-  t.libs = %w(test)
-  t.pattern = 'test/**/*_test.rb'
+task :cleanup_coverage_files do
+  rm_rf 'coverage*'
 end
 
-Rcov::RcovTask.new do |t|
-  t.libs = %w(test)
-  t.pattern = 'test/**/*_test.rb'
-end
-
-task :test => :check_dependencies
-task :default => :test
-
-Rake::RDocTask.new do |r|
-  version = File.exist?('VERSION') ? File.read('VERSION') : nil
-  r.rdoc_dir = 'rdoc'
-  r.title = ['vestal_versions', version].compact.join(' ')
-  r.options << '--line-numbers' << '--inline-source'
-  r.rdoc_files.include('README*')
-  r.rdoc_files.include('lib/**/*.rb')
+task :clobber => :cleanup_coverage_files do
+  rm_rf 'pkg'
+  rm_rf 'tmp'
 end

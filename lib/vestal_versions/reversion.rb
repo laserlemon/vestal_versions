@@ -1,11 +1,7 @@
 module VestalVersions
   # Enables versioned ActiveRecord::Base instances to revert to a previously saved version.
   module Reversion
-    def self.included(base) # :nodoc:
-      base.class_eval do
-        include InstanceMethods
-      end
-    end
+    extend ActiveSupport::Concern
 
     # Provides the base instance methods required to revert a versioned instance.
     module InstanceMethods
@@ -32,7 +28,7 @@ module VestalVersions
         changes_between(version, to_number).each do |attribute, change|
           write_attribute(attribute, change.last)
         end
-        
+
         reset_version(to_number)
       end
 
@@ -50,7 +46,6 @@ module VestalVersions
         version != last_version
       end
 
-
       private
 
         # Mixes in the reverted_from value if it is currently within a revert
@@ -64,7 +59,6 @@ module VestalVersions
           end
         end
 
-      
         # Returns the number of the last created version in the object's version history.
         #
         # If no associated versions exist, the object is considered at version 1.

@@ -2,13 +2,7 @@ module VestalVersions
   # Allows specific versions to be tagged with a custom string. Useful for assigning a more
   # meaningful value to a version for the purpose of reversion.
   module VersionTagging
-    def self.included(base) # :nodoc:
-      Version.send(:include, VersionMethods)
-
-      base.class_eval do
-        include InstanceMethods
-      end
-    end
+    extend ActiveSupport::Concern
 
     # Adds an instance method which allows version tagging through the parent object.
     module InstanceMethods
@@ -28,10 +22,10 @@ module VestalVersions
 
     # Instance methods included into VestalVersions::Version to enable version tagging.
     module VersionMethods
-      def self.included(base) # :nodoc:
-        base.class_eval do
-          validates_uniqueness_of :tag, :scope => [:versioned_id, :versioned_type], :if => :validate_tags?
-        end
+      extend ActiveSupport::Concern
+
+      included do
+        validates_uniqueness_of :tag, :scope => [:versioned_id, :versioned_type], :if => :validate_tags?
       end
 
       # Attaches the given string to the version tag column. If the uniqueness validation fails,
@@ -45,10 +39,12 @@ module VestalVersions
       def tagged?
         !tag.nil?
       end
-      
+
       def validate_tags?
         tagged? && tag != 'deleted'
       end
     end
+
+    Version.class_eval{ include VersionMethods }
   end
 end

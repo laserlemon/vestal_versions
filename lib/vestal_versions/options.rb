@@ -1,11 +1,7 @@
 module VestalVersions
   # Provides +versioned+ options conversion and cleanup.
   module Options
-    def self.included(base) # :nodoc:
-      base.class_eval do
-        extend ClassMethods
-      end
-    end
+    extend ActiveSupport::Concern
 
     # Class methods that provide preparation of options passed to the +versioned+ method.
     module ClassMethods
@@ -23,14 +19,14 @@ module VestalVersions
       # standard +has_many+ associations.
       def prepare_versioned_options(options)
         options.symbolize_keys!
-        options.reverse_merge!(Configuration.options)
+        options.reverse_merge!(VestalVersions.config)
         options.reverse_merge!(
           :class_name => 'VestalVersions::Version',
           :dependent => :delete_all
         )
-        options.reverse_merge!(
-          :order => "#{options[:class_name].constantize.table_name}.#{connection.quote_column_name('number')} ASC"
-        )
+        # options.reverse_merge!(
+        #   :order => "#{options[:class_name].constantize.table_name}.#{connection.quote_column_name('number')} ASC"
+        # )
 
         class_inheritable_accessor :vestal_versions_options
         self.vestal_versions_options = options.dup
