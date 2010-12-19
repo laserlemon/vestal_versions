@@ -6,9 +6,9 @@ Gem::Specification.new do |s|
   s.name        = 'vestal_versions'
   s.version     = VestalVersions::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["laserlemon"]
-  s.email       = ['steve@laserlemon.com']
-  s.homepage    = 'http://github.com/laserlemon/vestal_versions'
+  s.authors     = ["Adam Cooper"]
+  s.email       = ['adam.cooper@gmail.com']
+  s.homepage    = 'http://github.com/adamcooper/vestal_versions'
   s.summary     = "Keep a DRY history of your ActiveRecord models' changes"
   s.description = "Keep a DRY history of your ActiveRecord models' changes"
 
