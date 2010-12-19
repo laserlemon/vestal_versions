@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe VestalVersions::Control do
   let(:user){ User.create(:name => 'Steve Richert') }
-
+  let(:other_user){ User.create(:name => 'Michael Rossin') }
   before do
     @count = user.versions.count
   end
@@ -23,6 +23,7 @@ describe VestalVersions::Control do
 
       user.versions.count.should == @count
     end
+
   end
 
   shared_examples_for 'a version incrementer' do |method|
@@ -41,10 +42,34 @@ describe VestalVersions::Control do
 
       user.versions.count.should == @count + 1
     end
+
   end
 
   it_should_behave_like 'a version preserver', :skip_version
   it_should_behave_like 'a version incrementer', :merge_version
+
+  context "when operating on the class level" do
+    before do
+      @count = user.versions.count
+      @other_user_count = other_user.versions.count
+    end
+    it 'skip_version doesn\' create versions on multiple models' do
+      other_user_count = other_user.versions.count
+
+      User.skip_version do
+        user.update_attribute(:first_name, 'Stephen')
+        user.update_attribute(:last_name, 'Jobs')
+        user.update_attribute(:first_name, 'Steve')
+
+        other_user.update_attribute(:first_name, 'Stephen')
+        other_user.update_attribute(:last_name, 'Jobs')
+        other_user.update_attribute(:first_name, 'Steve')
+      end
+      user.versions.count.should == @count
+      other_user.versions.count.should == @other_user_count
+    end
+
+  end
 
   context 'within a append_version block' do
 
