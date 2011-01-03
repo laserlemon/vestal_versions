@@ -17,4 +17,4 @@ RSpec.configure do |c|
   end
 end
 
-Dir[File.dirname(__FILE__) + '/support/*.rb'].each { |f| require f }
+Dir[File.expand_path('../support/*.rb', __FILE__)].each{|f| require f }
