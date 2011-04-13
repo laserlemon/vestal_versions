@@ -8,6 +8,7 @@ module VestalVersions
       after_create :create_initial_version, :if => :create_initial_version?
       after_update :create_version, :if => :create_version?
       after_update :update_version, :if => :update_version?
+      define_model_callbacks :create_initial_version, :create_version, :update_version
     end
 
     # Class methods added to ActiveRecord::Base to facilitate the creation of new versions.
@@ -35,10 +36,13 @@ module VestalVersions
         end
 
         # Creates an initial version upon creation of the parent record.
+        # Executes create_initial_version callbacks.
         def create_initial_version
-          versions.create(version_attributes.merge(:number => 1))
-          reset_version_changes
-          reset_version
+          _run_create_initial_version_callbacks do
+            versions.create(version_attributes.merge(:number => 1))
+            reset_version_changes
+            reset_version
+          end
         end
                 
         # Returns whether a new version should be created upon updating the parent record.
@@ -47,10 +51,13 @@ module VestalVersions
         end
 
         # Creates a new version upon updating the parent record.
+        # Executes create_version callbacks
         def create_version(attributes = nil)
-          versions.create(attributes || version_attributes)
-          reset_version_changes
-          reset_version
+          _run_create_version_callbacks do
+            versions.create(attributes || version_attributes)
+            reset_version_changes
+            reset_version
+          end
         end
 
         # Returns whether the last version should be updated upon updating the parent record.
@@ -61,12 +68,15 @@ module VestalVersions
         end
 
         # Updates the last version's changes by appending the current version changes.
+        # Executes the update_version callbacks
         def update_version
-          return create_version unless v = versions.last
-          v.modifications_will_change!
-          v.update_attribute(:modifications, v.changes.append_changes(version_changes))
-          reset_version_changes
-          reset_version
+          _run_update_version_callbacks do
+            return create_version unless v = versions.last
+            v.modifications_will_change!
+            v.update_attribute(:modifications, v.changes.append_changes(version_changes))
+            reset_version_changes
+            reset_version
+          end
         end
 
         # Returns an array of column names that should be included in the changes of created
