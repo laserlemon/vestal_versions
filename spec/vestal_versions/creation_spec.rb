@@ -85,6 +85,11 @@ describe VestalVersions::Creation do
       User.prepare_versioned_options(:initial_version => true)
       subject.versions.first.number.should == 1
     end
+    
+    it "stores a snapshot of the model attributes as modifications" do
+      User.prepare_versioned_options(:initial_version => true)
+      subject.versions.first.modifications.should == User.last.attributes
+    end  
   end
 
 end
