@@ -1,0 +1,25 @@
+HEAD
+* Added a new class level 'skip_version' that works on one model at
+a time
+* Internal refactoring and tidying up by Alex Crichton
+
+Version 1.2.2
+* Fix conflicts with other Tagging systems
+* Adding a bundler Gemfile and updating the gemspec for the development
+* Adding an ':intial_version' option that will create a versions row on
+initial create
+* A couple internal refactors to remove alias_method_chain calls
+
+
+Version 1.2.1
+ * Soft Delete tracking including
+ * Adding revert tracking (version table change)
+ * Adding 'original_number' to the version class
+
+Version 1.1.0
+ * Ruby 1.9.2 compatibility
+ * Initial Rails 3 compatibility
+
+Version 1.0.2
+
+ * Original Version import from Laserlemon - thanks!

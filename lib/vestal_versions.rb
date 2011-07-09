@@ -1,3 +1,8 @@
+require 'active_support/concern'
+require 'active_support/dependencies/autoload'
+require 'active_support/core_ext/module/delegation'
+require 'active_record'
+
 # +vestal_versions+ keeps track of updates to ActiveRecord models, leveraging the introduction of
 # dirty attributes in Rails 2.1. By storing only the updated attributes in a serialized column of a
 # single version model, the history is kept DRY and no additional schema changes are necessary.
@@ -21,16 +26,34 @@
 #
 # See the +versioned+ documentation for more details.
 
-Dir[File.join(File.dirname(__FILE__), 'vestal_versions', '*.rb')].each{|f| require f }
-
 # The base module that gets included in ActiveRecord::Base. See the documentation for
 # VestalVersions::ClassMethods for more useful information.
 module VestalVersions
-  def self.included(base) # :nodoc:
-    base.class_eval do
-      extend ClassMethods
-      extend Versioned
-    end
+  extend ActiveSupport::Concern
+  extend ActiveSupport::Autoload
+
+  autoload :Changes
+  autoload :Conditions
+  autoload :Control
+  autoload :Creation
+  autoload :Deletion
+  autoload :Options
+  autoload :Reload
+  autoload :Reset
+  autoload :Reversion
+  autoload :Users
+  autoload :Version
+  autoload :VERSION, 'vestal_versions/version_num'
+  autoload :VersionTagging
+  autoload :Versioned
+  autoload :Versions
+
+  class << self
+    delegate :config, :configure, :to => Version
+  end
+
+  included do
+    include Versioned
   end
 
   module ClassMethods
@@ -46,7 +69,9 @@ module VestalVersions
     #   will permanently remove all associated versions *without* triggering any destroy callbacks.
     #   Other options are :destroy which removes the associated versions *with* callbacks, or
     #   :nullify which leaves the version records in the database, but dissociates them from the
-    #   parent object by setting the foreign key columns to +nil+ values.
+    #   parent object by setting the foreign key columns to +nil+ values.  Setting this option to 
+    #   :tracking will perform a soft delete on destroy and create a new version record preserving
+    #   details of this record for later restoration.
     # * <tt>:except</tt>: An update will trigger version creation as long as at least one column
     #   outside those specified here was updated. Also, upon version creation, the columns
     #   specified here will be excluded from the change history. This is useful when dealing with
@@ -63,6 +88,9 @@ module VestalVersions
     #   object is updated to determine whether a new version should be created. +to_proc+ is called
     #   on any symbols given and the resulting procs are called, passing in the object itself. If
     #   an array is given, all must be evaluate to +true+ in order for a version to be created.
+    # * <tt>:initial_version</tt>: When set to true, an initial version is always created when the
+    #   parent object is created. This initial version will have nil changes however it can be
+    #   used to store who created the original version.
     # * <tt>:only</tt>: An update will trigger version creation as long as at least one updated
     #   column falls within those specified here. Also, upon version creation, only the columns
     #   specified here will be included in the change history. This option accepts a symbol, string
@@ -85,15 +113,14 @@ module VestalVersions
       include Reset
       include Conditions
       include Control
-      include VersionableTagging
+      include VersionTagging
       include Reload
+      include Deletion
 
       prepare_versioned_options(options)
       has_many :versions, options, &block
     end
   end
-
-  extend Configuration
 end
 
-ActiveRecord::Base.send(:include, VestalVersions)
+ActiveRecord::Base.class_eval{ include VestalVersions }

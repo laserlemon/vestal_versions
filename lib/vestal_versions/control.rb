@@ -2,14 +2,12 @@ module VestalVersions
   # The control feature allows use of several code blocks that provide finer control over whether
   # a new version is created, or a previous version is updated.
   module Control
-    def self.included(base) # :nodoc:
-      base.class_eval do
-        include InstanceMethods
+    extend ActiveSupport::Concern
 
-        alias_method_chain :create_version?, :control
-        alias_method_chain :update_version?, :control
-      end
+    included do
+      class_attribute :_skip_version, :instance_writer => false
     end
+
 
     # Control blocks are called on ActiveRecord::Base instances as to not cause any conflict with
     # other instances of the versioned class whose behavior could be inadvertently altered within
@@ -31,7 +29,7 @@ module VestalVersions
       #   end
       #   user.version # => 1
       def skip_version
-        with_version_flag(:skip_version) do
+        _with_version_flag(:_skip_version) do
           yield if block_given?
           save
         end
@@ -41,16 +39,10 @@ module VestalVersions
       # +skip_version!+ block is that the save automatically performed at the close of the block
       # is a +save!+, meaning that an exception will be raised if the object cannot be saved.
       def skip_version!
-        with_version_flag(:skip_version) do
+        _with_version_flag(:_skip_version) do
           yield if block_given?
           save!
         end
-      end
-
-      # A convenience method for determining whether a versioned instance is set to skip its next
-      # version creation.
-      def skip_version?
-        !!@skip_version
       end
 
       # Merging versions with the +merge_version+ block will take all of the versions that would
@@ -73,7 +65,7 @@ module VestalVersions
       #
       # See VestalVersions::Changes for an explanation on how changes are appended.
       def merge_version
-        with_version_flag(:merge_version) do
+        _with_version_flag(:merge_version) do
           yield if block_given?
         end
         save
@@ -83,7 +75,7 @@ module VestalVersions
       # +merge_version!+ block is that the save automatically performed at the close of the block
       # is a +save!+, meaning that an exception will be raised if the object cannot be saved.
       def merge_version!
-        with_version_flag(:merge_version) do
+        _with_version_flag(:merge_version) do
           yield if block_given?
         end
         save!
@@ -116,11 +108,11 @@ module VestalVersions
       #
       # See VestalVersions::Changes for an explanation on how changes are appended.
       def append_version
-        with_version_flag(:merge_version) do
+        _with_version_flag(:merge_version) do
           yield if block_given?
         end
 
-        with_version_flag(:append_version) do
+        _with_version_flag(:append_version) do
           save
         end
       end
@@ -129,11 +121,11 @@ module VestalVersions
       # +append_version!+ block is that the save automatically performed at the close of the block
       # is a +save!+, meaning that an exception will be raised if the object cannot be saved.
       def append_version!
-        with_version_flag(:merge_version) do
+        _with_version_flag(:merge_version) do
           yield if block_given?
         end
 
-        with_version_flag(:append_version) do
+        _with_version_flag(:append_version) do
           save!
         end
       end
@@ -144,32 +136,65 @@ module VestalVersions
         !!@append_version
       end
 
-      private
-        # Used for each control block, the +with_version_flag+ method sets a given variable to
-        # true and then executes the given block, ensuring that the variable is returned to a nil
-        # value before returning. This is useful to be certain that one of the control flag
-        # instance variables isn't inadvertently left in the "on" position by execution within the
-        # block raising an exception.
-        def with_version_flag(flag)
-          begin
-            instance_variable_set("@#{flag}", true)
-            yield
-          ensure
-            instance_variable_set("@#{flag}", nil)
-          end
-        end
+      # Used for each control block, the +_with_version_flag+ method sets a given variable to
+      # true and then executes the given block, ensuring that the variable is returned to a nil
+      # value before returning. This is useful to be certain that one of the control flag
+      # instance variables isn't inadvertently left in the "on" position by execution within the
+      # block raising an exception.
+      def _with_version_flag(flag)
+        instance_variable_set("@#{flag}", true)
+        yield
+      ensure
+        remove_instance_variable("@#{flag}")
+      end
 
-        # Overrides the basal +create_version?+ method to make sure that new versions are not
-        # created when inside any of the control blocks (until the block terminates).
-        def create_version_with_control?
-          !skip_version? && !merge_version? && !append_version? && create_version_without_control?
-        end
+      # Overrides the basal +create_version?+ method to make sure that new versions are not
+      # created when inside any of the control blocks (until the block terminates).
+      def create_version?
+        !_skip_version? && !merge_version? && !append_version? && super
+      end
 
-        # Overrides the basal +update_version?+ method to allow the last version of an versioned
-        # ActiveRecord::Base instance to be updated at the end of an +append_version+ block.
-        def update_version_with_control?
-          append_version?
+      # Overrides the basal +update_version?+ method to allow the last version of an versioned
+      # ActiveRecord::Base instance to be updated at the end of an +append_version+ block.
+      def update_version?
+        append_version?
+      end
+
+    end
+    module ClassMethods
+      # The +skip_version+ block simply allows for updates to be made to an instance of a versioned
+      # ActiveRecord model while ignoring all new version creation. The <tt>:if</tt> and
+      # <tt>:unless</tt> conditions (if given) will not be evaulated inside a +skip_version+ block.
+      #
+      # When the block closes, the instance is automatically saved, so explicitly saving the
+      # object within the block is unnecessary.
+      #
+      # == Example
+      #
+      #   user = User.find_by_first_name("Steve")
+      #   user.version # => 1
+      #   user.skip_version do
+      #     user.first_name = "Stephen"
+      #   end
+      #   user.version # => 1
+      def skip_version
+        _with_version_flag(:_skip_version) do
+          yield if block_given?
         end
+      end
+
+      # Used for each control block, the +with_version_flag+ method sets a given variable to
+      # true and then executes the given block, ensuring that the variable is returned to a nil
+      # value before returning. This is useful to be certain that one of the control flag
+      # instance variables isn't inadvertently left in the "on" position by execution within the
+      # block raising an exception.
+      def _with_version_flag(flag)
+        self.send("#{flag}=", true)
+        yield
+      ensure
+        self.send("#{flag}=", nil)
+      end
+
     end
   end
 end

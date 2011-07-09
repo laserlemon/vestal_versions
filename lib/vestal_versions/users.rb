@@ -2,37 +2,34 @@ module VestalVersions
   # Provides a way for information to be associated with specific versions as to who was
   # responsible for the associated update to the parent.
   module Users
-    def self.included(base) # :nodoc:
-      Version.send(:include, VersionMethods)
+    extend ActiveSupport::Concern
 
-      base.class_eval do
-        include InstanceMethods
-
-        attr_accessor :updated_by
-        alias_method_chain :version_attributes, :user
-      end
+    included do
+      attr_accessor :updated_by
+      Version.class_eval{ include VersionMethods }
     end
 
     # Methods added to versioned ActiveRecord::Base instances to enable versioning with additional
     # user information.
     module InstanceMethods
+
       private
-        # Overrides the +version_attributes+ method to include user information passed into the
-        # parent object, by way of a +updated_by+ attr_accessor.
-        def version_attributes_with_user
-          version_attributes_without_user.merge(:user => updated_by)
-        end
+      # Overrides the +version_attributes+ method to include user information passed into the
+      # parent object, by way of a +updated_by+ attr_accessor.
+      def version_attributes
+        super.merge(:user => updated_by)
+      end
     end
 
     # Instance methods added to VestalVersions::Version to accomodate incoming user information.
     module VersionMethods
-      def self.included(base) # :nodoc:
-        base.class_eval do
-          belongs_to :user, :polymorphic => true
+      extend ActiveSupport::Concern
 
-          alias_method_chain :user, :name
-          alias_method_chain :user=, :name
-        end
+      included do
+        belongs_to :user, :polymorphic => true
+
+        alias_method_chain :user, :name
+        alias_method_chain :user=, :name
       end
 
       # Overrides the +user+ method created by the polymorphic +belongs_to+ user association. If
@@ -53,5 +50,6 @@ module VestalVersions
         end
       end
     end
+
   end
 end

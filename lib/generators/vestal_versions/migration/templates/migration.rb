@@ -3,10 +3,11 @@ class CreateVestalVersions < ActiveRecord::Migration
     create_table :versions do |t|
       t.belongs_to :versioned, :polymorphic => true
       t.belongs_to :user, :polymorphic => true
-      t.string :user_name
-      t.text :changes
+      t.string  :user_name
+      t.text    :modifications
       t.integer :number
-      t.string :versionable_tag
+      t.integer :reverted_from
+      t.string  :versionable_tag
 
       t.timestamps
     end
