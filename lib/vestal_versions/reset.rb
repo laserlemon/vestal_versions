@@ -14,7 +14,7 @@ module VestalVersions
       # documentation for more details.
       def reset_to!(value)
         if saved = skip_version{ revert_to!(value) }
-          versions.send(:delete_records, versions.after(value))
+          association(:versions).send(:delete_records, versions.after(value), self.class.reflect_on_association(:versions).options[:dependent])
           reset_version
         end
         saved
