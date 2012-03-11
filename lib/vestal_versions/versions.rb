@@ -49,7 +49,7 @@ module VestalVersions
     #   untouched.
     def at(value)
       case value
-        when Date, Time then last(:conditions => ["#{aliased_table_name}.created_at <= ?", value.to_time])
+        when Date, Time then last(:conditions => ["#{table_name}.created_at <= ?", value.to_time])
         when Numeric then find_by_number(value.floor)
         when String then find_by_tag(value)
         when Symbol then respond_to?(value) ? send(value) : nil
