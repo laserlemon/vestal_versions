@@ -26,7 +26,7 @@ module VestalVersions
         backward ? chain.pop : chain.shift unless from_number == 1 || to_number == 1
 
         chain.inject({}) do |changes, version|
-          changes.append_changes!(backward ? version.changes.reverse_changes : version.changes)
+          changes.append_changes!(backward ? version.changes.reverse_changes : version.changes).symbolize_keys
         end
       end
 
