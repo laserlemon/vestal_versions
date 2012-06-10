@@ -31,7 +31,7 @@ module VestalVersions
         end
 
         def create_destroyed_version
-          create_version({:modifications => attributes, :number => last_version + 1, :tag => 'deleted'})
+          create_version({:modifications => attributes, :number => last_version + 1, :versionable_tag => 'deleted'})
         end
 
     end

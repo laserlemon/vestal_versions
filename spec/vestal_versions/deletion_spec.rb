@@ -22,7 +22,7 @@ describe VestalVersions::Deletion do
 
     it "creates a version with a tag 'deleted'" do
       subject.destroy
-      VestalVersions::Version.last.tag.should == 'deleted'
+      VestalVersions::Version.last.versionable_tag.should == 'deleted'
     end
 
   end

@@ -15,7 +15,7 @@ module VestalVersions
       # Collects an array of changes from a record's versions between the given range and compiles
       # them into one summary hash of changes. The +from+ and +to+ arguments can each be either a
       # version number, a symbol representing an association proxy method, a string representing a
-      # version tag or a version object itself.
+      # version versionable_tag or a version object itself.
       def changes_between(from, to)
         from_number, to_number = versions.number_at(from), versions.number_at(to)
         return {} if from_number == to_number

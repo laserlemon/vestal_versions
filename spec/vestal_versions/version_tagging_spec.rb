@@ -12,9 +12,9 @@ describe VestalVersions::VersionTagging do
       tag_name = 'TAG'
       last_version = user.versions.last
 
-      last_version.tag.should_not == tag_name
+      last_version.versionable_tag.should_not == tag_name
       user.tag_version(tag_name)
-      last_version.reload.tag.should == tag_name
+      last_version.reload.versionable_tag.should == tag_name
     end
 
     it 'creates a version record for an initial version' do

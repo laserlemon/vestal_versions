@@ -39,8 +39,8 @@ module VestalVersions
     # * A Numeric object: Typically a positive integer, these values correspond to version numbers
     #   and the associated version record is found by a version number equal to the given value
     #   rounded down to the nearest integer.
-    # * A String: A string value represents a version tag and the associated version is searched
-    #   for by a matching tag value. *Note:* Be careful with string representations of numbers.
+    # * A String: A string value represents a version versionable_tag and the associated version is searched
+    #   for by a matching versionable_tag value. *Note:* Be careful with string representations of numbers.
     # * A Symbol: Symbols represent association class methods on the +has_many+ versions
     #   association. While all of the built-in association methods require arguments, additional
     #   extension modules can be defined using the <tt>:extend</tt> option on the +versioned+
@@ -51,7 +51,7 @@ module VestalVersions
       case value
         when Date, Time then last(:conditions => ["#{aliased_table_name}.created_at <= ?", value.to_time])
         when Numeric then find_by_number(value.floor)
-        when String then find_by_tag(value)
+        when String then find_by_versionable_tag(value)
         when Symbol then respond_to?(value) ? send(value) : nil
         when Version then value
       end

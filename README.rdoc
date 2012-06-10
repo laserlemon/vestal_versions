@@ -81,13 +81,13 @@ For the most part, version 1.0 of <tt>vestal_versions</tt> is backwards compatib
     change_table :versions do |t|
       t.belongs_to :user, :polymorphic => true
       t.string :user_name
-      t.string :tag
+      t.string :versionable_tag
     end
 
     change_table :versions do |t|
       t.index [:user_id, :user_type]
       t.index :user_name
-      t.index :tag
+      t.index :versionable_tag
     end
 
 * When a model is created (or updated the first time after being versioned), an initial version record with a number of 1 is no longer created. These aren't used during reversion and so they end up just being dead weight. Feel free to scrap all your versions where <tt>number == 1</tt> after the upgrade if you'd like to free up some room in your database (but you don't have to).
@@ -120,7 +120,7 @@ There are a handful of exciting new additions in version 1.0 of <tt>vestal_versi
     @user.name # => "Steve Richert"
     @user.update_attribute(:last_name, "Jobs")
     @user.name # => "Steve Jobs"
-    @user.tag_version("apple")
+    @user.versionable_tag_version("apple")
     @user.update_attribute(:last_name, "Richert")
     @user.name # => "Steve Richert"
     @user.revert_to("apple")

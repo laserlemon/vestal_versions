@@ -55,7 +55,7 @@ module VestalVersions
     end
     
     def restore
-      if tag == 'deleted'
+      if versionable_tag == 'deleted'
         attrs = modifications
 
         class_name = attrs['type'].blank? ? versioned_type : attrs['type']
@@ -72,7 +72,7 @@ module VestalVersions
 
         model
       else
-        latest_version = self.class.find(:first, :conditions => {:versioned_id => versioned_id, :versioned_type => versioned_type, :tag => 'deleted'})
+        latest_version = self.class.find(:first, :conditions => {:versioned_id => versioned_id, :versioned_type => versioned_type, :versionable_tag => 'deleted'})
         latest_version.nil? ? nil : latest_version.restore
       end
     end

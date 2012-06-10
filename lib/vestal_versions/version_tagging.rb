@@ -16,7 +16,7 @@ module VestalVersions
       # be built to house the given tag if the parent object's current version number is 1.
       def tag_version(tag)
         v = versions.at(version) || versions.build(:number => 1)
-        v.tag!(tag)
+        v.versionable_tag!(tag)
       end
     end
 
@@ -25,23 +25,23 @@ module VestalVersions
       extend ActiveSupport::Concern
 
       included do
-        validates_uniqueness_of :tag, :scope => [:versioned_id, :versioned_type], :if => :validate_tags?
+        validates_uniqueness_of :versionable_tag, :scope => [:versioned_id, :versioned_type], :if => :validate_tags?
       end
 
       # Attaches the given string to the version tag column. If the uniqueness validation fails,
       # nil is returned. Otherwise, the given string is returned.
-      def tag!(tag)
-        write_attribute(:tag, tag)
-        save ? tag : nil
+      def versionable_tag!(versionable_tag)
+        write_attribute(:versionable_tag, versionable_tag)
+        save ? versionable_tag : nil
       end
 
       # Simply returns a boolean signifying whether the version instance has a tag value attached.
       def tagged?
-        !tag.nil?
+        !versionable_tag.nil?
       end
 
       def validate_tags?
-        tagged? && tag != 'deleted'
+        tagged? && versionable_tag != 'deleted'
       end
     end
 

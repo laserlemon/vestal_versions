@@ -18,7 +18,7 @@ class CreateSchema < ActiveRecord::Migration
       t.text :modifications
       t.integer :number
       t.integer :reverted_from
-      t.string :tag
+      t.string :versionable_tag
       t.timestamps
     end
   end
