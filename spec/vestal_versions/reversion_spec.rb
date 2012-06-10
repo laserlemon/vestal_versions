@@ -100,4 +100,8 @@ describe VestalVersions::Reversion do
     subject.versions.last.reverted_from.should be_nil
   end
 
+  it "is able to return an array of clones of a range of revisions" do
+    versions = subject.get_versions(1..3)
+    versions.count.should == 3
+  end
 end
