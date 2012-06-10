@@ -25,6 +25,13 @@ describe VestalVersions::Deletion do
       VestalVersions::Version.last.tag.should == 'deleted'
     end
 
+    it "creates a version with user" do
+      user = User.create(:first_name => "Naruto", :last_name => "Uzumaki")
+      subject.updated_by = user
+
+      subject.destroy
+      VestalVersions::Version.last.user.should == user
+    end
   end
 
   context "deleted versions" do

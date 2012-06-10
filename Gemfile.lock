@@ -41,8 +41,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (>= 3.0.0)
-  activesupport (>= 3.0.0)
   rcov
   rspec
   simplecov
