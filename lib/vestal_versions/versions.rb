@@ -15,14 +15,14 @@ module VestalVersions
       condition = (from_number == to_number) ? to_number : Range.new(*[from_number, to_number].sort)
       all(
         :conditions => {:number => condition},
-        :order => "#{aliased_table_name}.#{connection.quote_column_name('number')} #{(from_number > to_number) ? 'DESC' : 'ASC'}"
+        :order => "#{table_name}.#{connection.quote_column_name('number')} #{(from_number > to_number) ? 'DESC' : 'ASC'}"
       )
     end
 
     # Returns all version records created before the version associated with the given value.
     def before(value)
       return [] if (number = number_at(value)).nil?
-      all(:conditions => "#{aliased_table_name}.#{connection.quote_column_name('number')} < #{number}")
+      all(:conditions => "#{table_name}.#{connection.quote_column_name('number')} < #{number}")
     end
 
     # Returns all version records created after the version associated with the given value.
@@ -30,7 +30,7 @@ module VestalVersions
     # This is useful for dissociating records during use of the +reset_to!+ method.
     def after(value)
       return [] if (number = number_at(value)).nil?
-      all(:conditions => "#{aliased_table_name}.#{connection.quote_column_name('number')} > #{number}")
+      all(:conditions => "#{table_name}.#{connection.quote_column_name('number')} > #{number}")
     end
 
     # Returns a single version associated with the given value. The following formats are valid:
@@ -49,7 +49,7 @@ module VestalVersions
     #   untouched.
     def at(value)
       case value
-        when Date, Time then last(:conditions => ["#{aliased_table_name}.created_at <= ?", value.to_time])
+        when Date, Time then last(:conditions => ["#{table_name}.created_at <= ?", value.to_time])
         when Numeric then find_by_number(value.floor)
         when String then find_by_tag(value)
         when Symbol then respond_to?(value) ? send(value) : nil
