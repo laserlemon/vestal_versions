@@ -16,11 +16,11 @@ Tested with Active Record 3.2.8 with Ruby 1.9.3 and 1.9.2.
 
 In the Gemfile:
 
-  ** Note: I am giving this project some much needed love to keep her relevant in a post Rails 3 world. I will be finalizing a version to support 1.9.2+ and Rails 3.2+ soon and pushing the gem, till then, use the git repo:
+** Note: I am giving this project some much needed love to keep her relevant in a post Rails 3 world. I will be finalizing a version to support 1.9.2+ and Rails 3.2+ soon and pushing the gem, till then, use the git repo:
+~dreamr
   
   gem 'vestal_versions', :git => 'git://github.com/laserlemon/vestal_versions'
   
-  ~dreamr
 
 Next, generate and run the first and last versioning migration you'll ever need:
 
