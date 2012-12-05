@@ -25,33 +25,33 @@ module VestalVersions
 
     # Instance methods that determine based on the <tt>:if</tt> and <tt>:unless</tt> conditions,
     # whether a version is to be create or updated.
-    module InstanceMethods
-      private
-        # After first determining whether the <tt>:if</tt> and <tt>:unless</tt> conditions are
-        # satisfied, the original, unaliased +create_version?+ method is called to determine
-        # whether a new version should be created upon update of the ActiveRecord::Base instance.
-        def create_version?
-          version_conditions_met? && super
-        end
+    
+    
+    private
+      # After first determining whether the <tt>:if</tt> and <tt>:unless</tt> conditions are
+      # satisfied, the original, unaliased +create_version?+ method is called to determine
+      # whether a new version should be created upon update of the ActiveRecord::Base instance.
+      def create_version?
+        version_conditions_met? && super
+      end
 
-        # After first determining whether the <tt>:if</tt> and <tt>:unless</tt> conditions are
-        # satisfied, the original, unaliased +update_version?+ method is called to determine
-        # whther the last version should be updated to include changes merged from the current
-        # ActiveRecord::Base instance update.
-        #
-        # The overridden +update_version?+ method simply returns false, effectively delegating
-        # the decision to whether the <tt>:if</tt> and <tt>:unless</tt> conditions are met.
-        def update_version?
-          version_conditions_met? && super
-        end
+      # After first determining whether the <tt>:if</tt> and <tt>:unless</tt> conditions are
+      # satisfied, the original, unaliased +update_version?+ method is called to determine
+      # whther the last version should be updated to include changes merged from the current
+      # ActiveRecord::Base instance update.
+      #
+      # The overridden +update_version?+ method simply returns false, effectively delegating
+      # the decision to whether the <tt>:if</tt> and <tt>:unless</tt> conditions are met.
+      def update_version?
+        version_conditions_met? && super
+      end
 
-        # Simply checks whether the <tt>:if</tt> and <tt>:unless</tt> conditions given in the
-        # +versioned+ options are met: meaning that all procs in the <tt>:if</tt> array must
-        # evaluate to a non-false, non-nil value and that all procs in the <tt>:unless</tt> array
-        # must all evaluate to either false or nil.
-        def version_conditions_met?
-          vestal_versions_options[:if].all?{|p| p.call(self) } && !vestal_versions_options[:unless].any?{|p| p.call(self) }
-        end
-    end
+      # Simply checks whether the <tt>:if</tt> and <tt>:unless</tt> conditions given in the
+      # +versioned+ options are met: meaning that all procs in the <tt>:if</tt> array must
+      # evaluate to a non-false, non-nil value and that all procs in the <tt>:unless</tt> array
+      # must all evaluate to either false or nil.
+      def version_conditions_met?
+        vestal_versions_options[:if].all?{|p| p.call(self) } && !vestal_versions_options[:unless].any?{|p| p.call(self) }
+      end
   end
 end
