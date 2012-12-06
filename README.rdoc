@@ -1,4 +1,4 @@
-= vestal_versions for Rails 3
+= Vestal Versions {<img src="https://secure.travis-ci.org/laserlemon/vestal_versions.png?branch=rails_3" alt="Build Status" />}[https://travis-ci.org/laserlemon/vestal_versions]
 
 Finally, DRY ActiveRecord versioning!
 
