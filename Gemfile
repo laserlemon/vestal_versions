@@ -1,8 +1,8 @@
-source :rubygems
+source 'https://rubygems.org'
 
 gemspec
 
-group :development do
-  gem 'rcov',      :platform => :ruby_18
-  gem 'simplecov', :platform => :ruby_19
-end
+gem 'rake', '>= 0.9'
+gem 'rspec', '~> 2.0'
+gem 'sqlite3', '~> 1.0'
+
