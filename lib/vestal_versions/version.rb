@@ -1,14 +1,17 @@
 require 'active_record'
 require 'active_support/configurable'
+require 'yaml'
 
 module VestalVersions
   # The ActiveRecord model representing versions.
   class Version < ActiveRecord::Base
     include Comparable
     include ActiveSupport::Configurable
+    include ActiveRecord::Coders
 
     # Associate polymorphically with the parent record.
     belongs_to :versioned, :polymorphic => true
+    attr_accessible :modifications, :number, :user, :tag, :reverted_from
 
     # ActiveRecord::Base#changes is an existing method, so before serializing the +changes+ column,
     # the existing +changes+ method is undefined. The overridden +changes+ method pertained to
@@ -18,7 +21,20 @@ module VestalVersions
     def changes
       self[:modifications]
     end
-    serialize :modifications, Hash
+
+    class ForceYAML
+      YAML::ENGINE.yamler='syck'      
+      def self.load(text)
+        return if text.blank?
+        YAML::load(text)
+      end
+
+      def self.dump(text)
+        YAML::dump(text)
+      end
+    end
+
+    serialize :modifications, ForceYAML
 
     # In conjunction with the included Comparable module, allows comparison of version records
     # based on their corresponding version numbers, creation timestamps and IDs.
