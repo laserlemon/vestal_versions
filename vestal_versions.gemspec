@@ -1,25 +1,19 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path('../lib', __FILE__)
-require 'vestal_versions/version_num'
+# encoding: utf-8
 
-Gem::Specification.new do |s|
-  s.name        = 'vestal_versions'
-  s.version     = VestalVersions::VERSION
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Adam Cooper"]
-  s.email       = ['adam.cooper@gmail.com']
-  s.homepage    = 'http://github.com/adamcooper/vestal_versions'
-  s.summary     = "Keep a DRY history of your ActiveRecord models' changes"
-  s.description = "Keep a DRY history of your ActiveRecord models' changes"
+Gem::Specification.new do |gem|
+  gem.name    = 'vestal_versions'
+  gem.version = '1.2.3'
 
-  s.files         = `git ls-files lib`.split("\n") + ['README.rdoc', 'LICENSE']
-  s.test_files    = `git ls-files spec`.split("\n")
-  s.require_paths = ['lib']
+  gem.authors     = ['Steve Richert', "James O'Kelly"]
+  gem.email       = ['steve.richert@gmail.com', 'dreamr.okelly@gmail.com']
+  gem.description = "Keep a DRY history of your ActiveRecord models' changes"
+  gem.summary     = gem.description
+  gem.homepage    = 'http://github.com/laserlemon/vestal_versions'
 
-  s.add_dependency 'activerecord', '>= 3.0.0'
-  s.add_dependency 'activesupport', '>= 3.0.0'
+  gem.add_dependency 'activerecord', '~> 3.0'
+  gem.add_dependency 'activesupport', '~> 3.0'
 
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'rake'
+  gem.files         = `git ls-files`.split($\)
+  gem.test_files    = gem.files.grep(/^spec/)
+  gem.require_paths = ['lib']
 end

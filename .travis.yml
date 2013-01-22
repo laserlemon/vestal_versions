@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - 1.9.2
+  - 1.9.3
+gemfile:
+  - gemfiles/activerecord_3_0.gemfile
+  - gemfiles/activerecord_3_1.gemfile
+  - gemfiles/activerecord_3_2.gemfile
+script: rspec
