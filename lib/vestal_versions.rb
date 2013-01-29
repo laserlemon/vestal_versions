@@ -37,6 +37,7 @@ module VestalVersions
   autoload :Control
   autoload :Creation
   autoload :Deletion
+  autoload :Plugins
   autoload :Options
   autoload :Reload
   autoload :Reset
@@ -102,6 +103,9 @@ module VestalVersions
     #   is called on any symbols given and the resulting procs are called, passing in the object
     #   itself. If an array is given and any element evaluates as +true+, the version creation will
     #   be skipped.
+    # * <tt>:plugins</tt>: This option allows you to load additional functionality from a custom 
+    #   module or array of modules, allowing you to extend functionality of both the Version model 
+    #   and the +versioned+ models.  See VestalVersions::Users for an example plugin class.
     def versioned(options = {}, &block)
       return if versioned?
 
@@ -116,6 +120,7 @@ module VestalVersions
       include VersionTagging
       include Reload
       include Deletion
+      include Plugins
 
       prepare_versioned_options(options)
       has_many :versions, options, &block
