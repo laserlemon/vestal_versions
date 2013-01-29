@@ -4,6 +4,10 @@ module VestalVersions
   module VersionTagging
     extend ActiveSupport::Concern
 
+    included do
+      Version.class_eval{ include VersionTaggingMethods }
+    end
+
     # Adds an instance method which allows version tagging through the parent object.
 
     # Accepts a single string argument which is attached to the version record associated with
@@ -21,7 +25,7 @@ module VestalVersions
   end
 
   # Instance methods included into VestalVersions::Version to enable version tagging.
-  module VersionMethods
+  module VersionTaggingMethods
     extend ActiveSupport::Concern
 
     included do
@@ -43,7 +47,5 @@ module VestalVersions
     def validate_tags?
       tagged? && tag != 'deleted'
     end
-
-    Version.class_eval{ include VersionMethods }
   end
 end
