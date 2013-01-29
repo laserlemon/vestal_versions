@@ -8,6 +8,13 @@ describe VestalVersions::Options do
     before do
       VestalVersions::Version.config.clear
       VestalVersions::Version.config.class_name = 'MyCustomVersion'
+      User.prepare_versioned_options(options.dup)
+    end
+
+    it 'stores options in a class variable' do
+      User.vestal_versions_options.slice(:class_name).should == {
+        :class_name => 'MyCustomVersion'
+      }
     end
 
     it 'has symbolized keys' do
@@ -20,7 +27,6 @@ describe VestalVersions::Options do
         :class_name => 'MyCustomVersion'
       }
     end
-
   end
 
   context 'default configuration options' do
