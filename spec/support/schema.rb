@@ -21,5 +21,17 @@ class CreateSchema < ActiveRecord::Migration
       t.string :tag
       t.timestamps
     end
+
+    create_table :sections, :force => true
+
+    create_table :posts, :force => true do |t|
+      t.string  :title
+      t.integer :section_id
+    end
+
+    create_table :admins_sections, :force => true do |t|
+      t.integer :admin_id
+      t.integer :section_id
+    end
   end
 end

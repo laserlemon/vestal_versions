@@ -6,8 +6,8 @@ module VestalVersions
 
     included do
       after_create :create_initial_version, :if => :create_initial_version?
-      after_update :create_version, :if => :create_version?
-      after_update :update_version, :if => :update_version?
+      after_update :create_version,         :if => :create_version?
+      after_update :update_version,         :if => :update_version?
     end
 
     # Class methods added to ActiveRecord::Base to facilitate the creation of new versions.
@@ -21,15 +21,23 @@ module VestalVersions
         self.vestal_versions_options[:only] = Array(options.delete(:only)).map(&:to_s).uniq if options[:only]
         self.vestal_versions_options[:except] = Array(options.delete(:except)).map(&:to_s).uniq if options[:except]
         self.vestal_versions_options[:initial_version] = options.delete(:initial_version)
-        
+
         result
       end
     end
 
     # Instance methods that determine whether to save a version and actually perform the save.
-    
+
     private
-    
+
+    # Creates a new version upon updating the parent record.
+    def create_version(attributes = nil)
+      status || update_status('updated')
+      versions.create(attributes || version_attributes)
+      reset_version_changes
+      reset_version
+    end
+
     # Returns whether an initial version should be created upon creation of the parent record.
     def create_initial_version?
       vestal_versions_options[:initial_version] == true
@@ -37,21 +45,13 @@ module VestalVersions
 
     # Creates an initial version upon creation of the parent record.
     def create_initial_version
-      versions.create(version_attributes.merge(:number => 1))
-      reset_version_changes
-      reset_version
+      update_status('created')
+      create_version(version_attributes.merge(:number => 1))
     end
-            
+
     # Returns whether a new version should be created upon updating the parent record.
     def create_version?
       !version_changes.blank?
-    end
-
-    # Creates a new version upon updating the parent record.
-    def create_version(attributes = nil)
-      versions.create(attributes || version_attributes)
-      reset_version_changes
-      reset_version
     end
 
     # Returns whether the last version should be updated upon updating the parent record.
