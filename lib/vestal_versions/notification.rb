@@ -41,7 +41,7 @@ module VestalVersions
 
     # Returns whether a notification should be sent to the dependencies upon event on the parent record.
     def notify_dependencies?
-      vestal_versions_options[:notify_dependencies] && vestal_versions_options[:notify_dependencies].any?
+      (status.present? || version_changes.any?) && vestal_versions_options[:notify_dependencies] && vestal_versions_options[:notify_dependencies].any?
     end
 
     # Notifies all dependencies
