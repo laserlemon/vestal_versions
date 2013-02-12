@@ -18,13 +18,13 @@ class Section < ActiveRecord::Base
   has_and_belongs_to_many :admins
   has_many :posts
 
-  versioned :notify_dependencies => %w(admins), :initial_version => true, :dependent => :tracking
+  versioned :dependencies => { :notify => %w(admins), :touch => true }, :initial_version => true, :dependent => :tracking
 end
 
 class Post < ActiveRecord::Base
   belongs_to :section
 
-  versioned :notify_dependencies => %w(section), :initial_version => true, :dependent => :tracking
+  versioned :dependencies => { :notify => %w(section), :touch => true }, :initial_version => true, :dependent => :tracking
 end
 
 class DeletedUser < ActiveRecord::Base
