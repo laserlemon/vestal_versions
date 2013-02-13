@@ -61,14 +61,9 @@ module VestalVersions
 
     # Sends notification for a specific dependency whether it's an ActiveRecord::Base or an array (RecordRecord::Relation)
     def notify_dependency(dependency)
-      if dependency.is_a?(ActiveRecord::Base)
-        dependency.notify({self.class.name.underscore => [ self.id, status ]})
-        dependency.touch if touch_dependencies?
-      else
-        dependency.each do |sub_dependency|
-          sub_dependency.notify({self.class.name.underscore => [ self.id, status ]})
-          sub_dependency.touch if touch_dependencies?
-        end
+      Array.wrap(dependency).each do |sub_dependency|
+        sub_dependency.notify({self.class.name.underscore => [ self.id, status ]})
+        sub_dependency.touch if touch_dependencies?
       end
     end
   end
