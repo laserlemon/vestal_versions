@@ -10,8 +10,8 @@ Gem::Specification.new do |gem|
   gem.summary     = gem.description
   gem.homepage    = 'http://github.com/laserlemon/vestal_versions'
 
-  gem.add_dependency 'activerecord', '~> 3.0'
-  gem.add_dependency 'activesupport', '~> 3.0'
+  gem.add_dependency 'activerecord', '>= 4.0.0.rc1'
+  gem.add_dependency 'activesupport', '>= 4.0.0.rc1'
 
   gem.files         = `git ls-files`.split($\)
   gem.test_files    = gem.files.grep(/^spec/)
