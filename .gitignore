@@ -17,3 +17,5 @@ test/tmp
 test/version_tmp
 tmp
 _yardoc
+.ruby-version
+.ruby-gemset
