@@ -8,3 +8,7 @@ gemfile:
   - gemfiles/activerecord_3_2.gemfile
   - gemfiles/activerecord_4_0.gemfile
 script: rspec
+matrix:
+   exclude:
+      - rvm: 1.9.2
+        gemfile: gemfiles/activerecord_4_0.gemfile
