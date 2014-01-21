@@ -1,3 +1,8 @@
+if ENV['COVERAGE']
+  require 'coveralls'
+  Coveralls.wear!
+end
+
 require 'vestal_versions'
 
 require 'bundler'
