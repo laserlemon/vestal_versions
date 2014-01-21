@@ -9,6 +9,7 @@ Gem::Specification.new do |gem|
   gem.description = "Keep a DRY history of your ActiveRecord models' changes"
   gem.summary     = gem.description
   gem.homepage    = 'http://github.com/laserlemon/vestal_versions'
+  gem.license     = 'MIT'
 
   gem.add_dependency 'activerecord', '~> 3.0'
   gem.add_dependency 'activesupport', '~> 3.0'
