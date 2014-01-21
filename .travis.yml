@@ -1,3 +1,6 @@
+branches:
+  only:
+    - master
 gemfile:
   - gemfiles/activerecord_3_0.gemfile
   - gemfiles/activerecord_3_1.gemfile
