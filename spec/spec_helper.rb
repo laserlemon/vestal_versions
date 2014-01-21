@@ -1,6 +1,7 @@
+require 'vestal_versions'
+
 require 'bundler'
-Bundler.require
-require 'rspec/core'
+Bundler.require(:test)
 
 RSpec.configure do |c|
   c.before(:suite) do
