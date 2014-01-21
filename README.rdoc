@@ -1,4 +1,10 @@
-= Vestal Versions {<img src="https://secure.travis-ci.org/laserlemon/vestal_versions.png?branch=rails_3" alt="Build Status" />}[https://travis-ci.org/laserlemon/vestal_versions]
+= Vestal Versions
+
+{<img src="https://badge.fury.io/rb/vestal_versions.png" alt="Gem Version" />}[http://badge.fury.io/rb/vestal_versions]
+{<img src="https://travis-ci.org/laserlemon/vestal_versions.png?branch=master" alt="Build Status" />}[https://travis-ci.org/laserlemon/vestal_versions]
+{<img src="https://codeclimate.com/github/laserlemon/vestal_versions.png" alt="Code Climate" />}[https://codeclimate.com/github/laserlemon/vestal_versions]
+{<img src="https://coveralls.io/repos/laserlemon/vestal_versions/badge.png" alt="Coverage Status" />}[https://coveralls.io/r/laserlemon/vestal_versions]
+{<img src="https://gemnasium.com/laserlemon/vestal_versions.png" alt="Dependency Status" />}[https://gemnasium.com/laserlemon/vestal_versions]
 
 Finally, DRY ActiveRecord versioning!
 
