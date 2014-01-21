@@ -10,7 +10,7 @@ And that's just what <tt>vestal_versions</tt> does. Not only can a model be reve
 
 == Compatibility
 
-Tested with Active Record 3.2.8 with Ruby 1.9.3 and 1.9.2.
+Tested with Active Record 3.2.16 with Ruby 1.9.3 and 1.9.2.
 
 == Installation
 
