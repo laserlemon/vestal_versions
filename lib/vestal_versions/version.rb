@@ -76,7 +76,7 @@ module VestalVersions
 
         model
       else
-        latest_version = self.class.find(:first, :conditions => {:versioned_id => versioned_id, :versioned_type => versioned_type, :tag => 'deleted'})
+        latest_version = self.class.where(:versioned_id => versioned_id, :versioned_type => versioned_type, :tag => 'deleted').first
         latest_version.nil? ? nil : latest_version.restore
       end
     end
