@@ -1,11 +1,11 @@
-language: ruby
-rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
 gemfile:
   - gemfiles/activerecord_3_0.gemfile
   - gemfiles/activerecord_3_1.gemfile
   - gemfiles/activerecord_3_2.gemfile
   - gemfiles/activerecord_4_0.gemfile
+language: ruby
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1.0
 script: bundle exec rspec
