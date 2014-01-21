@@ -17,5 +17,6 @@ test/tmp
 test/version_tmp
 tmp
 _yardoc
+.rspec
 .ruby-gemset
 .ruby-version
