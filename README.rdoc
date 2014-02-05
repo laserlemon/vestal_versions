@@ -195,6 +195,31 @@ There are a handful of exciting new additions in version 1.0 of <tt>vestal_versi
     >> @user.version
     => 2
 
+* Plugin modules.  By setting <tt>:plugins</tt> to a module, or array of modules, you can mixin your own code.
+
+   module MyCustomPlugin
+     extend ActiveSupport::Concern
+     included do
+       class_attribute :plugged_in_model
+       VestalVersions::Version.class_eval{ include MyCustomPluginMethods}
+     end
+   end
+   module MyCustomPluginMethods
+     extend ActiveSupport::Concern
+     included do
+       class_attribute :plugged_in_version
+     end
+   end
+
+   class User < ActiveRecord::Base
+     versioned :plugins => MyCustomPlugin
+   end
+
+   >> User.respond_to? :plugged_in_model
+   => true
+   >> VestalVersions::Version.respond_to? :plugged_in_version
+   => true
+
 == Thanks!
 
 Thank you to all those who post {issues and suggestions}[http://github.com/laserlemon/vestal_versions/issues]. And special thanks to:
