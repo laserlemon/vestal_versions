@@ -82,5 +82,4 @@ describe VestalVersions::Deletion do
       end
     end
   end
-
 end

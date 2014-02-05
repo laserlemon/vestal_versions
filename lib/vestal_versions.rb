@@ -38,6 +38,7 @@ module VestalVersions
   autoload :Creation
   autoload :Deletion
   autoload :Options
+  autoload :Notification
   autoload :Reload
   autoload :Reset
   autoload :Reversion
@@ -69,7 +70,7 @@ module VestalVersions
     #   will permanently remove all associated versions *without* triggering any destroy callbacks.
     #   Other options are :destroy which removes the associated versions *with* callbacks, or
     #   :nullify which leaves the version records in the database, but dissociates them from the
-    #   parent object by setting the foreign key columns to +nil+ values.  Setting this option to 
+    #   parent object by setting the foreign key columns to +nil+ values.  Setting this option to
     #   :tracking will perform a soft delete on destroy and create a new version record preserving
     #   details of this record for later restoration.
     # * <tt>:except</tt>: An update will trigger version creation as long as at least one column
@@ -107,6 +108,7 @@ module VestalVersions
 
       include Options
       include Changes
+      include Notification
       include Creation
       include Users
       include Reversion

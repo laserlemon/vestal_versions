@@ -86,5 +86,4 @@ describe VestalVersions::Creation do
       subject.versions.first.number.should == 1
     end
   end
-
 end

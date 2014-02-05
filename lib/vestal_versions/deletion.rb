@@ -14,6 +14,7 @@ module VestalVersions
       # also extracts the <tt>:depedent</tt> if it set to <tt>:tracking</tt>
       def prepare_versioned_options(options)
         result = super(options)
+
         if result[:dependent] == :tracking
           self.vestal_versions_options[:track_destroy] = true
           options.delete(:dependent)
@@ -30,8 +31,9 @@ module VestalVersions
     end
 
     def create_destroyed_version
+      update_status('deleted')
       create_version({:modifications => attributes, :number => last_version + 1, :tag => 'deleted'})
     end
-  
+
   end
 end
