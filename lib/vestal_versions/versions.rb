@@ -64,7 +64,7 @@ module VestalVersions
     #   untouched.
     def at(value)
       case value
-        when Date, Time then where("#{table_name}.created_at <= ?", value.to_time).last
+        when Date, Time then where("#{table_name}.created_at <= ?", value.to_time).order(:created_at).last
         when Numeric then find_by_number(value.floor)
         when String then find_by_tag(value)
         when Symbol then respond_to?(value) ? send(value) : nil
