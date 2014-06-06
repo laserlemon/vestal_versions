@@ -6,7 +6,7 @@ module VestalVersions
 
     included do
       attr_accessor :updated_by
-      Version.class_eval{ include VersionMethods }
+      Version.class_eval{ include UserVersionMethods }
     end
 
     # Methods added to versioned ActiveRecord::Base instances to enable versioning with additional
@@ -22,7 +22,7 @@ module VestalVersions
   end
 
   # Instance methods added to VestalVersions::Version to accomodate incoming user information.
-  module VersionMethods
+  module UserVersionMethods
     extend ActiveSupport::Concern
 
     included do
