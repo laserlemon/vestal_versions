@@ -9,7 +9,7 @@ module VestalVersions
       argument :name, :type => :string, :default => 'create_vestal_versions'
 
       def generate_files
-        migration_template 'migration.rb', "db/migrate/#{name}"
+        migration_template 'migration.rb', "db/migrate/#{name}.rb"
         template 'initializer.rb', 'config/initializers/vestal_versions.rb'
       end
     end
