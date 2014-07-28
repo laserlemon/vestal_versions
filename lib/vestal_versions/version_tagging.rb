@@ -23,7 +23,7 @@ module VestalVersions
   end
 
   # Instance methods included into VestalVersions::Version to enable version tagging.
-  module VersionMethods
+  module TaggingVersionMethods
     extend ActiveSupport::Concern
 
     included do
@@ -46,6 +46,6 @@ module VestalVersions
       tagged? && tag != 'deleted'
     end
 
-    Version.class_eval{ include VersionMethods }
+    Version.class_eval{ include TaggingVersionMethods }
   end
 end
