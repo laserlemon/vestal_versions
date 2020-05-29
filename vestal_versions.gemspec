@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |gem|
   gem.name    = 'houston-vestal_versions'
-  gem.version = '2.0.1'
+  gem.version = '3.0.0'
 
   gem.authors     = ['Steve Richert', "James O'Kelly", 'C. Jason Harrelson']
   gem.email       = ['steve.richert@gmail.com', 'dreamr.okelly@gmail.com', 'jason@lookforwardenterprises.com']
