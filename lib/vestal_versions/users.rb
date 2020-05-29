@@ -11,8 +11,8 @@ module VestalVersions
 
     # Methods added to versioned ActiveRecord::Base instances to enable versioning with additional
     # user information.
-    
-    
+
+
     private
     # Overrides the +version_attributes+ method to include user information passed into the
     # parent object, by way of a +updated_by+ attr_accessor.
@@ -28,8 +28,13 @@ module VestalVersions
     included do
       belongs_to :user, :polymorphic => true
 
-      alias_method_chain :user, :name
-      alias_method_chain :user=, :name
+      # alias_method_chain :user, :name
+      alias_method :user_without_name, :user
+      alias_method :user, :user_with_name
+
+      # alias_method_chain :user=, :name
+      alias_method :user_without_name=, :user=
+      alias_method :user=, :user_with_name=
     end
 
     # Overrides the +user+ method created by the polymorphic +belongs_to+ user association. If
