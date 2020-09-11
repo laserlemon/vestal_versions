@@ -3,7 +3,7 @@ ActiveRecord::Base.establish_connection(
   :database => File.expand_path('../../test.db', __FILE__)
 )
 
-class CreateSchema < ActiveRecord::Migration
+class CreateSchema < ActiveRecord::Migration[4.2]
   def self.up
     create_table :users, :force => true do |t|
       t.string :first_name

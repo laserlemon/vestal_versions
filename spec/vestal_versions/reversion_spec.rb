@@ -73,7 +73,7 @@ describe VestalVersions::Reversion do
 
   it "does not store the reverted_from for subsequent saves" do
     subject.revert_to!(1)
-    subject.update_attributes(:name => 'Bill Gates')
+    subject.update(:name => 'Bill Gates')
     subject.versions.last.reverted_from.should be_nil
   end
 
@@ -88,14 +88,14 @@ describe VestalVersions::Reversion do
     subject.revert_to(1)
     subject.name = "Reverted"
     subject.save
-    subject.update_attributes(:name => 'Bill Gates')
+    subject.update(:name => 'Bill Gates')
     subject.versions.last.reverted_from.should be_nil
   end
 
   it "clears the reverted_from if the model is reloaded after a revert_to without a save" do
     subject.revert_to(1)
     subject.reload
-    subject.update_attributes(:name => 'Bill Gates')
+    subject.update(:name => 'Bill Gates')
 
     subject.versions.last.reverted_from.should be_nil
   end

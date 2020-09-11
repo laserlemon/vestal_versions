@@ -48,7 +48,7 @@ module VestalVersions
 			# creation. Incremental changes are reset when the record is saved because they represent
 			# a subset of the dirty attribute changes, which are reset upon save.
 			def incremental_version_changes
-				changes.slice(*versioned_columns)
+				previous_changes.slice(*versioned_columns)
 			end
 
 			# Simply resets the cumulative changes after version creation.
