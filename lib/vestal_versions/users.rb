@@ -6,13 +6,13 @@ module VestalVersions
 
     included do
       attr_accessor :updated_by
-      Version.class_eval{ include VersionMethods }
+      Version.class_eval{ include UserVersionMethods }
     end
 
     # Methods added to versioned ActiveRecord::Base instances to enable versioning with additional
     # user information.
-    
-    
+
+
     private
     # Overrides the +version_attributes+ method to include user information passed into the
     # parent object, by way of a +updated_by+ attr_accessor.
@@ -22,14 +22,19 @@ module VestalVersions
   end
 
   # Instance methods added to VestalVersions::Version to accomodate incoming user information.
-  module VersionMethods
+  module UserVersionMethods
     extend ActiveSupport::Concern
 
     included do
       belongs_to :user, :polymorphic => true
 
-      alias_method_chain :user, :name
-      alias_method_chain :user=, :name
+      # alias_method_chain :user, :name
+      alias_method :user_without_name, :user
+      alias_method :user, :user_with_name
+
+      # alias_method_chain :user=, :name
+      alias_method :user_without_name=, :user=
+      alias_method :user=, :user_with_name=
     end
 
     # Overrides the +user+ method created by the polymorphic +belongs_to+ user association. If

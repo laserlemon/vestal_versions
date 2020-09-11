@@ -119,7 +119,7 @@ There are a handful of exciting new additions in version 1.0 of <tt>vestal_versi
       @user.update_attribute(:first_name, "Stephen")
       @user.first_name = "Steve"
       @user.save
-      @user.update_attributes(:last_name => "Jobs")
+      @user.update(:last_name => "Jobs")
     end
     @user.version # => 1
 
@@ -154,12 +154,12 @@ There are a handful of exciting new additions in version 1.0 of <tt>vestal_versi
 
 * Storing which user is responsible for a revision. Rather than introduce a lot of controller magic to guess what to store, you can simply update an additional attribute on your versioned model: <tt>updated_by</tt>.
 
-    @user.update_attributes(:last_name => "Jobs", :updated_by => "Tyler")
+    @user.update(:last_name => "Jobs", :updated_by => "Tyler")
     @user.versions.last.user # => "Tyler"
 
   Instead of passing a simple string to the <tt>updated_by</tt> setter, you can pass a model instance, such as an ActiveRecord user or administrator. The association will be saved polymorphically alongside the version.
 
-    @user.update_attributes(:last_name => "Jobs", :updated_by => current_user)
+    @user.update(:last_name => "Jobs", :updated_by => current_user)
     @user.versions.last.user # => #<User first_name: "Steven", last_name: "Tyler">
 
 * Global configuration. The new <tt>vestal_versions</tt> Rails generator also writes an initializer with instructions on how to set application-wide options for the <tt>versioned</tt> method.
